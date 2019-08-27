@@ -9,10 +9,10 @@
 .content-bg{
 	background: white;
 }
-/*.padding a{
+.dashboard a{
     color: white;
     text-decoration: none;
-}*/
+}
 .icon-size{
 	    font-size: 50px;
 	    padding: 10px;
@@ -349,4 +349,23 @@ font-weight: bold;
 }
 .cal-height{
      height: 340px!important; 
+}
+.attachment img{
+    height: 100px;
+    width: 100px;
+}
+.select{
+	width: 50%;
+}
+.label{
+	display: inline-block;
+    width: 40%;
+}
+.modal-backdrop{
+	height: 70%!important;
+    bottom: 0;
+    margin: auto;
+}
+.bar .title.title-left{
+	text-align: center!important;
 }

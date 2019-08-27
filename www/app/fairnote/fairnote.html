@@ -1,12 +1,34 @@
-<ion-view view-title="Attendance">
+<ion-view view-title="Fair Notes">
   <ion-content class="padding scroll-bg">
-   <div class="row padding">
-   	<div class="col-50"><label>Class : </label><label>UKG</label></div>
-   	<div class="col-50"><label>Section : </label><label>M Blue</label></div>
-   </div>
-    <div class="row padding">
-   	<div class="col-50"><label># Working days : </label><label>55</label></div>
-   	<div class="col-50"><label># days present : </label><label>50</label></div>
+   <div  class="content-bg">
+     <div class="padding"><h4>Notes {{class}} {{section}}</h4></div>
+     <div>
+       <label class="padding label">Term</label> 
+       <select class="select">
+        <option></option>
+       </select>
+     </div>
+     <div>
+       <label class="padding label">Subject</label> 
+       <select class="select">
+        <option></option>
+       </select>
+       </div>
+       <div>
+       <label class="padding label">Chapter</label> 
+       <select class="select">
+        <option></option>
+       </select></div>
+       <div>
+       <label class="padding label">Question Type</label> 
+       <select class="select">
+        <option></option>
+       </select>
+     </div>
+     <div class="text-center padding">
+       <button class="button button-calm">Submit</button>
+     </div>
+
    </div>
   </ion-content>
 </ion-view>
