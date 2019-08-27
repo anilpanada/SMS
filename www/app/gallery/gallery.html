@@ -1,0 +1,16 @@
+<ion-view view-title="Gallery">
+  <ion-content class="padding scroll-bg">
+   <div class="content-bg">
+     <div ng-repeat="gr in gallery" class=" padding">
+        <div>{{gr.date}}</div>
+         <div class="gallery">
+           <a download="" href="{{gr.attachment}}">
+              <img src="{{gr.attachment}}"></a>
+         </div>
+        <div> {{gr.eventtitle}}</div>
+      </div>
+       
+
+   </div>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,22 @@
+<ion-view view-title="Class Notes">
+  <ion-content class="padding scroll-bg">
+    
+     <div class="content-bg">
+     <div align="center">
+      <datepicker class="cal-margin">
+      <input ng-model="date" type="text" placeholder="Select date" />
+      </datepicker>
+    </div>
+       <div class="row border header">
+         <div class="col-25 table-pad">Period</div>
+         <div class="col-30 table-pad">Today Class Notes {{date | date:'dd-MM-yyyy'}} </div>
+       </div>
+       
+      <div ng-repeat="cn in classnotes" class="row border">
+        <div class="col-25 table-pad ">{{cn.period}}</div>
+        <div class="col-30 table-pad ">{{cn.notes}} <a download="" ng-if="cn.attachment" href="{{cn.attachment}}"><i class="fa fa-download"></i></a></div>
+      </div>
+       
+     </div>
+  </ion-content>
+</ion-view>

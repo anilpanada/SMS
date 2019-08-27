@@ -1,0 +1,28 @@
+<ion-view view-title="Project">
+  <ion-content class="padding scroll-bg">
+   <div class="content-bg">
+      <div align="center">
+        <datepicker class="cal-margin">
+        <input ng-model="date" type="text" placeholder="Select date" />
+        </datepicker>
+      </div>
+
+      <div align="center">
+         <p>Today Projects</p>
+       </div>
+       <div class="row border header">
+           <div class="col-10 padding">#</div>
+           <div class="col-30 padding">Subject </div>
+           <div class="col-30 padding">Description</div>
+           <div class="col-30 padding">Attachments</div>
+       </div>
+       <div ng-repeat="pr in projects" class="row border">
+          <div class="col-10 table-pad " >{{$index + 1}}</div>
+          <div class="col-30 table-pad ">{{pr.subject}}</div>
+         <div class="col-30 table-pad ">{{pr.description}}</div>
+         <div class="col-30 table-pad text-center"><a download="" ng-if="pr.attachment" href="{{pr.attachment}}"><i class="fa fa-download"></i></a></div> 
+      </div>
+     
+    </div>
+  </ion-content>
+</ion-view>
