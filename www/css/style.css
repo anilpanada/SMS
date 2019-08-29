@@ -8,6 +8,7 @@
 }
 .content-bg{
 	background: white;
+	overflow: auto;
 }
 .dashboard a{
     color: white;
@@ -368,4 +369,13 @@ font-weight: bold;
 }
 .bar .title.title-left{
 	text-align: center!important;
+}
+.table td, th{
+	padding: 10px;
+}
+.table th{
+	font-weight: bold;
+}
+.fc-scroller{
+	height: auto!important;
 }

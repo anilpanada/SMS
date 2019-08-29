@@ -2,15 +2,38 @@
   <ion-content class="padding scroll-bg">
 
    <div class="content-bg padding">
-   <div class="row ">
-   	<div class="col-50"><label>Class : </label><label>UKG</label></div>
-   	<div class="col-50"><label>Section : </label><label>M Blue</label></div>
-   </div>
-    <div class="row ">
-   	<div class="col-50"><label># Working days : </label><label>55</label></div>
-   	<div class="col-50"><label># days present : </label><label>50</label></div>
-   </div>
-   <div id='calendar' class="padding"></div>
+    <ion-scroll direction="xy" scrollbar-x="true" style="width: 100%; height: 100%">
+   <table id="time-table" class="table">
+  <thead>
+    <tr>
+        <th>Day/Period</th>
+        <th>I</th>
+        <th>II</th>
+        <th>III</th>
+        <th>IV</th>
+        <th>V</th>
+        <th>VI</th>
+        <th>VII</th>
+        <th>VIII</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="tt in timetable">
+        <th>{{tt.day}}</th>
+        <td>{{tt.period1}}</td>
+        <td>{{tt.period2}}</td>
+        <td>{{tt.period3}}</td>
+        <td>{{tt.period4}}</td>
+        <td>{{tt.period5}}</td>
+        <td>{{tt.period6}}</td>
+        <td>{{tt.period7}}</td>
+        <td>{{tt.period8}}</td>
+    </tr>
+     
+  <tbody>
+  </table>
+</ion-scroll>
+   
  </div>
   </ion-content>
 </ion-view>

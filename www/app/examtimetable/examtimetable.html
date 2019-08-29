@@ -1,13 +1,41 @@
-<ion-view view-title="Exam Time Table">
+
+<ion-view view-title="Results">
   <ion-content class="padding scroll-bg">
-   <div class="row padding">
-   	<div class="col-50"><label>Class : </label><label>UKG</label></div>
-   	<div class="col-50"><label>Section : </label><label>M Blue</label></div>
-   </div>
-    <div class="row padding">
-   	<div class="col-50"><label># Working days : </label><label>55</label></div>
-   	<div class="col-50"><label># days present : </label><label>50</label></div>
-   </div>
-   <div id='calendar' class="padding"></div>
+   <div class="content-bg">
+      <div >
+        <div class="row border header">
+          <div class="col-10 padding">#</div>
+          <div class="col-20 padding">Exam Name</div>
+          <div class="col-25 padding">Start Date</div>
+          <div class="col-25 padding">End Date</div>
+          <div class="col-20 padding">Action</div>
+        </div>
+        <div ng-repeat="et in examtable" class="row border">
+          <div class="col-10 padding">{{$index+1}}</div>
+          <div class="col-20 padding"> {{et.examname}}</div>
+          <div class="col-25 padding">{{et.startdate}}</div>
+          <div class="col-25 padding">{{et.enddate}}</div>
+          <div class="col-20 padding"><a href="" ng-click="selectedExam(et);"><i class="fa fa-eye" ></i></a></div>
+        </div>
+    </div>
+  </div>
   </ion-content>
 </ion-view>
+<script id="templates/modal.html" type="text/ng-template">
+      <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+          <h1 class="title text-center">Exam: Mid {{selected.examname}} Exam</h1>
+          <button class="button button-clear ion-close" ng-click="modal.hide()"></button>
+        </ion-header-bar>
+        <ion-content class="padding">
+          <div class="row">
+            <div class="padding col-25">Date</div><div class="padding col-25">Subject</div>
+            <div class="padding col-25">Session</div><div class="padding col-25">Syllabus</div>
+          </div>
+          <div class="row border" ng-repeat="et in selected.exams">
+            <div class="padding col-25">{{et.date}}</div><div class="padding col-25">{{et.subject}}</div>
+            <div class="padding col-25">{{et.session}}</div><div class="padding col-25">{{et.syllabus}}</div>
+          </div>
+        </ion-content>
+      </ion-modal-view>
+    </script>
