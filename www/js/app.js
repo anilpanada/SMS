@@ -151,11 +151,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
     url: '/report',
     templateUrl: 'app/test/report.html',
     controller: 'ReportCtrl'
-  })
-  .state('fairnoteview', {
-    url: '/notesview',
-    templateUrl: 'app/fairnote/notesview.html',
-    controller: 'fairnoteviewCtrl'
   });
 
   // if none of the above states are matched, use this as the fallback

@@ -1,33 +1,58 @@
 <ion-view view-title="Fair Notes">
   <ion-content class="padding scroll-bg">
    <div  class="content-bg">
-     <div class="padding"><h4>Notes {{class}} {{section}}</h4></div>
-     <div>
-       <label class="padding label">Term</label> 
-       <select class="select">
-        <option></option>
-       </select>
+    <div ng-if="!pageInfo.showquestion">
+         <div class="padding"><h4>Notes {{class}} {{section}}</h4></div>
+         <div>
+           <label class="padding label">Term</label> 
+           <select class="select" ng-model="pageInfo.term">
+            <option value="">Select Term</option>
+            <option value="Term 1">Term 1</option>
+            <option value="Term 2">Term 2</option>
+            <option value="Term 3">Term 3</option>
+           </select>
+         </div>
+         <div>
+           <label class="padding label">Subject</label> 
+           <select class="select" ng-model="pageInfo.subject">
+            <option value="">Select Subject</option>
+            <option ng-repeat="su in subjects" value="{{$index}}">{{su.subject_name}}</option>
+           </select>
+           </div>
+           <div>
+           <label class="padding label">Chapter</label> 
+           <select class="select" ng-model="pageInfo.chapter">
+            <option value="">Select chapter</option>
+            <option ng-repeat="su in subjects[pageInfo.subject].chapters">{{su.cname}}</option>
+           </select></div>
+           <div>
+           <label class="padding label">Question Type</label> 
+           <select class="select" ng-model="pageInfo.question">
+            <option value="">Select Question Type</option>
+            <option value="1">Only Questions</option>
+            <option value="2">Question & Answer</option>
+           </select>
+         </div>
+         <div class="text-center padding">
+           <button class="button button-calm" ng-click="pageInfo.showquestion=true;">Submit</button>
+         </div>
      </div>
-     <div>
-       <label class="padding label">Subject</label> 
-       <select class="select">
-        <option></option>
-       </select>
-       </div>
-       <div>
-       <label class="padding label">Chapter</label> 
-       <select class="select">
-        <option></option>
-       </select></div>
-       <div>
-       <label class="padding label">Question Type</label> 
-       <select class="select">
-        <option></option>
-       </select>
+
+     <div ng-if="pageInfo.showquestion">
+      <div ng-repeat="qs in que_ans">
+        <div class="padding"><h4>{{qs.question_type}}</h4></div>
+        <div class="padding" ng-repeat="qs2 in qs.questions">
+          <p>{{$index+1}}. {{qs2.question}}</p>
+          <p><b>Ans</b>. {{qs2.answer}}</p>
+        </div>
+
+        </div>
+
+      <div class="text-center padding">
+           <button class="button button-assertive">Download</button>
+         </div>
      </div>
-     <div class="text-center padding">
-       <button class="button button-calm">Submit</button>
-     </div>
+    
 
    </div>
   </ion-content>
