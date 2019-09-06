@@ -1,7 +1,12 @@
 moduleCtrl
 
 .controller('AttendanceCtrl', function($scope, $rootScope, $state) {
-	/*var calendarEl = document.getElementById('calendar');
+
+$scope.attendance = [
+{date:'06/09/2019', forenoon:'on', afternoon:'on'}
+]
+
+	var calendarEl = document.getElementById('attendancecalendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
     	plugins: [ 'interaction', 'dayGrid' ],
@@ -26,6 +31,6 @@ moduleCtrl
 	    }
     });
 
-    calendar.render();*/
+    calendar.render();
 
 });

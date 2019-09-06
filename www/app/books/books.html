@@ -1,20 +1,22 @@
 <ion-view view-title="Books">
   <ion-content class="padding scroll-bg">
    <div class="content-bg">
-   	<div class="text-center cal-margin">
-   		<label>Select Term :</label>
-   		<select>
-   			<option>Term 1</option>
-   			<option>Term 2</option>
-   			<option>Term 3</option>
-   		</select>
-   	</div>
-
-   	<div class= "row subject">
-   		<a href=""><div>Tamil</div></a>
-   		<a href=""><div>English</div></a>
-   		<a href=""><div>Maths</div></a>
-   	</div>
+        <div>
+           <label class="padding label">Term</label> 
+           <select class="select" ng-model="pageInfo.term">
+            <option value="">Select Term</option>
+            <option value="Term 1">Term 1</option>
+            <option value="Term 2">Term 2</option>
+            <option value="Term 3">Term 3</option>
+           </select>
+         </div>
+         <div>
+           <label class="padding label">Subject</label> 
+           <select class="select" ng-model="pageInfo.subject">
+            <option value="">Select Subject</option>
+            <option ng-repeat="su in subjects" value="{{$index}}">{{su.subject_name}}</option>
+           </select>
+          </div>
    	<div class="row border header">
       <div class="padding">S.No</div>
       <div class="padding">Term</div>
