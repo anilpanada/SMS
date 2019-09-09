@@ -17,7 +17,7 @@
             <option ng-repeat="su in subjects" value="{{$index}}">{{su.subject_name}}</option>
            </select>
           </div>
-          <div> <label>Select Chapter :</label>
+          <div> <label class="padding label">Select Chapter :</label>
             <select>
               <option>Chapter 1</option>
               <option>Chapter 2</option>
@@ -28,7 +28,7 @@
                   <a href="">
                    <video  controls><source src="/img/gallery-1.5502970754E+12.mp4" type="video/mp4"></video>
                   </a>
-            <a href=""><i class="fa fa-download"><span>Download Video Book</span></i></a>
+            <a download="" ng-if="hw.attachment" href="{{hw.attachment}}"><i class="fa fa-download"><span>Download Video Book</span></i></a>
           </div>
       </div>
   </ion-content>

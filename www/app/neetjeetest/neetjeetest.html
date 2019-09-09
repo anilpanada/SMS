@@ -1,12 +1,116 @@
-<ion-view view-title="Attendance">
-  <ion-content class="padding scroll-bg">
-   <div class="row padding">
-   	<div class="col-50"><label>Class : </label><label>UKG</label></div>
-   	<div class="col-50"><label>Section : </label><label>M Blue</label></div>
+<ion-view view-title="Neet JEE">
+  <ion-content class="padding scroll-bg" >
+   <div class="content-bg">
+    
+    <div class="row border header">
+      <div class="padding">S.No</div>
+      <div class="padding">Date</div>
+      <div class="padding">Subject</div>
+      <div class="padding">Test Name</div>
+      <div class="padding">Total</div>
+      <div class="padding">Marks</div>
+      <div class="padding">Action</div>
+    </div>
+    <div class="row border" ng-repeat="st in selftest">
+      <div class="padding">{{$index+1}}</div>
+      <div class="padding">{{st.date}}</div>
+      <div class="padding">{{st.subject}}</div>
+      <div class="padding"> {{st.testname}}</div>
+      <div class="padding">{{st.total}}</div>
+      <div class="padding"><a ui-sref="report"></a>{{st.marks}}</div>
+      <div class="row padding">
+        <a class="col-30 pad-5"  ng-click="selectedTest(st); pageInfo.template = 'read';"><i class="fa fa-eye"></i></a>
+        <a class="col-30 pad-5"  ng-click="selectedTest(st); pageInfo.template = 'write';"><i class="fa fa-edit"></i></a>
+        <a class="col-30 pad-5"  ng-click="selectedTest(st); pageInfo.template = 'report';"><i class="fa fa-file"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-bg" ng-if="pageInfo.template == 'create'">
+  <div class="row" ng-model="selftest">
+    <div>
+         <div class="padding"><h4>{{class}} {{section}}</h4></div>
+         <div>
+           <label class="padding label">Term</label> 
+           <select class="select" ng-model="pageInfo.term">
+            <option value="">Select Term</option>
+            <option value="Term 1">Term 1</option>
+            <option value="Term 2">Term 2</option>
+            <option value="Term 3">Term 3</option>
+           </select>
+         </div>
+         <div>
+           <label class="padding label">Subject</label> 
+           <select class="select" ng-model="pageInfo.subject">
+            <option value="">Select Subject</option>
+            <option ng-repeat="su in subjects" value="{{$index}}">{{su.subject_name}}</option>
+           </select>
+          </div>
+          
+        <div class="row border header">
+          <div class="padding">S.No</div>
+          <div class="padding">Chapter</div>
+          <div class="padding">Action</div>
+        </div>
+        <div class="row border" ng-repeat="dt in dailytest">
+          <div class="padding">{{$index+1}}</div>
+          <div class="padding">{{dt.cname}}</div>
+          <div class="row padding">
+            <input type="checkbox" value="">            
+          </div>
+        </div>
+         </div>
+    
+  </div>
+        <div class="text-center padding">
+           <button class="button button-positive" ng-click="pageInfo.template = 'write';">Write Test</button>
+         </div>
+  </div>
+
+
+ <div class="content-bg" ng-if="pageInfo.template == 'read'">
+  <div class="row" ng-model="selftest">
+    <div><label>Subjet: </label><label>{{selected.subject}}</label></div>
+    <div><label>Test Name: </label><label>{{selected.testname}}</label></div>
+    <div><label>Mark: </label><label>{{selected.total}}</label></div>
+    <div><label>Remark: </label><label>{{selected.remark}}</label></div>
+    
+  </div>
+      <div ng-repeat="qs in que_ans">
+        <div class="padding"><h4>{{qs.question_type}}</h4></div>
+        <div class="padding" ng-repeat="qs2 in qs.questions">
+          <p>{{$index+1}}. {{qs2.question}}</p>
+          <p><b>Ans</b>. {{qs2.answer}}</p>
+        </div>
+        </div>
+        <div class="text-center padding">
+           <button class="button button-positive" ng-click="pageInfo.template = 'write';">Write Test</button>
+         </div>
+  </div>
+
+  <div class="content-bg" ng-if="pageInfo.template == 'write'">
+      <div ng-repeat="qs in que_ans">
+        <div class="padding"><h4>{{qs.question_type}}</h4></div>
+        <div class="padding" ng-repeat="qs2 in qs.questions">
+          <p>{{$index+1}}. {{qs2.question}}</p>
+          <p><b>Ans</b>. <input type="text"></p>
+        </div>
+        </div>
+        <div class="text-center padding">
+           <button class="button button-balanced" >Save</button>
+         </div>
    </div>
-    <div class="row padding">
-   	<div class="col-50"><label># Working days : </label><label>55</label></div>
-   	<div class="col-50"><label># days present : </label><label>50</label></div>
+   
+   <div class="content-bg" ng-if="pageInfo.template == 'report'">
+      <div ng-repeat="qs in que_ans">
+        <div class="padding"><h4>{{qs.question_type}}</h4></div>
+        <div class="padding" ng-repeat="qs2 in qs.questions">
+          <p>{{$index+1}}. {{qs2.question}}</p>
+          <p><b>Ans</b>. <input type="text"></p>
+        </div>
+        </div>
    </div>
+  
   </ion-content>
 </ion-view>
+
