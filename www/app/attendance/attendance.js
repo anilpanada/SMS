@@ -3,7 +3,8 @@ moduleCtrl
 .controller('AttendanceCtrl', function($scope, $rootScope, $state) {
 
 $scope.attendance = [
-{date:'06/09/2019', forenoon:'on', afternoon:'on'}
+{start:'2019-09-11', title: 'Absent' , backgroundColor: 'red', forenoon:'on', afternoon:'on'},
+{start:'2019-09-12', title: 'Present' , backgroundColor: 'green', forenoon:'on', afternoon:'on'}
 ]
 
 	var calendarEl = document.getElementById('attendancecalendar');
@@ -18,10 +19,7 @@ $scope.attendance = [
 	    defaultDate: new Date(),
 	    editable: true,
 	    eventLimit: true, // allow "more" link when too many events
-	    events: [{
-    title: 'my event',
-    duration: '02:00'
-  }],
+	    events: $scope.attendance,
 	    eventClick: function(info) {
 	      	console.log(info.event);
 	      	$scope.pageInfo.new_action = 'viewTask';
