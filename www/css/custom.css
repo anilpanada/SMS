@@ -39,5 +39,36 @@ body.login_page ion-content{
 .test-list .test-btn{
 	position: absolute;
 	right: 10px;
-	top: 0;
+	top: 10px;
+}
+.test_page .content-bg{
+	background: #E7EAEB;
+}
+.test-list{
+	background: white;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+.test-list h4{
+	margin-top: 0px;
+}
+.test-list .mark-list span{
+	display: inline-block;
+	padding: 5px;
+	background: #00BCD4;
+	color: #fff;
+	margin: 0 5px;
+}
+.test-list .mark-list{
+	padding: 10px;
+	text-align: center;
+	background: #E7EAEB;	
+}
+.test-list .mark-list button{
+	width: auto;
+    display: inline-block;
+    padding: 0 10px;
+    height: auto;
+    min-height: auto;
+    line-height: 30px;
 }
