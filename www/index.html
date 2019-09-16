@@ -19,6 +19,7 @@
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
     <link href="css/angular-datepicker.css" rel="stylesheet">
 	<link href="fontawesome/css/all.css" rel="stylesheet">
 	<link href="fontawesome/css/fontawesome.min.css" rel="stylesheet">
@@ -54,17 +55,20 @@
     <script src="app/results/results.js"></script>
     <script src="app/selftest/selftest.js"></script>
     <script src="app/test/test.js"></script>
+    <script src="app/login/login.js"></script>
     <script src="app/timetable/timetable.js"></script>
     <script src="app/transport/transport.js"></script>
     <script src="app/videobooks/videobooks.js"></script>
     <script src="js/services.js"></script>
+    <script src="js/httpService.js"></script>
+    <script src="js/apiService.js"></script>
     <!-- <script src="js/fullcalendar.min.js"></script> -->
     <script src='js/main.js'></script>
     <script src='js/interaction.main.js'></script>
     <script src='js/daygrid.main.js'></script>
     <script src='js/ionic-datepicker.bundle.min.js'></script>
   </head>
-  <body ng-app="starter" ng-controller="indexController">
+  <body ng-app="starter" ng-controller="indexController" class="{{currentState}}_page">
     <!--
       The nav bar that will be updated as we navigate between views.
     -->

@@ -1,6 +1,29 @@
 <ion-view view-title="Daily Test">
   <ion-content class="padding scroll-bg">
    <div class="content-bg" ng-if="pageInfo.template == ''">
+
+    <div class="test-list pos-relative" ng-repeat="dt in dailytest">
+      <h4>{{dt.daily_test_name}}</h4>
+      <div class="clearfix">
+        <span class="pull-left"><b>Sub:</b> {{dt.subject_name}}</span>
+        <span class="pull-right"><b>Date:</b> {{dt.created_at.split(' ')[0]}}</span>
+      </div>
+      <div class="clearfix">
+        <span class="pull-left"><b>Mark:</b> {{dt.mark}}</span>
+        <span class="pull-right test-btn">
+          <a ng-show="dt.tests.length" ng-click="dt.expand = !dt.expand;"><i class="fa fa-file"></i></a>
+          <a ng-click="selectedTest(dt); pageInfo.template = 'read';"><i class="fa fa-eye"></i></a>
+          <a ng-click="selectedTest(dt); pageInfo.template = 'write';"><i class="fa fa-edit"></i></a>
+        </span>
+      </div>
+      <div class="clearfix mark-list" ng-if="dt.expand">
+        <span ng-repeat="mark in dt.tests">{{mark.mark}}</span>
+        <div>
+          <button>View Detailed Report</button>
+        </div>
+      </div>
+    </div>
+
    	<div class="row border header">
       <div class="padding">S.No</div>
       <div class="padding">Date</div>

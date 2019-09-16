@@ -27,6 +27,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
   });
 })
 
+
+.value('APIURL', 'http://localhost/sms2019/api/?action=')
+
 .config(function($stateProvider, $urlRouterProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
@@ -50,7 +53,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
   .state('attendance', {
     url: '/attendance',
     templateUrl: 'app/attendance/attendance.html',
-    controller: 'AttendanceCtrl'
+    controller: 'AttendanceCtrl',
+    resolve: {
+        Data: function(ApiService, $stateParams) {
+          return ApiService.attendance();
+        }
+    }
   })
 .state('books', {
     url: '/books',
@@ -60,7 +68,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
 .state('calendar', {
     url: '/calendar',
     templateUrl: 'app/calendar/calendar.html',
-    controller: 'calendarCtrl'
+    controller: 'calendarCtrl',
+    resolve: {
+        Data: function(ApiService, $stateParams) {
+          return ApiService.calendar();
+        }
+    }
   })
 .state('classnotes', {
     url: '/classnotes',
@@ -110,7 +123,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
 .state('test', {
     url: '/test',
     templateUrl: 'app/test/test.html',
-    controller: 'testCtrl'
+    controller: 'testCtrl',
+    resolve: {
+        Data: function(ApiService, $stateParams) {
+          return ApiService.get_daily_tests();
+        }
+    }
   })
 .state('timetable', {
     url: '/timetable',
@@ -154,6 +172,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/home');
+  $urlRouterProvider.otherwise('/login');
 
 });

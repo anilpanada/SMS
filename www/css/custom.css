@@ -1,0 +1,43 @@
+body.login_page ion-content{
+	background: #fff;
+}
+.pos-relative{
+	position: relative;
+}
+.fc-sun {
+    color: #337ab7;
+    border-color: black;
+    background-color: #ffa58c;
+}
+.fc-event.event.greenEvent {
+    background-color: #06df06;
+}
+
+.fc-event.event.blueEvent {
+    background-color:#00c0ef;
+}
+
+.fc-event.event.presentEvent {
+    background-color: #a69600;
+}
+
+.fc-event.event.absentEvent {
+    background-color:#fd0303;
+}
+.pull-left{
+	float: left;
+}
+.pull-right{
+	float: right;
+}
+.w100{
+	width: 100%;
+}
+.test-list .test-btn a{
+	margin: 0 10px;
+}
+.test-list .test-btn{
+	position: absolute;
+	right: 10px;
+	top: 0;
+}

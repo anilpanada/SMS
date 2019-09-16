@@ -1,13 +1,7 @@
 moduleCtrl
 
-.controller('calendarCtrl', function($scope, $rootScope, $state) {
+.controller('calendarCtrl', function($scope, $rootScope, $state, Data) {
 
-$scope.attendance = [
-{start:'2019-10-02', title: 'Gandhi Jayanthi' , backgroundColor: 'red', calendar_type:'1'},
-{start:'2019-10-03', title: '' , backgroundColor: 'green', calendar_type:'2'},
-]
-
-/*document.addEventListener('DOMContentLoaded', function() {*/
 	var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -20,7 +14,7 @@ $scope.attendance = [
 	    defaultDate: new Date(),
 	    editable: true,
 	    eventLimit: true, // allow "more" link when too many events
-	    events: $scope.attendance,
+	    events: Data.data,
 	    eventClick: function(info) {
 	      	console.log(info.event);
 	      	$scope.pageInfo.new_action = 'viewTask';
