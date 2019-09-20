@@ -388,3 +388,33 @@ font-weight: bold;
 .di-block{
   display: inline-block;
 }
+.gal-down{
+  float: right;
+  padding: 5px 10px;
+}
+.testatm span{
+  display: inline-block;
+  padding: 5px;
+  background: #00BCD4;
+  color: #fff;
+  margin: 0 5px;
+}
+.testatm span.greenbtn{
+  background: #3bbd3b!important;
+}
+.testatm span.redbtn{
+  background: #f37373!important;
+}
+.ca{
+  background: none!important;
+  color:#3bbd3b!important;
+}
+.wa{
+  background: none!important;
+  color:#f37373!important;
+}
+.pg-close{
+    background: #2d2828;
+    padding: 5px 10px;
+    color: white;
+}

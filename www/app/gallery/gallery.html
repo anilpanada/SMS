@@ -2,12 +2,20 @@
   <ion-content class="padding scroll-bg">
    <div class="content-bg">
      <div ng-repeat="gr in gallery" class=" padding">
-        <div>{{gr.date}}</div>
+        <div>{{gr.gallery_date}}</div>
          <div class="gallery">
-           <a download="" href="{{gr.attachment}}">
-              <img src="{{gr.attachment}}"></a>
+           
+             <video ng-if="gr.type== 'video'" src="{{gr.gallery_file_path}}" class="form-control" style="height: 200px;" controls>
+              Your browser does not support the video tag.
+            </video>
+             <audio ng-if="gr.type== 'audio'"  controls class="form-control" style="height: 200px;">
+               <source src="{{gr.gallery_file_path}}">
+               Your browser does not support the audio element.
+             </audio>
+             <img ng-if="gr.type== 'image'" src="{{gr.gallery_file_path}}"/>
+           
          </div>
-        <div> {{gr.eventtitle}}</div>
+        <div >{{gr.class == 100 ? 'All' : gr.class_name}} - {{gr.gallery_title}} - {{gr.description}} <a class="fa fa-download gal-down" download="" href="{{gr.gallery_file_path}}"></a></div>
       </div>
        
 

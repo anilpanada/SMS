@@ -93,7 +93,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
 .state('gallery', {
     url: '/gallery',
     templateUrl: 'app/gallery/gallery.html',
-    controller: 'galleryCtrl'
+    controller: 'galleryCtrl',
+     resolve: {
+        Data: function(ApiService, $stateParams) {
+          return ApiService.get_gallery();
+        }
+    }
   })
 .state('neetjeetest', {
     url: '/neetjeetest',
@@ -118,7 +123,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
 .state('selftest', {
     url: '/selftest',
     templateUrl: 'app/selftest/selftest.html',
-    controller: 'selftestCtrl'
+    controller: 'selftestCtrl',
+    resolve: {
+        Data: function(ApiService, $stateParams) {
+          return ApiService.get_self_tests();
+        }
+    }
   })
 .state('test', {
     url: '/test',
