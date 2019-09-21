@@ -22,4 +22,9 @@ moduleCtrl
         $rootScope.loggedInUserInfo = data;
     });
 
+    $scope.logout = function(){
+        $rootScope.loggedInUserInfo = {};
+        localStorage.removeItem('sms_auth');
+        $state.go('login');
+    }
 });

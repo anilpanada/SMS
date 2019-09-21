@@ -41,7 +41,7 @@ body.login_page ion-content{
 	right: 10px;
 	top: 10px;
 }
-.test_page,.selftest_page .content-bg{
+.test_page  .content-bg, .selftest_page .content-bg{
 	background: #E7EAEB;
 }
 .test-list{
@@ -71,4 +71,37 @@ body.login_page ion-content{
     height: auto;
     min-height: auto;
     line-height: 30px;
+}
+.closediv{
+	padding: 10px 0px;
+}
+.login span{
+	padding: 13px 10px;
+	position: absolute;
+	font-size: 20px;
+}
+.login input{
+	padding: 25px 45px;
+	font-size: 16px;
+}
+.form-check-input {
+    position: absolute;
+    margin-top: .3rem!important;
+    margin-left: -1.25rem!important;
+}
+.login-btn {
+    width: 100%;
+    font-size: 25px;
+}
+.title h1{
+    color: white;
+    font-size: 30px;
+    padding: 10px;
+}
+/*.student span{
+	float: right;
+    margin: -75px 5px;
+}*/
+.row{
+	margin:0!important;
 }

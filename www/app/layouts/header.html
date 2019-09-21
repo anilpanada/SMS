@@ -9,25 +9,26 @@
 		            <span class="hamburger hamburger-3"></span>
 		          </label>
 		          
-		          <a ui-sref="home"  ng-click="menuinput=false" href="#" class="menu-item ng-scope md-orange-theme" tabindex="0"> <i class="fa fa-home"></i> <span>Home</span></a>
+		          <a ui-sref="home"  ng-show="loggedInUserInfo.id" ng-click="menuinput=false" href="#" class="menu-item ng-scope md-orange-theme" tabindex="0"> <i class="fa fa-home"></i> <span>Home</span></a>
 		          
-		          <a  ui-sref="profile" ng-click="menuinput=false" class="menu-item md-orange-theme" tabindex="0"> <i class="fa fa-user"></i> <span>Profile</span></a>
+		          <a  ui-sref="profile" ng-show="loggedInUserInfo.id" ng-click="menuinput=false" class="menu-item md-orange-theme" tabindex="0"> <i class="fa fa-user"></i> <span>Profile</span></a>
 
-		          <a  ng-click="menuinput=false" class="menu-item md-orange-theme" tabindex="0" aria-hidden="true"> <i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+		          <a  ng-click="logout(); menuinput=false" ng-show="loggedInUserInfo.id" class="menu-item md-orange-theme" tabindex="0" aria-hidden="true"> <i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
 				</nav>
 	</div>
 		
-	<div class="col-80 student">
-		<div class="row">
-			<div class="col-90 text-left">
+	<div class="col-80 student" ng-show="loggedInUserInfo.id">
+			<div class="text-left">
 				<div>DONSRI .M</div> 
 				<div>(1234) UKG M-Blue</div>
 				<div>Teacher : N.MANJURANI(7976)</div>
+				<span><img src="img/adam.jpg"></span>
 			</div>
-			<div class="col-10">
-					<img src="img/adam.jpg">
-			</div>
-		</div>
+		
+	</div>
+
+	<div class="col-80 title" ng-hide="loggedInUserInfo.id">
+		<h1>Sri Vinayaga Matriculation School</h1>
 	</div>
 		
 </div>
