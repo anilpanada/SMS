@@ -19,10 +19,10 @@
 		
 	<div class="col-80 student" ng-show="loggedInUserInfo.id">
 			<div class="text-left">
-				<div>DONSRI .M</div> 
-				<div>(1234) UKG M-Blue</div>
-				<div>Teacher : N.MANJURANI(7976)</div>
-				<span><img src="img/adam.jpg"></span>
+				<div>{{loggedInUserInfo.name}}</div> 
+				<div>({{loggedInUserInfo.admission_number}}) {{loggedInUserInfo.academic.class_name}} {{loggedInUserInfo.academic.section_name}}</div>
+				<div>Teacher : {{loggedInUserInfo.teacher.teacher_name}}({{loggedInUserInfo.teacher.emp_no}})</div>
+				<span><img src="{{loggedInUserInfo.academic.photo}}"></span>
 			</div>
 		
 	</div>

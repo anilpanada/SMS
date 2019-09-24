@@ -37,4 +37,11 @@ moduleCtrl
 				$scope.reviewPageData = res.data;
 			});
 		};
+}
+
+
+.controller('WritestestCtrl', function($scope, $rootScope, $state, Data, $ionicModal, ApiService) {
+	
 });
+
+

@@ -1,26 +1,36 @@
 <ion-view view-title="Project">
   <ion-content class="padding scroll-bg">
-   <div class="content-bg">
-      <div align="center">
-         <button class="datepick button button-block button-balanced" ng-click="openDatePicker()">Open date picker</button>
-      </div>
-
-      <div align="center">
-         <p>Today Projects</p>
-       </div>
-       <div class="row border header">
-           <div class="col-10 padding">#</div>
-           <div class="col-30 padding">Subject </div>
-           <div class="col-30 padding">Description</div>
-           <div class="col-30 padding">Attachments</div>
-       </div>
-       <div ng-repeat="pr in projects" class="row border">
-          <div class="col-10 table-pad " >{{$index + 1}}</div>
-          <div class="col-30 table-pad ">{{pr.subject}}</div>
-         <div class="col-30 table-pad ">{{pr.description}}</div>
-         <div class="col-30 table-pad text-center"><a download="" ng-if="pr.attachment" href="{{pr.attachment}}"><i class="fa fa-download"></i></a></div> 
-      </div>
-     
+    <div class="content-bg">
+     <div align="center" class="test-list">
+        <i class="fa fa-arrow-circle-left pg-arrow pull-left" ng-click="changeDate(homeworks.prev)"></i>
+       <button class="datepick button button-block button-balanced in-block" ng-click="openDatePicker()">{{get_date(homeworks.current) | date:'dd-MM-yyyy'}}</button>
+       <i class="fa fa-arrow-circle-right pg-arrow pull-right" ng-if="!homeworks.is_today" ng-click="changeDate(homeworks.next)"></i>
+       <i class="fa fa-arrow-circle-right pg-arrow pull-right" ng-if="homeworks.is_today" ng-click="changeDate(homeworks.next)" style="opacity: 0"></i>
+  
     </div>
+    <p class="test-list text-center" ng-if="homeworks.data.length == 0">No Data Available</p>
+       <div ng-repeat="pr in homeworks.data" >
+          <div class="test-list ">
+            <div  class="row">  
+              <div class="col-50 header">Subject :</div>
+              <div class="col-50">{{pr.subject}}</div>
+              
+            </div>
+            <div  class="row">
+              <div class="col-50 header"> Description :</div>          
+              <div class="col-50 ">{{pr.description}}</div>
+            </div>
+             
+            <div  class="row">
+              <div class="col-50 header ">Attachments:</div>
+              <div class="col-50">
+                <a download="" class="padding" ng-if="pr.project1" href="{{pr.project1}}"><i class="fa fa-download"></i></a>
+                <a download="" class="padding" ng-if="pr.project2" href="{{pr.project2}}"><i class="fa fa-download"></i></a>
+                <a download="" class="padding" ng-if="pr.project3" href="{{pr.project3}}"><i class="fa fa-download"></i></a></div>
+            </div>
+           </div>
+        </div>
+       
+     </div>
   </ion-content>
 </ion-view>

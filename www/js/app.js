@@ -27,8 +27,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
   });
 })
 
+.filter('to_trusted', ['$sce', function($sce){
+    return function(text) {
+        return $sce.trustAsHtml(text);
+    };
+}])
 
-.value('APIURL', 'http://localhost/sms2019/api/?action=')
+.filter('secure_url', ['$sce', function($sce){
+    return function(text) {
+        return $sce.trustAsResourceUrl(text);
+    };
+}])
+
+.value('APIURL', 'http://dev.srivinayagaschoolpennagaram.com/api/?action=')
+//.value('APIURL', 'http://localhost/sms2019/api/?action=')
 
 .config(function($stateProvider, $urlRouterProvider) {
 
@@ -48,7 +60,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
   .state('homework', {
     url: '/homework',
     templateUrl: 'app/homework/homework.html',
-    controller: 'HomeworkCtrl'
+    controller: 'HomeworkCtrl',
+    resolve: {
+        Data: function(ApiService, $stateParams) {
+          return ApiService.get_homework();
+        }
+    }
   })
   .state('attendance', {
     url: '/attendance',
@@ -63,7 +80,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
 .state('books', {
     url: '/books',
     templateUrl: 'app/books/books.html',
-    controller: 'BooksCtrl'
+    controller: 'BooksCtrl',
+    resolve: {
+        Data: function(ApiService, $stateParams) {
+          return ApiService.get_books();
+        }
+    }
   })
 .state('calendar', {
     url: '/calendar',
@@ -78,12 +100,22 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
 .state('classnotes', {
     url: '/classnotes',
     templateUrl: 'app/classnotes/classnotes.html',
-    controller: 'ClassnotesCtrl'
+    controller: 'ClassnotesCtrl',
+    resolve: {
+        Data: function(ApiService, $stateParams) {
+          return ApiService.get_class_notes();
+        }
+    }
   })
 .state('examtimetable', {
     url: '/examtimetable',
     templateUrl: 'app/examtimetable/examtimetable.html',
-    controller: 'examtimetableCtrl'
+    controller: 'examtimetableCtrl',
+    resolve: {
+        Data: function(ApiService, $stateParams) {
+          return ApiService.get_exam_time_table();
+        }
+    }
   })
 .state('fairnote', {
     url: '/fairnote',
@@ -108,17 +140,32 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
 .state('profile', {
     url: '/profile',
     templateUrl: 'app/profile/profile.html',
-    controller: 'profileCtrl'
+    controller: 'profileCtrl',
+    resolve: {
+        Data: function(ApiService, $stateParams) {
+          return ApiService.get_profile();
+        }
+    }
   })
 .state('projects', {
     url: '/projects',
     templateUrl: 'app/projects/projects.html',
-    controller: 'projectsCtrl'
+    controller: 'projectsCtrl',
+    resolve: {
+        Data: function(ApiService, $stateParams) {
+          return ApiService.get_projects();
+        }
+    }
   })
 .state('results', {
     url: '/results',
     templateUrl: 'app/results/results.html',
-    controller: 'resultsCtrl'
+    controller: 'resultsCtrl',
+     resolve: {
+        Data: function(ApiService, $stateParams) {
+          return ApiService.get_results();
+        }
+    }
   })
 .state('selftest', {
     url: '/selftest',
@@ -143,7 +190,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
 .state('timetable', {
     url: '/timetable',
     templateUrl: 'app/timetable/timetable.html',
-    controller: 'timetableCtrl'
+    controller: 'timetableCtrl',
+    resolve: {
+        Data: function(ApiService, $stateParams) {
+          return ApiService.get_time_table();
+        }
+    }
   })
 .state('transport', {
     url: '/transport',
@@ -172,8 +224,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
   })
   .state('writetest', {
     url: '/writetest',
-    templateUrl: 'app/test/writetest.html',
+    templateUrl: 'app/test/write_test.html',
     controller: 'WritetestCtrl'
+  })
+  .state('writestest', {
+    url: '/writestest',
+    templateUrl: 'app/selftest/write_stest.html',
+    controller: 'WritestestCtrl'
   })
   .state('report', {
     url: '/report',

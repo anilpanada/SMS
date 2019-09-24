@@ -11,18 +11,22 @@ body.login_page ion-content{
 }
 .fc-event.event.greenEvent {
     background-color: #06df06;
+    padding: 5px 0px;
 }
 
 .fc-event.event.blueEvent {
     background-color:#00c0ef;
+    padding: 5px 0px;
 }
 
 .fc-event.event.presentEvent {
     background-color: #a69600;
+    padding: 5px 0px;
 }
 
 .fc-event.event.absentEvent {
     background-color:#fd0303;
+    padding: 5px 0px;
 }
 .pull-left{
 	float: left;
@@ -41,7 +45,7 @@ body.login_page ion-content{
 	right: 10px;
 	top: 10px;
 }
-.test_page  .content-bg, .selftest_page .content-bg{
+.content-bg{
 	background: #E7EAEB;
 }
 .test-list{
@@ -51,6 +55,7 @@ body.login_page ion-content{
 }
 .test-list h4{
 	margin-top: 0px;
+	width: 60%;
 }
 .test-list .mark-list span{
 	display: inline-block;
@@ -95,8 +100,8 @@ body.login_page ion-content{
 }
 .title h1{
     color: white;
-    font-size: 30px;
-    padding: 10px;
+    font-size: 24px;
+    padding: 10px 25px;
 }
 /*.student span{
 	float: right;
@@ -104,4 +109,31 @@ body.login_page ion-content{
 }*/
 .row{
 	margin:0!important;
+}
+.in-block{
+	display: inline-block;
+}
+.pg-arrow{
+    margin-top: 15px;
+    padding: 10px;
+    font-size: 24px;
+}
+
+.form-control{
+	display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.login input{
+	margin-bottom: 20px;
 }

@@ -125,5 +125,71 @@ moduleCtrl.factory('ApiService', function (httpService, $q, APIURL, $rootScope) 
         });
     };
 
+    apiService.get_homework = function(dt){
+        return httpService
+        .post(APIURL+'get_homework', {date: dt, class_name: $rootScope.loggedInUserInfo.academic.class_name, section_name: $rootScope.loggedInUserInfo.academic.section_name})
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+    apiService.get_class_notes = function(dt){
+        return httpService
+        .post(APIURL+'get_class_notes', {date: dt, class_name: $rootScope.loggedInUserInfo.academic.class_name, section_name: $rootScope.loggedInUserInfo.academic.section_name})
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+    apiService.get_projects = function(dt){
+        return httpService
+        .post(APIURL+'get_projects', {date: dt, class_name: $rootScope.loggedInUserInfo.academic.class_name, section_name: $rootScope.loggedInUserInfo.academic.section_name})
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+    apiService.get_time_table = function(dt){
+        return httpService
+        .post(APIURL+'get_time_table', {date: dt, class_name: $rootScope.loggedInUserInfo.academic.class_name, section_name: $rootScope.loggedInUserInfo.academic.section_name})
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+    apiService.get_exam_time_table = function(){
+        return httpService
+        .post(APIURL+'get_exam_time_table', {class: $rootScope.loggedInUserInfo.academic.class})
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+    apiService.get_results = function(){
+        return httpService
+        .post(APIURL+'get_results', {user_id: $rootScope.loggedInUserInfo.id, class: $rootScope.loggedInUserInfo.academic.class, section_name: $rootScope.loggedInUserInfo.academic.section_name})
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+    apiService.get_profile = function(){
+        return httpService
+        .post(APIURL+'get_profile', {user_id: $rootScope.loggedInUserInfo.id, class: $rootScope.loggedInUserInfo.academic.class, section_name: $rootScope.loggedInUserInfo.academic.section_name})
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+    apiService.get_books = function(){
+        return httpService
+        .post(APIURL+'get_books', {user_id: $rootScope.loggedInUserInfo.id, class: $rootScope.loggedInUserInfo.academic.class, section_name: $rootScope.loggedInUserInfo.academic.section_name})
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+    get_books
+
     return apiService;
 });

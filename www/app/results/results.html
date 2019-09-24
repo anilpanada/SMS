@@ -12,9 +12,9 @@
         </div>
         <div ng-repeat="ex in exams" class="row border">
           <div class="col-10 padding">{{$index+1}}</div>
-          <div class="col-20 padding"> {{ex.examname}}</div>
-          <div class="col-25 padding">{{ex.startdate}}</div>
-          <div class="col-25 padding">{{ex.enddate}}</div>
+          <div class="col-20 padding"> {{ex.exam_name}}</div>
+          <div class="col-25 padding">{{ex.start_date}}</div>
+          <div class="col-25 padding">{{ex.end_date}}</div>
           <div class="col-20 padding"><a href="" ng-click="selectedExam(ex);"><i class="fa fa-eye" ></i></a></div>
         </div>
     </div>
@@ -24,12 +24,24 @@
 <script id="templates/modal.html" type="text/ng-template">
       <ion-modal-view>
         <ion-header-bar class="bar bar-header bar-positive">
-          <h1 class="title text-center">{{selected.examname}} Results</h1>
+          <h1 class="title text-center">{{selected.exam_name}} Results</h1>
           <button class="button button-clear ion-close" ng-click="modal.hide()"></button>
         </ion-header-bar>
         <ion-content class="padding">
-          <div class="row border" ng-repeat="(subject, mark) in selected.result">
-            <div class="padding col-50">{{subject}}</div><div class="padding col-50">{{mark}}</div>
+          <div class="row border" ng-repeat="subject in selected.subject">
+            <div class="padding col-50">{{subject}}</div><div class="padding col-50">{{selected.marks[$index] ? selected.marks[$index] : 0}}</div>
+          </div>
+          <div class="row border">
+            <div class="padding col-50">Total</div><div class="padding col-50">{{selected.total}}</div>
+          </div>
+          <div class="row border">
+            <div class="padding col-50">Grade</div><div class="padding col-50">{{selected.grade}}</div>
+          </div>
+          <div class="row border">
+            <div class="padding col-50">Remarks</div>
+            <div class="padding col-50">
+              <p ng-repeat="re in selected.remarks"><b>{{re.subject}}: </b>{{re.remarks}}<p>
+            </div>
           </div>
         </ion-content>
       </ion-modal-view>

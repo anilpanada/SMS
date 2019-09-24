@@ -1,0 +1,31 @@
+<ion-view view-title="Write Test">
+  <ion-content class="padding scroll-bg">
+    <div class="content-bg" ng-if="pageInfo.template == 'write'">
+        <div class="closediv">
+          <i class="pg-close fas fa-arrow-left" ng-click="pageInfo.template=''"></i>
+         <!--  <i class="pg-close fa fa-times"></i> -->
+        </div>
+        <div class="test-list">
+          <div class="row ">
+            <div class="col-50"><label><b>Subjet:</b> </label><label>English</label></div>
+            <div class="col-50"><label><b>Test Name:</b> </label><label>English I akjhsdkfjhas</label></div>
+          </div>
+          <div class="row">
+            <div class="col-50"><label><b>Mark:</b> </label><label>89</label></div>
+            <div class="col-50"><label><b>Remark:</b> </label><label>asdfasd.sadfas</label></div>
+          </div>
+        </div>
+
+          <div ng-repeat="qs in que_ans">
+            <div class="padding"><h4>{{qs.question_type}}</h4></div>
+            <div class="padding" ng-repeat="qs2 in qs.questions">
+              <p>{{$index+1}}. {{qs2.question}}</p>
+              <p><b>Ans</b>. <input type="text"></p>
+            </div>
+          </div>
+          <div class="text-center padding">
+               <button class="button button-balanced" >Save</button>
+          </div>
+    </div>
+  </ion-content>
+</ion-view>

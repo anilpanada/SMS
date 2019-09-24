@@ -1,11 +1,7 @@
 moduleCtrl
 
-.controller('timetableCtrl', function($scope, $rootScope, $state) {
-	$scope.timetable=[
-		{day: 'Monday', period1: 'English',  period2: 'tamil', period3: 'maths',period4: 'social', period5: 'science', period6: 'hindi', period7: 'evs', period8: 'PT'},
-		{day: 'Tuesday', period1: 'English',  period2: 'tamil', period3: 'maths',period4: 'social', period5: 'science', period6: 'hindi', period7: 'evs', period8: 'PT'},
-		{day: 'wednesday', period1: 'English',  period2: 'tamil', period3: 'maths',period4: 'social', period5: 'science', period6: 'hindi', period7: 'evs', period8: 'PT'},
-		{day: 'thursday', period1: 'English',  period2: 'tamil', period3: 'maths',period4: 'social', period5: 'science', period6: 'hindi', period7: 'evs', period8: 'PT'},
-		{day: 'friday', period1: 'English',  period2: 'tamil', period3: 'maths',period4: 'social', period5: 'science', period6: 'hindi', period7: 'evs', period8: 'PT'}
-	];
+.controller('timetableCtrl', function($scope, $rootScope, $state, Data) {
+	$scope.timetable=Data.data;
+	$scope.days = [{i:1, d:'Monday'}, {i:2, d:'Tuesday'}, {i:3, d:'Wednesday'}, {i:4, d:'Thurday'}, {i:5, d:'Friday'}];
+	$scope.periods = [1,2,3,4,5,6,7,8];
 });

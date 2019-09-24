@@ -12,9 +12,9 @@
         </div>
         <div ng-repeat="et in examtable" class="row border">
           <div class="col-10 padding">{{$index+1}}</div>
-          <div class="col-20 padding"> {{et.examname}}</div>
-          <div class="col-25 padding">{{et.startdate}}</div>
-          <div class="col-25 padding">{{et.enddate}}</div>
+          <div class="col-20 padding"> {{et.exam_name}}</div>
+          <div class="col-25 padding">{{et.start_date}}</div>
+          <div class="col-25 padding">{{et.end_date}}</div>
           <div class="col-20 padding"><a href="" ng-click="selectedExam(et);"><i class="fa fa-eye" ></i></a></div>
         </div>
     </div>
@@ -24,7 +24,7 @@
 <script id="templates/modal.html" type="text/ng-template">
       <ion-modal-view>
         <ion-header-bar class="bar bar-header bar-positive">
-          <h1 class="title text-center">Exam: Mid {{selected.examname}} Exam</h1>
+          <h1 class="title text-center">{{selected.exam_name}}</h1>
           <button class="button button-clear ion-close" ng-click="modal.hide()"></button>
         </ion-header-bar>
         <ion-content class="padding">
@@ -33,8 +33,8 @@
             <div class="padding col-25">Session</div><div class="padding col-25">Syllabus</div>
           </div>
           <div class="row border" ng-repeat="et in selected.exams">
-            <div class="padding col-25">{{et.date}}</div><div class="padding col-25">{{et.subject}}</div>
-            <div class="padding col-25">{{et.session}}</div><div class="padding col-25">{{et.syllabus}}</div>
+            <div class="padding col-25">{{et.exam_date}}</div><div class="padding col-25">{{et.subject_name}}</div>
+            <div class="padding col-25">{{et.exam_session}}</div><div class="padding col-25">{{et.syllabus}}</div>
           </div>
         </ion-content>
       </ion-modal-view>

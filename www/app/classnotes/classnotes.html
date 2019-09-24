@@ -1,20 +1,32 @@
 <ion-view view-title="Class Notes">
   <ion-content class="padding scroll-bg">
-    
-     <div class="content-bg">
-     <div align="center">
-        <button class="datepick button button-block button-balanced" ng-click="openDatePicker()">Open date picker</button>
+    <div class="content-bg">
+        <div align="center" class="test-list">
+            <i class="fa fa-arrow-circle-left pg-arrow pull-left" ng-click="changeDate(homeworks.prev)"></i>
+           <button class="datepick button button-block button-balanced in-block" ng-click="openDatePicker()">{{get_date(homeworks.current) | date:'dd-MM-yyyy'}}</button>
+           <i class="fa fa-arrow-circle-right pg-arrow pull-right" ng-if="!homeworks.is_today" ng-click="changeDate(homeworks.next)"></i>
+           <i class="fa fa-arrow-circle-right pg-arrow pull-right" ng-if="homeworks.is_today" ng-click="changeDate(homeworks.next)" style="opacity: 0"></i>
+        </div>
+         <p class="test-list text-center" ng-if="pageInfo.tempcount == 0">No Data Available</p>
+         <div ng-repeat="(period, hw) in homeworks.data" ng-init="pageInfo.tempcount=hw.subject?(pageInfo.tempcount+1) :pageInfo.tempcount" ng-hide="pageInfo.tempcount == 0" ng-if="pageInfo.load">
+        
+          <div class="test-list ">
+            <div  class="row">  
+              <div class="col-50 header">Period :</div>
+              <div class="col-50">{{period}}</div>
+              
+            </div>
+            <div  class="row">
+              <div class="col-50 header"> Subject :</div>          
+              <div class="col-50 ">{{hw.subject}}</div>
+            </div>
+             
+            <div  class="row">
+              <div class="col-50 header ">Class Notes Details :</div>
+              <div class="col-50">{{hw.description}}<a download="" class="padding" ng-if="hw.home_work_file_path" href="{{hw.home_work_file_path}}"><i class="fa fa-download"></i></a></div>
+            </div>
+           </div>
+        </div>
     </div>
-       <div class="row border header">
-         <div class="col-25 table-pad">Period</div>
-         <div class="col-30 table-pad">Today Class Notes {{date | date:'dd-MM-yyyy'}} </div>
-       </div>
-       
-      <div ng-repeat="cn in classnotes" class="row border">
-        <div class="col-25 table-pad ">{{cn.period}}</div>
-        <div class="col-30 table-pad ">{{cn.notes}} <a download="" ng-if="cn.attachment" href="{{cn.attachment}}"><i class="fa fa-download"></i></a></div>
-      </div>
-       
-     </div>
   </ion-content>
 </ion-view>

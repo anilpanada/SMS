@@ -6,7 +6,7 @@
    <table id="time-table" class="table">
   <thead>
     <tr>
-        <th>Day/Period</th>
+        <th>Day</th>
         <th>I</th>
         <th>II</th>
         <th>III</th>
@@ -18,19 +18,24 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="tt in timetable">
-        <th>{{tt.day}}</th>
-        <td>{{tt.period1}}</td>
-        <td>{{tt.period2}}</td>
-        <td>{{tt.period3}}</td>
-        <td>{{tt.period4}}</td>
-        <td>{{tt.period5}}</td>
-        <td>{{tt.period6}}</td>
-        <td>{{tt.period7}}</td>
-        <td>{{tt.period8}}</td>
+    <tr ng-repeat="dy in days">
+        <th>{{dy.d}}</th>
+        <td ng-repeat="pr in periods">{{timetable['day_'+dy.i+'_'+pr]}}</td>
     </tr>
-     
   <tbody>
+    <thead>
+    <tr>
+        <th>Day</th>
+        <th>I</th>
+        <th>II</th>
+        <th>III</th>
+        <th>IV</th>
+        <th>V</th>
+        <th>VI</th>
+        <th>VII</th>
+        <th>VIII</th>
+    </tr>
+  </thead>
   </table>
 </ion-scroll>
    
