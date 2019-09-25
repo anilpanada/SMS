@@ -137,3 +137,9 @@ body.login_page ion-content{
 .login input{
 	margin-bottom: 20px;
 }
+.mar-b{
+	    margin-bottom: 20px;
+}
+.upper{
+	text-transform: uppercase;
+}

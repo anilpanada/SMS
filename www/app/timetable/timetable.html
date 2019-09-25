@@ -1,44 +1,30 @@
 <ion-view view-title="Time Table">
   <ion-content class="padding scroll-bg">
 
-   <div class="content-bg padding">
+   <div class="test-list padding">
     <ion-scroll direction="xy" scrollbar-x="true" style="width: 100%; height: 100%">
-   <table id="time-table" class="table">
-  <thead>
-    <tr>
-        <th>Day</th>
-        <th>I</th>
-        <th>II</th>
-        <th>III</th>
-        <th>IV</th>
-        <th>V</th>
-        <th>VI</th>
-        <th>VII</th>
-        <th>VIII</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr ng-repeat="dy in days">
-        <th>{{dy.d}}</th>
-        <td ng-repeat="pr in periods">{{timetable['day_'+dy.i+'_'+pr]}}</td>
-    </tr>
-  <tbody>
-    <thead>
-    <tr>
-        <th>Day</th>
-        <th>I</th>
-        <th>II</th>
-        <th>III</th>
-        <th>IV</th>
-        <th>V</th>
-        <th>VI</th>
-        <th>VII</th>
-        <th>VIII</th>
-    </tr>
-  </thead>
-  </table>
-</ion-scroll>
-   
- </div>
+      <table id="time-table" class="table">
+        <thead>
+          <tr>
+              <th>Day</th>
+              <th>I</th>
+              <th>II</th>
+              <th>III</th>
+              <th>IV</th>
+              <th>V</th>
+              <th>VI</th>
+              <th>VII</th>
+              <th>VIII</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="dy in days">
+              <th>{{dy.d}}</th>
+              <td ng-repeat="pr in periods">{{timetable['day_'+dy.i+'_'+pr]}}</td>
+          </tr>
+        <tbody>
+      </table>
+    </ion-scroll>
+   </div>
   </ion-content>
 </ion-view>

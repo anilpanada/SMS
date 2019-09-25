@@ -63,7 +63,10 @@
         </div>
         <div ng-if="type == 'Choose' " class="padding" ng-repeat="qs2 in questions">
           <p>{{$index+1}}. {{qs2.question}}</p>
-          <p><span class="padding">A) {{qs2.optiona}}</span><span class="padding">B) {{qs2.optionb}}</span><span class="padding" ng-hide="qs2.optionc == 'null' || qs2.optionc =='' ">C) {{qs2.optionc}}</span><span class="padding" ng-hide="qs2.optiond =! null || qs2.optiond ==''">D) {{qs2.optiond}}</span></p>
+          <p class="padding">A) {{qs2.optiona}}</p>
+          <p class="padding">B) {{qs2.optionb}}</p>
+          <p class="padding" ng-show="qs2.optionc">C) {{qs2.optionc}}</p>
+          <p class="padding" ng-show="qs2.optiond ">D) {{qs2.optiond}}</p>
            <p><b>Ans:</b>{{qs2.answer}}</p>
         </div>
         </div>
@@ -158,6 +161,19 @@
             <div><b>{{$index+1}}. Question:</b>{{qs3.question}} </div>
             <div><b>Ans:</b>{{qs3.answer}}</div>
             <div ng-class="{ca: qs3.urans.daily_test_mark == 1, wa: qs3.urans.daily_test_mark == 0}" ><b>Your Ans:</b> {{qs3.urans.answer}}</div> 
+            <div class="clearfix mar-b" ng-repeat="qs3 in questions">
+            <div><b>{{$index+1}}. Question:</b><p>{{qs3.question}} </p></div>
+            <div ng-show="type == Choose"><b>Options :</b>
+            <p class="pad-5">A) {{qs3.optiona}}</p>
+            <p class="pad-5">B) {{qs3.optionb}}</p>
+            <p class="pad-5" ng-show="qs3.optionc">C) {{qs3.optionc}}</p>
+            <p class="pad-5" ng-show="qs3.optiond">D) {{qs3.optiond}}</p>
+            <p class="pad-5" ng-show="qs3.optione">E) {{qs3.optione}}</p>
+            </div>
+            <div><b>Ans:</b>{{qs3.answer}}</div>
+            <div ng-class="{ca: qs3.urans.daily_test_mark == 1, wa: qs3.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs3.urans.answer}}</span></div> 
+                           
+          </div>
                            
           </div>              
        </div>

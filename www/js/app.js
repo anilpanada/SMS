@@ -132,11 +132,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
         }
     }
   })
+
 .state('neetjeetest', {
     url: '/neetjeetest',
     templateUrl: 'app/neetjeetest/neetjeetest.html',
-    controller: 'neetjeetestCtrl'
+    controller: 'neetjeetestCtrl',
+    resolve: {
+        Data: function(ApiService, $stateParams) {
+          return ApiService.get_aptitude();
+        }
+    }
   })
+
 .state('profile', {
     url: '/profile',
     templateUrl: 'app/profile/profile.html',

@@ -125,6 +125,47 @@ moduleCtrl.factory('ApiService', function (httpService, $q, APIURL, $rootScope) 
         });
     };
 
+
+    apiService.get_aptitude = function(){
+        return httpService
+        .post(APIURL+'get_aptitude&user_id='+$rootScope.loggedInUserInfo.id, {})
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+    apiService.get_aptitude_questions = function(id){
+        return httpService
+        .post(APIURL+'get_aptitude_questions&user_id='+$rootScope.loggedInUserInfo.id+'&test_id='+id, {})
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+     apiService.get_aptitude_report = function(id){
+        return httpService
+        .post(APIURL+'get_aptitude_report&user_id='+$rootScope.loggedInUserInfo.id+'&test_id='+id, {})
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+    apiService.get_aptitude_review = function(id, aid){
+        return httpService
+        .post(APIURL+'get_aptitude_review&user_id='+$rootScope.loggedInUserInfo.id+'&test_id='+id+'&answer_id='+aid, {})
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+    apiService.write_aptitude = function(id, aid){
+        return httpService
+        .post(APIURL+'write_aptitude&user_id='+$rootScope.loggedInUserInfo.id+'&test_id='+id, {})
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
     apiService.get_homework = function(dt){
         return httpService
         .post(APIURL+'get_homework', {date: dt, class_name: $rootScope.loggedInUserInfo.academic.class_name, section_name: $rootScope.loggedInUserInfo.academic.section_name})

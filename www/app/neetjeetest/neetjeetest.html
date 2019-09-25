@@ -1,116 +1,170 @@
-<ion-view view-title="Neet JEE">
-  <ion-content class="padding scroll-bg" >
-   <div class="content-bg">
-    
-    <div class="row border header">
-      <div class="padding">S.No</div>
-      <div class="padding">Date</div>
-      <div class="padding">Subject</div>
-      <div class="padding">Test Name</div>
-      <div class="padding">Total</div>
-      <div class="padding">Marks</div>
-      <div class="padding">Action</div>
-    </div>
-    <div class="row border" ng-repeat="st in selftest">
-      <div class="padding">{{$index+1}}</div>
-      <div class="padding">{{st.date}}</div>
-      <div class="padding">{{st.subject}}</div>
-      <div class="padding"> {{st.testname}}</div>
-      <div class="padding">{{st.total}}</div>
-      <div class="padding"><a ui-sref="report"></a>{{st.marks}}</div>
-      <div class="row padding">
-        <a class="col-30 pad-5"  ng-click="selectedTest(st); pageInfo.template = 'read';"><i class="fa fa-eye"></i></a>
-        <a class="col-30 pad-5"  ng-click="selectedTest(st); pageInfo.template = 'write';"><i class="fa fa-edit"></i></a>
-        <a class="col-30 pad-5"  ng-click="selectedTest(st); pageInfo.template = 'report';"><i class="fa fa-file"></i></a>
+<ion-view view-title="NEET JEE Test">
+  <ion-content class="padding scroll-bg">
+   <div class="content-bg" ng-if="pageInfo.template == ''">
+
+    <div class="test-list pos-relative" ng-repeat="dt in dailytest">
+      <h4>{{dt.daily_test_name}}</h4>
+      <div class="clearfix">
+        <span class="pull-left"><b>Sub:</b> {{dt.subject_name}}</span>
+        <span class="pull-right"><b>Date:</b> {{dt.created_at.split(' ')[0]}}</span>
+      </div>
+      <div class="clearfix">
+        <span class="pull-left"><b>Mark:</b> {{dt.mark}}</span>
+        <span class="pull-right test-btn">
+          <a ng-show="dt.tests.length" ng-click="dt.expand = !dt.expand;"><i class="fa fa-file"></i></a>
+          <a ng-click="selectedTest(dt); pageInfo.template = 'read';getReadData(dt.id);"><i class="fa fa-eye"></i></a>
+          <a ng-click="selectedTest(dt); pageInfo.template = 'write';"><i class="fa fa-edit"></i></a>
+        </span>
+      </div>
+      <div class="clearfix mark-list" ng-if="dt.expand">
+        <span ng-repeat="mark in dt.tests" ng-click="pageInfo.template='review'; getReviewData(dt.id, mark.id)">{{mark.mark}}</span>
+        <div>
+          <button class="button button-block button-positive" ng-click="pageInfo.template='report'; getReportData(dt.id)">View Detailed Report</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="content-bg" ng-if="pageInfo.template == 'create'">
-  <div class="row" ng-model="selftest">
-    <div>
-         <div class="padding"><h4>{{class}} {{section}}</h4></div>
-         <div>
-           <label class="padding label">Term</label> 
-           <select class="select" ng-model="pageInfo.term">
-            <option value="">Select Term</option>
-            <option value="Term 1">Term 1</option>
-            <option value="Term 2">Term 2</option>
-            <option value="Term 3">Term 3</option>
-           </select>
-         </div>
-         <div>
-           <label class="padding label">Subject</label> 
-           <select class="select" ng-model="pageInfo.subject">
-            <option value="">Select Subject</option>
-            <option ng-repeat="su in subjects" value="{{$index}}">{{su.subject_name}}</option>
-           </select>
-          </div>
-          
-        <div class="row border header">
-          <div class="padding">S.No</div>
-          <div class="padding">Chapter</div>
-          <div class="padding">Action</div>
-        </div>
-        <div class="row border" ng-repeat="dt in dailytest">
-          <div class="padding">{{$index+1}}</div>
-          <div class="padding">{{dt.cname}}</div>
-          <div class="row padding">
-            <input type="checkbox" value="">            
-          </div>
-        </div>
-         </div>
-    
-  </div>
-        <div class="text-center padding">
-           <button class="button button-positive" ng-click="pageInfo.template = 'write';">Write Test</button>
-         </div>
-  </div>
-
-
  <div class="content-bg" ng-if="pageInfo.template == 'read'">
-  <div class="row" ng-model="selftest">
-    <div><label>Subjet: </label><label>{{selected.subject}}</label></div>
-    <div><label>Test Name: </label><label>{{selected.testname}}</label></div>
-    <div><label>Mark: </label><label>{{selected.total}}</label></div>
-    <div><label>Remark: </label><label>{{selected.remark}}</label></div>
-    
+  <div class="closediv">
+    <i class="pg-close fas fa-arrow-left" ng-click="pageInfo.template=''"></i>
+   <!--  <i class="pg-close fa fa-times"></i> -->
   </div>
-      <div ng-repeat="qs in que_ans">
-        <div class="padding"><h4>{{qs.question_type}}</h4></div>
-        <div class="padding" ng-repeat="qs2 in qs.questions">
-          <p>{{$index+1}}. {{qs2.question}}</p>
-          <p><b>Ans</b>. {{qs2.answer}}</p>
+  <div class="test-list">
+    <div class="row ">
+      <div class="col-50"><label><b>Subject:</b> </label><label>{{readPageData.info.subject_name}}</label></div>
+      <div class="col-50"><label><b>Test Name:</b> </label><label>{{readPageData.info.daily_test_name}}</label></div>
+    </div>
+    <div class="row">
+      <div class="col-50"><label><b>Mark:</b> </label><label>{{readPageData.info.mark}}</label></div>
+      <div class="col-50"><label><b>Remark:</b> </label><label>{{readPageData.info.daily_test_remark}}</label></div>
+    </div>
+    </div>
+
+      <div class="test-list" ng-repeat="(type, questions) in readPageData.questions">
+        <div class="padding">
+          <h4>{{type}}</h4>
+        </div>
+
+         <div ng-if="type == 'Choose' " class="padding" ng-repeat="qs2 in questions">
+            <p>{{$index+1}}. {{qs2.question}}</p>
+          
+            <p class="pad-5">A) {{qs2.optiona}}</p>
+            <p class="pad-5">B) {{qs2.optionb}}</p>
+            <p class="pad-5" ng-show="qs2.optionc">C) {{qs2.optionc}}</p>
+            <p class="pad-5" ng-show="qs2.optiond">D) {{qs2.optiond}}</p>
+            <p class="pad-5" ng-show="qs2.optione">E) {{qs2.optione}}</p>
+          
+           <p><b>Ans:</b>{{qs2.answer}}</p>
         </div>
         </div>
+
         <div class="text-center padding">
            <button class="button button-positive" ng-click="pageInfo.template = 'write';">Write Test</button>
          </div>
   </div>
-
   <div class="content-bg" ng-if="pageInfo.template == 'write'">
-      <div ng-repeat="qs in que_ans">
-        <div class="padding"><h4>{{qs.question_type}}</h4></div>
-        <div class="padding" ng-repeat="qs2 in qs.questions">
-          <p>{{$index+1}}. {{qs2.question}}</p>
-          <p><b>Ans</b>. <input type="text"></p>
+    <div class="closediv">
+      <i class="pg-close fas fa-arrow-left" ng-click="pageInfo.template=''"></i>
+     <!--  <i class="pg-close fa fa-times"></i> -->
+    </div>
+        <div class="test-list">
+          <div class="row ">
+            <div class="col-50"><label><b>Subjet:</b> </label><label>English</label></div>
+            <div class="col-50"><label><b>Test Name:</b> </label><label>English I akjhsdkfjhas</label></div>
+          </div>
+          <div class="row">
+            <div class="col-50"><label><b>Mark:</b> </label><label>89</label></div>
+            <div class="col-50"><label><b>Remark:</b> </label><label>asdfasd.sadfas</label></div>
+          </div>
         </div>
-        </div>
-        <div class="text-center padding">
-           <button class="button button-balanced" >Save</button>
-         </div>
+
+          <div ng-repeat="qs in que_ans">
+            <div class="padding"><h4>{{qs.question_type}}</h4></div>
+            <div class="padding" ng-repeat="qs2 in qs.questions">
+              <p>{{$index+1}}. {{qs2.question}}</p>
+              <p><b>Ans</b>. <input type="text"></p>
+            </div>
+          </div>
+          <div class="text-center padding">
+               <button class="button button-balanced" >Save</button>
+          </div>
    </div>
    
    <div class="content-bg" ng-if="pageInfo.template == 'report'">
-      <div ng-repeat="qs in que_ans">
-        <div class="padding"><h4>{{qs.question_type}}</h4></div>
-        <div class="padding" ng-repeat="qs2 in qs.questions">
-          <p>{{$index+1}}. {{qs2.question}}</p>
-          <p><b>Ans</b>. <input type="text"></p>
+    <div class="closediv">
+    <i class="pg-close fas fa-arrow-left" ng-click="pageInfo.template=''"></i>
+   <!--  <i class="pg-close fa fa-times"></i> -->
+  </div>
+  <div class="test-list">
+    <div class="row ">
+      <div class="col-50"><label><b>Subject:</b> </label><label>{{reportPageData.info.subject_name}}</label></div>
+      <div class="col-50"><label><b>Test Name:</b> </label><label>{{reportPageData.info.daily_test_name}}</label></div>
+    </div>
+    <div class="row">
+      <div class="col-50"><label><b>Mark:</b> </label><label>{{reportPageData.info.mark}}</label></div>
+      <div class="col-50"><label><b>Remark:</b> </label><label>{{reportPageData.info.daily_test_remark}}</label></div>
+    </div>
+    </div>
+    
+      <div class="test-list pos-relative" ng-repeat="qr in reportPageData.questions">
+          
+          <div class="clearfix" >
+            <div><b>{{$index+1}}. Question:</b><p> {{qr.question}} </p></div>
+            <div><b>Options :</b></div>
+            <p class="pad-5">A) {{qr.optiona}}</p>
+            <p class="pad-5">B) {{qr.optionb}}</p>
+            <p class="pad-5" ng-show="qr.optionc">C) {{qr.optionc}}</p>
+            <p class="pad-5" ng-show="qr.optiond">D) {{qr.optiond}}</p>
+            <p class="pad-5" ng-show="qr.optione">E) {{qr.optione}}</p>
+            <div><b>Ans:</b> {{qr.answer}}</div>
+
+            
+          <div class="clearfix mark-list text-center ">
+            <div class="clearfix testatm " >
+              <span ng-class="{greenbtn: re.daily_test_mark == 1, redbtn: re.daily_test_mark == 0}" ng-repeat="re in qr.results">T{{$index+1}}</span>
+          </div>
+          <div class="clearfix ">
+            <span class="ca"><b>CA:</b>{{qr.correct}}</span>
+            <span class="wa"><b>WA:</b>{{qr.wrong}}</span>            
+          </div>  
+          </div>
+           
+          </div>              
+       </div>
+      </div>
+
+   <div class="content-bg" ng-if="pageInfo.template == 'review'">
+       <div class="closediv">
+        <i class="pg-close fas fa-arrow-left" ng-click="pageInfo.template=''"></i>
+       <!--  <i class="pg-close fa fa-times"></i> -->
+      </div>
+      <div class="test-list">
+        <div class="row ">
+          <div class="col-50"><label><b>Subject:</b> </label><label>{{reviewPageData.info.subject_name}}</label></div>
+          <div class="col-50"><label><b>Test Name:</b> </label><label>{{reviewPageData.info.daily_test_name}}</label></div>
+        </div>
+        <div class="row">
+          <div class="col-50"><label><b>Mark:</b> </label><label>{{reviewPageData.info.mark}}</label></div>
+          <div class="col-50"><label><b>Remark:</b> </label><label>{{reviewPageData.info.daily_test_remark}}</label></div>
         </div>
         </div>
+      <div class="test-list pos-relative padding" ng-repeat="(type,questions) in reviewPageData.questions">
+         
+          <div class="clearfix mar-b" ng-repeat="qs3 in questions">
+            <div><b>{{$index+1}}. Question:</b><p>{{qs3.question}} </p></div>
+            <div><b>Options :</b></div>
+            <p class="pad-5">A) {{qs3.optiona}}</p>
+            <p class="pad-5">B) {{qs3.optionb}}</p>
+            <p class="pad-5" ng-show="qs3.optionc">C) {{qs3.optionc}}</p>
+            <p class="pad-5" ng-show="qs3.optiond">D) {{qs3.optiond}}</p>
+            <p class="pad-5" ng-show="qs3.optione">E) {{qs3.optione}}</p>
+            <div><b>Ans:</b>{{qs3.answer}}</div>
+            <div ng-class="{ca: qs3.urans.daily_test_mark == 1, wa: qs3.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs3.urans.answer}}</span></div> 
+                           
+          </div>              
+       </div>
    </div>
   
   </ion-content>
 </ion-view>
-
