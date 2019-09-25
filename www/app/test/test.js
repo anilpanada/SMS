@@ -38,5 +38,4 @@ $scope.reviewPageData = {};
 		});
 	};
 	
-})
-.controller('WritetestCtrl', function($scope, $rootScope, $state, $ionicModal, Data, ApiService) {
+});

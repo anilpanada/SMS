@@ -1,34 +1,47 @@
 <ion-view view-title="Books">
   <ion-content class="padding scroll-bg">
    <div class="content-bg">
-        <div>
-           <label class="padding label">Term</label> 
-           <select class="select" ng-model="pageInfo.term">
-            <option value="">Select Term</option>
-            <option value="Term 1">Term 1</option>
-            <option value="Term 2">Term 2</option>
-            <option value="Term 3">Term 3</option>
-           </select>
-         </div>
-         <div>
-           <label class="padding label">Subject</label> 
-           <select class="select" ng-model="pageInfo.subject">
-            <option value="">Select Subject</option>
-            <option ng-repeat="su in subjects" value="{{$index}}">{{su.subject_name}}</option>
-           </select>
+        <div class="test-list ">
+          <div>
+               <label class="padding label">Term</label> 
+               <select class="select" ng-model="pageInfo.term" ng-change="get_books()">
+                  <option value="">Select Term</option>
+                  <option value="Term 1">Term 1</option>
+                  <option value="Term 2">Term 2</option>
+                  <option value="Term 3">Term 3</option>
+               </select>
           </div>
-   	<div class="row border header">
-      <div class="padding">S.No</div>
-      <div class="padding">Term</div>
-      <div class="padding">Description</div>
-      <div class="padding">Books</div>
-    </div>
-    <div class="row border">
-      <div class="padding">1</div>
-      <div class="padding"> Term 1</div>
-      <div class="padding">chapter 1 testsjkashdkfj</div>
-      <div class="padding"><i class="fa fa-download"></i></div>
-    </div>
-   </div>
+          <div>
+               <label class="padding label">Subject</label> 
+               <select class="select" ng-model="pageInfo.subject" ng-change="get_books()">
+                  <option value="">Select Subject</option>
+                  <option ng-repeat="su in subjects" value="{{su.subject_name}}">{{su.subject_name}}</option>
+               </select>
+          </div>
+        </div>
+        
+         	<p class="test-list text-center" ng-if="books.length == 0">No Books Available</p>
+        <div ng-repeat="bk in books" >
+          <div class="test-list ">
+            <div  class="row">  
+              <div class="col-50 header">Subject :</div>
+              <div class="col-50">{{bk.subject}}</div>
+              
+            </div>
+            <div  class="row">
+              <div class="col-50 header"> Description :</div>          
+              <div class="col-50 ">{{bk.description}}</div>
+            </div>
+             
+            <div  class="row">
+              <div class="col-50 header ">Books:</div>
+              <div class="col-50">
+                <a download="" class="padding" ng-if="bk.project1" href="{{bk.project1}}"><i class="fa fa-download"></i></a>
+                <a download="" class="padding" ng-if="bk.project2" href="{{bk.project2}}"><i class="fa fa-download"></i></a>
+                <a download="" class="padding" ng-if="bk.project3" href="{{bk.project3}}"><i class="fa fa-download"></i></a></div>
+            </div>
+           </div>
+        </div>
+     </div>
   </ion-content>
 </ion-view>

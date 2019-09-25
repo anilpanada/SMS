@@ -1,35 +1,42 @@
 <ion-view view-title="Video Books">
   <ion-content class="padding scroll-bg">
-      <div class="content-bg">
+   <div class="content-bg">
+        <div class="test-list ">
           <div>
-           <label class="padding label">Term</label> 
-           <select class="select" ng-model="pageInfo.term">
-            <option value="">Select Term</option>
-            <option value="Term 1">Term 1</option>
-            <option value="Term 2">Term 2</option>
-            <option value="Term 3">Term 3</option>
-           </select>
-         </div>
-         <div>
-           <label class="padding label">Subject</label> 
-           <select class="select" ng-model="pageInfo.subject">
-            <option value="">Select Subject</option>
-            <option ng-repeat="su in subjects" value="{{$index}}">{{su.subject_name}}</option>
-           </select>
+               <label class="padding label">Term</label> 
+               <select class="select " ng-model="pageInfo.term" ng-change="get_books()">
+                  <option value="">Select Term</option>
+                  <option value="Term 1">Term 1</option>
+                  <option value="Term 2">Term 2</option>
+                  <option value="Term 3">Term 3</option>
+               </select>
           </div>
-          <div> <label class="padding label">Select Chapter :</label>
-            <select>
-              <option>Chapter 1</option>
-              <option>Chapter 2</option>
-              <option>Chapter 3</option>
-            </select>
+          <div>
+               <label class="padding label">Subject</label> 
+               <select class="select" ng-model="pageInfo.subject" ng-change="get_books()">
+                  <option value="">Select Subject</option>
+                  <option ng-repeat="su in subjects" value="{{su.subject_name}}">{{su.subject_name}}</option>
+               </select>
           </div>
-          <div class="gallery">
-                  <a href="">
-                   <video  controls><source src="/img/gallery-1.5502970754E+12.mp4" type="video/mp4"></video>
-                  </a>
-            <a download="" ng-if="hw.attachment" href="{{hw.attachment}}"><i class="fa fa-download"><span>Download Video Book</span></i></a>
+        </div>
+        
+          <p class="test-list text-center" ng-if="books.length == 0">No Books Available</p>
+        <div ng-repeat="bk in books" class="test-list ">
+            <div  class="row">  
+              <div class="col-50 header">Subject :</div>
+              <div class="col-50">{{bk.subject}}</div>
+            </div>
+            <div  class="row">
+              <div class="col-50 header"> Description :</div>          
+              <div class="col-50 ">{{bk.description}}</div>
+            </div>
+            <div  class="">
+              <video  controls><source src="{{bk.project1 | secure_url}}" type="video/mp4"></video>
+              <a download="" ng-if="bk.project1" href="{{bk.project1 | secure_url}}" >
+                <i class="fa fa-download padding"> <span class="padding">Download Video Book</span></i>
+              </a>
+            </div>
           </div>
-      </div>
+     </div>
   </ion-content>
 </ion-view>

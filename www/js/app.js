@@ -83,7 +83,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
     controller: 'BooksCtrl',
     resolve: {
         Data: function(ApiService, $stateParams) {
-          return ApiService.get_books();
+          return ApiService.get_subjects();
         }
     }
   })
@@ -205,7 +205,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
 .state('videobooks', {
     url: '/videobooks',
     templateUrl: 'app/videobooks/videobooks.html',
-    controller: 'videobooksCtrl'
+    controller: 'videobooksCtrl',
+    resolve: {
+        Data: function(ApiService, $stateParams) {
+          return ApiService.get_subjects();
+        }
+    }
   })
 .state('login', {
     url: '/login',

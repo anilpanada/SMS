@@ -175,21 +175,35 @@ moduleCtrl.factory('ApiService', function (httpService, $q, APIURL, $rootScope) 
 
     apiService.get_profile = function(){
         return httpService
-        .post(APIURL+'get_profile', {user_id: $rootScope.loggedInUserInfo.id, class: $rootScope.loggedInUserInfo.academic.class, section_name: $rootScope.loggedInUserInfo.academic.section_name})
+        .post(APIURL+'get_profile', {user_id: $rootScope.loggedInUserInfo.id, class_name: $rootScope.loggedInUserInfo.academic.class_name, section_name: $rootScope.loggedInUserInfo.academic.section_name})
         .then(function (res) {
             return res['data'];
         });
     };
 
-    apiService.get_books = function(){
+    apiService.get_books = function(term, subject){
         return httpService
-        .post(APIURL+'get_books', {user_id: $rootScope.loggedInUserInfo.id, class: $rootScope.loggedInUserInfo.academic.class, section_name: $rootScope.loggedInUserInfo.academic.section_name})
+        .post(APIURL+'get_books', {term: term, subject: subject, user_id: $rootScope.loggedInUserInfo.id, class_name: $rootScope.loggedInUserInfo.academic.class_name, section_name: $rootScope.loggedInUserInfo.academic.section_name})
         .then(function (res) {
             return res['data'];
         });
     };
 
-    get_books
+    apiService.get_subjects = function(){
+        return httpService
+        .post(APIURL+'get_subject', {user_id: $rootScope.loggedInUserInfo.id, class_name: $rootScope.loggedInUserInfo.academic.class_name, section_name: $rootScope.loggedInUserInfo.academic.section_name})
+        .then(function (res) {
+            return res['data'];
+        });
+    };
 
+     apiService.get_vbooks = function(term, subject){
+        return httpService
+        .post(APIURL+'get_vbooks', {term: term, subject: subject, user_id: $rootScope.loggedInUserInfo.id, class_name: $rootScope.loggedInUserInfo.academic.class_name, section_name: $rootScope.loggedInUserInfo.academic.section_name})
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+   
     return apiService;
 });
