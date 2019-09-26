@@ -1,15 +1,26 @@
 moduleCtrl
 
-.controller('fairnoteCtrl', function($scope, $rootScope, $state) {
-	$scope.subjects = [
-	{subject_name: 'tamil', chapters:[{cname:'1'}, {cname:'2'}, {cname:'3'}]}, 
-	{subject_name: 'english', chapters:[{cname:'4'}, {cname:'5'}, {cname:'6'}]}
-	];
-	
-	$scope.que_ans = [
-	{question_type: 'choose', questions:[{question:'1', answer:'asdfas'}, {question:'2', answer:'wertwetwer'}, {question:'3', answer:'asdyuiyrtyfas'}]}, 
-	{question_type: 'match', questions:[{question:'1', answer:'qwerwqetrqw'}, {question:'2', answer:'w34twrtew'}, {question:'3', answer:'bvmghfgjfghj'}]}	];
+.controller('fairnoteCtrl', function($scope, $rootScope, $state, Data, ApiService) {
+	$scope.subjects = Data.data;
 
-	$scope.pageInfo = {};
+	/*$scope.pageInfo = {};*/
+	$scope.pageInfo = {template: ''};
 
+	$scope.chapters = [];
+	$scope.fairnotes = [];
+
+	$scope.get_chapter = function(){
+		if($scope.pageInfo.term && $scope.pageInfo.subject){
+			ApiService.get_chapter($scope.pageInfo.term, $scope.pageInfo.subject).then(function(res){
+				$scope.chapters = res.data;
+			});
+		}
+	};
+
+	$scope.get_fair_notes = function(){
+		ApiService.get_fair_notes($scope.pageInfo).then(function(res){
+			$scope.fairnotes = res.data;
+			$scope.pageInfo.showquestion = true;
+		});
+	};
 });

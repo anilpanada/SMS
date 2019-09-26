@@ -120,7 +120,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
 .state('fairnote', {
     url: '/fairnote',
     templateUrl: 'app/fairnote/fairnote.html',
-    controller: 'fairnoteCtrl'
+    controller: 'fairnoteCtrl',
+    resolve: {
+        Data: function(ApiService, $stateParams) {
+          return ApiService.get_subjects();
+        }
+    }
   })
 .state('gallery', {
     url: '/gallery',

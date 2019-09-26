@@ -1,49 +1,57 @@
 <ion-view view-title="Fair Notes">
   <ion-content class="padding scroll-bg">
    <div  class="content-bg">
-    <div ng-if="!pageInfo.showquestion">
+    <div class="test-list" ng-if="!pageInfo.showquestion">
          <div class="padding"><h4>Notes {{class}} {{section}}</h4></div>
          <div>
            <label class="padding label">Term</label> 
-           <select class="select" ng-model="pageInfo.term">
+           <select class="select" ng-model="pageInfo.term" ng-change="get_chapter()">
             <option value="">Select Term</option>
             <option value="Term 1">Term 1</option>
             <option value="Term 2">Term 2</option>
             <option value="Term 3">Term 3</option>
+
            </select>
          </div>
          <div>
            <label class="padding label">Subject</label> 
-           <select class="select" ng-model="pageInfo.subject">
+           <select class="select" ng-model="pageInfo.subject" ng-change="get_chapter()">
             <option value="">Select Subject</option>
-            <option ng-repeat="su in subjects" value="{{$index}}">{{su.subject_name}}</option>
-           </select>
-           </div>
-           <div>
-           <label class="padding label">Chapter</label> 
-           <select class="select" ng-model="pageInfo.chapter">
-            <option value="">Select chapter</option>
-            <option ng-repeat="su in subjects[pageInfo.subject].chapters">{{su.cname}}</option>
-           </select></div>
-           <div>
-           <label class="padding label">Question Type</label> 
-           <select class="select" ng-model="pageInfo.question">
-            <option value="">Select Question Type</option>
-            <option value="1">Only Questions</option>
-            <option value="2">Question & Answer</option>
+            <option ng-repeat="su in subjects" value="{{su.subject_name}}">{{su.subject_name}}</option>
            </select>
          </div>
+         <div>
+             <label class="padding label">Chapter</label> 
+              <select class="select" ng-model="pageInfo.chapter" >
+                <option value="">Select chapter</option>
+                <option ng-repeat="su in chapters">{{su.cname}}</option>
+              </select>
+         </div>
+
+         <div>
+             <label class="padding label">Question Type</label> 
+             <select class="select" ng-model="pageInfo.question_type" >
+                <option value="">Select Question Type</option>
+                <option value="1">Only Questions</option>
+                <option value="2">Question & Answer</option>
+             </select>
+         </div>
+
          <div class="text-center padding">
-           <button class="button button-calm" ng-click="pageInfo.showquestion=true;">Submit</button>
+           <button class="button button-calm" ng-click="get_fair_notes();">Submit</button>
          </div>
      </div>
 
-     <div ng-if="pageInfo.showquestion">
-      <div ng-repeat="qs in que_ans">
-        <div class="padding"><h4>{{qs.question_type}}</h4></div>
-        <div class="padding" ng-repeat="qs2 in qs.questions">
+     <div  class="content-bg" ng-if="pageInfo.showquestion">
+          <div class="closediv">
+            <i class="pg-close fas fa-arrow-left" ng-click="pageInfo.template=''"></i>
+           <!--  <i class="pg-close fa fa-times"></i> -->
+          </div>
+      <div class="test-list" ng-repeat="(type, questions) in fairnotes">
+        <div class="padding"><h4>{{type}}</h4></div>
+        <div class="padding" ng-repeat="qs2 in questions">
           <p>{{$index+1}}. {{qs2.question}}</p>
-          <p><b>Ans</b>. {{qs2.answer}}</p>
+          <p ng-if="pageInfo.question_type == 2"><b>Ans</b>. {{qs2.answer}}</p>
         </div>
 
         </div>

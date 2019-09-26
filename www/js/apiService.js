@@ -245,6 +245,23 @@ moduleCtrl.factory('ApiService', function (httpService, $q, APIURL, $rootScope) 
             return res['data'];
         });
     };
+
+    apiService.get_chapter = function(term, subject){
+        return httpService
+        .post(APIURL+'get_chapter', {term: term, subject: subject, user_id: $rootScope.loggedInUserInfo.id, class: $rootScope.loggedInUserInfo.academic.class, section_name: $rootScope.loggedInUserInfo.academic.section_name})
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+    apiService.get_fair_notes = function(data){
+        data.class = $rootScope.loggedInUserInfo.academic.class;
+        return httpService
+        .post(APIURL+'get_fair_notes', data)
+        .then(function (res) {
+            return res['data'];
+        });
+    };
    
     return apiService;
 });
