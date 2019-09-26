@@ -44,7 +44,7 @@
 
      <div  class="content-bg" ng-if="pageInfo.showquestion">
           <div class="closediv">
-            <i class="pg-close fas fa-arrow-left" ng-click="pageInfo.template=''"></i>
+            <i class="pg-close fas fa-arrow-left" ng-click="pageInfo.showquestion=false;"></i>
            <!--  <i class="pg-close fa fa-times"></i> -->
           </div>
       <div class="test-list" ng-repeat="(type, questions) in fairnotes">

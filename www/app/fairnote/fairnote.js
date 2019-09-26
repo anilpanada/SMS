@@ -4,7 +4,7 @@ moduleCtrl
 	$scope.subjects = Data.data;
 
 	/*$scope.pageInfo = {};*/
-	$scope.pageInfo = {template: ''};
+	$scope.pageInfo = {};
 
 	$scope.chapters = [];
 	$scope.fairnotes = [];
