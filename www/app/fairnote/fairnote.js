@@ -3,7 +3,7 @@ moduleCtrl
 .controller('fairnoteCtrl', function($scope, $rootScope, $state, Data, ApiService) {
 	$scope.subjects = Data.data;
 
-	/*$scope.pageInfo = {};*/
+	
 	$scope.pageInfo = {};
 
 	$scope.chapters = [];

@@ -2,7 +2,7 @@
   <ion-content class="padding scroll-bg" >
    <div class="content-bg" ng-if="pageInfo.template == ''">
 
- <div class="text-right "><button class=" di-block datepick button button-block button-positive" ng-click="pageInfo.template = 'create';">Create Test</button></div>
+ <div class="text-right "><button ng-if="isOnline" class=" di-block datepick button button-block button-positive" ng-click="pageInfo.template = 'create';">Create Test</button></div>
 <div class="test-list pos-relative" ng-repeat="st in selftest">
       <h4>{{st.daily_test_name}}</h4>
       <div class="clearfix">
@@ -14,14 +14,13 @@
         <span class="pull-right test-btn">
           <a ng-show="st.tests.length" ng-click="st.expand = !st.expand;"><i class="fa fa-file"></i></a>
           <a ng-click="selectedTest(st); pageInfo.template = 'read'; getReadData(st.id);"><i class="fa fa-eye"></i></a>
-          <a ng-click="selectedTest(st); pageInfo.template = 'write';"><i class="fa fa-edit"></i></a>
+          <a ng-click="selectedTest(st); pageInfo.template = 'write';getReadData(st.id);"><i class="fa fa-edit"></i></a>
         </span>
       </div>
       <div class="clearfix mark-list" ng-if="st.expand">
-        <span ng-repeat="mark in st.tests" ng-click="pageInfo.template='review'; getReviewData(st.id, mark.id)">{{mark.mark}}</span>
-         <span ng-repeat="mark in dt.tests" ng-click="pageInfo.template='review'; getReviewData(dt.id, mark.id)">{{mark.mark}}</span>
+        <span ng-repeat="mark in st.tests" ng-click="selectedTest(st);pageInfo.template='review'; getReviewData(st.id, mark.id)">{{mark.mark}}</span>
         <div>
-          <button class="button button-block button-positive" ng-click="pageInfo.template='report'; getReportData(st.id)">View Detailed Report</button>
+          <button class="button button-block button-positive" ng-click="selectedTest(st);pageInfo.template='report'; getReportData(st.id)">View Detailed Report</button>
         </div>
       </div>
     </div>
@@ -29,12 +28,12 @@
 </div>
 
   <div class="content-bg" ng-if="pageInfo.template == 'create'">
-  <div class="row" ng-model="selftest">
-    <div>
+  <div >
+    <div >
          <div class="padding"><h4>{{class}} {{section}}</h4></div>
          <div>
            <label class="padding label">Term</label> 
-           <select class="select" ng-model="pageInfo.term">
+           <select class="select" ng-model="pageInfo.term" ng-change="get_results()">
             <option value="">Select Term</option>
             <option value="Term 1">Term 1</option>
             <option value="Term 2">Term 2</option>
@@ -43,36 +42,36 @@
          </div>
          <div>
            <label class="padding label">Subject</label> 
-           <select class="select" ng-model="pageInfo.subject">
+           <select class="select" ng-model="pageInfo.sub" ng-change="get_results()">
             <option value="">Select Subject</option>
-            <option ng-repeat="su in subjects" value="{{$index}}">{{su.subject_name}}</option>
+            <option ng-repeat="su in subjects" value="{{su.subject_name}}">{{su.subject_name}}</option>
            </select>
           </div>
           
         <div class="row border header">
-          <div class="padding">S.No</div>
-          <div class="padding">Chapter</div>
-          <div class="padding">Action</div>
+          <div class="padding w20">S.No</div>
+          <div class="padding w60">Chapter</div>
+          <div class="padding w20">Action</div>
         </div>
-        <div class="row border" ng-repeat="st in dailytest">
-          <div class="padding">{{$index+1}}</div>
-          <div class="padding">{{st.cname}}</div>
-          <div class="row padding">
-            <input type="checkbox" value="">            
+        <div class="row border" ng-repeat="st in testresults">
+          <div class="padding w20">{{$index+1}}</div>
+          <div class="padding w60">{{st.chapter}}</div>
+          <div class="padding w20">
+            <input type="checkbox" ng-model="pageInfo.assign[st.id]">            
           </div>
         </div>
          </div>
     
   </div>
         <div class="text-center padding">
-           <button class="button button-positive" ng-click="pageInfo.template = 'write';">Write Test</button>
+           <button class="button button-positive" ng-click="assign_self_test();">Write Test</button>
          </div>
   </div>
 
 
  <div class="content-bg" ng-if="pageInfo.template == 'read'">
   <div class="closediv">
-    <i class="pg-close fas fa-arrow-left" ng-click="pageInfo.template=''"></i>
+    <i class="pg-close fas fa-arrow-left" ng-click="get_test()"></i>
    <!--  <i class="pg-close fa fa-times"></i> -->
   </div>
   <div class="test-list">
@@ -99,7 +98,7 @@
         <div ng-if="type == 'Meanings' || type == 'Match' || type == 'Other'" class="padding" ng-repeat="qs2 in questions">
           <span>{{$index+1}}. {{qs2.question}}</span> - <span>{{qs2.answer}}</span>
         </div>
-        <div ng-if="type == 'Missing Letters' || type == 'Jumbled Letters' || type == 'Jumbled Words" class="padding" ng-repeat="qs2 in questions">
+        <div ng-if="type == 'Missing Letters' || type == 'Jumbled Letters' || type == 'Jumbled Words'" class="padding" ng-repeat="qs2 in questions">
           <span>{{$index+1}}. {{qs2.question}}</span>
         </div>
         <div ng-if="type == 'Choose'" class="padding" ng-repeat="qs2 in questions">
@@ -113,36 +112,61 @@
          </div>
   </div>
   <div class="content-bg" ng-if="pageInfo.template == 'write'">
-        <div class="closediv">
-          <i class="pg-close fas fa-arrow-left" ng-click="pageInfo.template=''"></i>
-         <!--  <i class="pg-close fa fa-times"></i> -->
-        </div>
+    <div class="closediv">
+      <i class="pg-close fas fa-arrow-left" ng-click="get_test()"></i>
+     <!--  <i class="pg-close fa fa-times"></i> -->
+    </div>
         <div class="test-list">
-          <div class="row ">
-            <div class="col-50"><label><b>Subjet:</b> </label><label>English</label></div>
-            <div class="col-50"><label><b>Test Name:</b> </label><label>English I akjhsdkfjhas</label></div>
-          </div>
-          <div class="row">
-            <div class="col-50"><label><b>Mark:</b> </label><label>89</label></div>
-            <div class="col-50"><label><b>Remark:</b> </label><label>asdfasd.sadfas</label></div>
-          </div>
+    <div class="row ">
+      <div class="col-50"><label><b>Subject:</b> </label><label>{{readPageData.info.subject_name}}</label></div>
+      <div class="col-50"><label><b>Test Name:</b> </label><label>{{readPageData.info.daily_test_name}}</label></div>
+    </div>
+    <div class="row">
+      <div class="col-50"><label><b>Mark:</b> </label><label>{{readPageData.info.mark}}</label></div>
+      <div class="col-50"><label><b>Remark:</b> </label><label>{{readPageData.info.daily_test_remark}}</label></div>
+    </div>
+    </div>
+
+          <div class="test-list" ng-repeat="(type, questions) in readPageData.questions" >
+        <div class="padding">
+          <h4 ng-if="type !== 'Other'">{{type}}</h4>
+          <h4 ng-if="type == 'Other'">{{questions[0].other_type}}</h4>
         </div>
 
-          <div ng-repeat="qs in que_ans">
-            <div class="padding"><h4>{{qs.question_type}}</h4></div>
-            <div class="padding" ng-repeat="qs2 in qs.questions">
-              <p>{{$index+1}}. {{qs2.question}}</p>
-              <p><b>Ans</b>. <input type="text"></p>
-            </div>
+        <div ng-if="type == 'Fill Up' || type == 'Other' || type == 'One or Two Words' || type == 'True or False'" class="padding" ng-repeat="qs2 in questions">
+          <p>{{$index+1}}. {{qs2.question}}</p>
+          <p><input ng-model="pageInfo.writetest.questions[qs2.id]"></p>
+          
+        </div>
+        <div ng-repeat="qs2 in questions" ng-init="pageInfo.writetest.questions[qs2.id]='';">
+          <div ng-if="type == 'Opposites'" class="padding" >
+            <span>{{$index+1}}. {{qs2.question}}</span> X <input ng-model="pageInfo.writetest.questions[qs2.id]">
           </div>
+          <div ng-if="type == 'Meanings' || type == 'Match'" class="padding" >
+            <span>{{$index+1}}. {{qs2.question}}</span> - <input ng-model="pageInfo.writetest.questions[qs2.id]">
+          </div>
+          <div ng-if="type == 'Missing Letters' || type == 'Jumbled Letters' || type == 'Jumbled Words'" class="padding" >
+            <span>{{$index+1}}. {{pageInfo.writetest.question_answers[qs2.id]}}</span> - <input ng-model="pageInfo.writetest.questions[qs2.id]">
+          </div>
+          <div ng-if="type == 'Choose' " class="padding" >
+            <p>{{$index+1}}. {{qs2.question}}</p>
+            <p class="padding">A) {{qs2.optiona}}</p>
+            <p class="padding">B) {{qs2.optionb}}</p>
+            <p class="padding" ng-show="qs2.optionc">C) {{qs2.optionc}}</p>
+            <p class="padding" ng-show="qs2.optiond ">D) {{qs2.optiond}}</p>
+             <p><input ng-model="pageInfo.writetest.questions[qs2.id]"></p>
+          </div>
+        </div>
+        
+        </div>
           <div class="text-center padding">
-               <button class="button button-balanced" >Save</button>
+               <button class="button button-balanced" ng-click="writetest()">Save</button>
           </div>
    </div>
    
    <div class="content-bg" ng-if="pageInfo.template == 'report'">
     <div class="closediv">
-    <i class="pg-close fas fa-arrow-left" ng-click="pageInfo.template=''"></i>
+    <i class="pg-close fas fa-arrow-left" ng-click="get_test()"></i>
    <!--  <i class="pg-close fa fa-times"></i> -->
   </div>
   <div class="test-list">
@@ -179,7 +203,7 @@
 
    <div class="content-bg" ng-if="pageInfo.template == 'review'">
        <div class="closediv">
-        <i class="pg-close fas fa-arrow-left" ng-click="pageInfo.template=''"></i>
+        <i class="pg-close fas fa-arrow-left" ng-click="get_test()"></i>
        <!--  <i class="pg-close fa fa-times"></i> -->
       </div>
       <div class="test-list">

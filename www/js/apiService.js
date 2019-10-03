@@ -67,9 +67,9 @@ moduleCtrl.factory('ApiService', function (httpService, $q, APIURL, $rootScope) 
         });
     };
 
-    apiService.write_daily_test = function(id, aid){
+    apiService.write_daily_test = function(data){
         return httpService
-        .post(APIURL+'write_daily_test&user_id='+$rootScope.loggedInUserInfo.id+'&test_id='+id, {})
+        .post(APIURL+'write_daily_test&user_id='+$rootScope.loggedInUserInfo.id, data)
         .then(function (res) {
             return res['data'];
         });
@@ -117,14 +117,31 @@ moduleCtrl.factory('ApiService', function (httpService, $q, APIURL, $rootScope) 
         });
     };
 
-    apiService.write_self_test = function(id, aid){
+    apiService.write_self_test = function(data){
         return httpService
-        .post(APIURL+'write_self_test&user_id='+$rootScope.loggedInUserInfo.id+'&test_id='+id, {})
+        .post(APIURL+'write_self_test&user_id='+$rootScope.loggedInUserInfo.id, data)
         .then(function (res) {
             return res['data'];
         });
     };
 
+    apiService.get_self_test_results = function(sub, term){
+        return httpService
+        .post(APIURL+'get_self_test_results&class='+$rootScope.loggedInUserInfo.academic.class+'&sub='+sub+'&term='+term, {})
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+    apiService.assign_self_test = function(sub, term, dat){
+        var data = {assign: dat};
+        data.user = $rootScope.loggedInUserInfo;
+        return httpService
+        .post(APIURL+'assign_self_test&sub='+sub+'&term='+term, data)
+        .then(function (res) {
+            return res['data'];
+        });
+    };
 
     apiService.get_aptitude = function(){
         return httpService
@@ -158,15 +175,18 @@ moduleCtrl.factory('ApiService', function (httpService, $q, APIURL, $rootScope) 
         });
     };
 
-    apiService.write_aptitude = function(id, aid){
+    apiService.write_aptitude = function(data){
         return httpService
-        .post(APIURL+'write_aptitude&user_id='+$rootScope.loggedInUserInfo.id+'&test_id='+id, {})
+        .post(APIURL+'write_aptitude&user_id='+$rootScope.loggedInUserInfo.id, data)
         .then(function (res) {
             return res['data'];
         });
     };
 
     apiService.get_homework = function(dt){
+        if(dt === undefined){
+            dt = new Date().toJSON().split('T')[0];
+        }
         return httpService
         .post(APIURL+'get_homework', {date: dt, class_name: $rootScope.loggedInUserInfo.academic.class_name, section_name: $rootScope.loggedInUserInfo.academic.section_name})
         .then(function (res) {
@@ -175,6 +195,9 @@ moduleCtrl.factory('ApiService', function (httpService, $q, APIURL, $rootScope) 
     };
 
     apiService.get_class_notes = function(dt){
+        if(dt === undefined){
+            dt = new Date().toJSON().split('T')[0];
+        }
         return httpService
         .post(APIURL+'get_class_notes', {date: dt, class_name: $rootScope.loggedInUserInfo.academic.class_name, section_name: $rootScope.loggedInUserInfo.academic.section_name})
         .then(function (res) {
@@ -183,6 +206,9 @@ moduleCtrl.factory('ApiService', function (httpService, $q, APIURL, $rootScope) 
     };
 
     apiService.get_projects = function(dt){
+        if(dt === undefined){
+            dt = new Date().toJSON().split('T')[0];
+        }
         return httpService
         .post(APIURL+'get_projects', {date: dt, class_name: $rootScope.loggedInUserInfo.academic.class_name, section_name: $rootScope.loggedInUserInfo.academic.section_name})
         .then(function (res) {
@@ -191,6 +217,9 @@ moduleCtrl.factory('ApiService', function (httpService, $q, APIURL, $rootScope) 
     };
 
     apiService.get_time_table = function(dt){
+        if(dt === undefined){
+            dt = new Date().toJSON().split('T')[0];
+        }
         return httpService
         .post(APIURL+'get_time_table', {date: dt, class_name: $rootScope.loggedInUserInfo.academic.class_name, section_name: $rootScope.loggedInUserInfo.academic.section_name})
         .then(function (res) {

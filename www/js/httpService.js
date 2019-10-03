@@ -1,8 +1,8 @@
 moduleCtrl.factory('httpService', httpRestService);
 
-httpRestService.$inject = ['$http', '$q'];
+httpRestService.$inject = ['$http', '$q', '$rootScope', 'APIURL', '$timeout'];
 
-function httpRestService($http, $q) {
+function httpRestService($http, $q, $rootScope, APIURL, $timeout) {
 
     return {
         get: get,
@@ -14,19 +14,34 @@ function httpRestService($http, $q) {
     }
 
     function post(url, req) {
-        var deferred = $q.defer(),
-            apiPromise;
+            var deferred = $q.defer(),
+                apiPromise;
 
-        apiPromise = $http.post(url, req, {headers: { 'Content-Type': 'application/x-www-form-urlencoded' }});
+            if($rootScope.isOnline){
+                apiPromise = $http.post(url, req, {headers: { 'Content-Type': 'application/x-www-form-urlencoded' }});
 
-        apiPromise.then(function(response){
-            deferred.resolve(response);
-        }, function(response){
-            deferred.reject(response);
-        });
+                apiPromise.then(function(response){
+                    var vv = url.split(APIURL);
+                    localStorage.setItem('sms_sync_'+encodeURI(vv[1]), JSON.stringify(response));
 
-        return deferred.promise;
+                    deferred.resolve(response);
+                }, function(response){
+                    deferred.reject(response);
+                });
+            } else {
+                $timeout(function(){
+                    var vv = url.split(APIURL);
+                    var data = localStorage.getItem('sms_sync_'+encodeURI(vv[1]));
+                    if(data){
+                        deferred.resolve(JSON.parse(data));
+                    } else{
+                        deferred.reject({});
+                    }
+                });
+            }
 
-    }
+            return deferred.promise;
+
+        }
 
 }

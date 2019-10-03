@@ -13,13 +13,13 @@
         <span class="pull-right test-btn">
           <a ng-show="dt.tests.length" ng-click="dt.expand = !dt.expand;"><i class="fa fa-file"></i></a>
           <a ng-click="selectedTest(dt); pageInfo.template = 'read';getReadData(dt.id);"><i class="fa fa-eye"></i></a>
-          <a ng-click="selectedTest(dt); pageInfo.template = 'write';"><i class="fa fa-edit"></i></a>
+          <a ng-click="selectedTest(dt); pageInfo.template = 'write';getReadData(dt.id);"><i class="fa fa-edit"></i></a>
         </span>
       </div>
       <div class="clearfix mark-list" ng-if="dt.expand">
-        <span ng-repeat="mark in dt.tests" ng-click="pageInfo.template='review'; getReviewData(dt.id, mark.id)">{{mark.mark}}</span>
+        <span ng-repeat="mark in dt.tests" ng-click="selectedTest(dt);pageInfo.template='review'; getReviewData(dt.id, mark.id)">{{mark.mark}}</span>
         <div>
-          <button class="button button-block button-positive" ng-click="pageInfo.template='report'; getReportData(dt.id)">View Detailed Report</button>
+          <button class="button button-block button-positive" ng-click="selectedTest(dt);pageInfo.template='report'; getReportData(dt.id)">View Detailed Report</button>
         </div>
       </div>
     </div>
@@ -58,7 +58,7 @@
         <div ng-if="type == 'Meanings' || type == 'Match' || type == 'Other'" class="padding" ng-repeat="qs2 in questions">
           <span>{{$index+1}}. {{qs2.question}}</span> - <span>{{qs2.answer}}</span>
         </div>
-        <div ng-if="type == 'Missing Letters' || type == 'Jumbled Letters' || type == 'Jumbled Words" class="padding" ng-repeat="qs2 in questions">
+        <div ng-if="type == 'Missing Letters' || type == 'Jumbled Letters' || type == 'Jumbled Words'" class="padding" ng-repeat="qs2 in questions">
           <span>{{$index+1}}. {{qs2.question}}</span>
         </div>
         <div ng-if="type == 'Choose' " class="padding" ng-repeat="qs2 in questions">
@@ -77,35 +77,60 @@
   </div>
   <div class="content-bg" ng-if="pageInfo.template == 'write'">
     <div class="closediv">
-      <i class="pg-close fas fa-arrow-left" ng-click="pageInfo.template=''"></i>
+      <i class="pg-close fas fa-arrow-left" ng-click="get_test()"></i>
      <!--  <i class="pg-close fa fa-times"></i> -->
     </div>
         <div class="test-list">
-          <div class="row ">
-            <div class="col-50"><label><b>Subjet:</b> </label><label>English</label></div>
-            <div class="col-50"><label><b>Test Name:</b> </label><label>English I akjhsdkfjhas</label></div>
-          </div>
-          <div class="row">
-            <div class="col-50"><label><b>Mark:</b> </label><label>89</label></div>
-            <div class="col-50"><label><b>Remark:</b> </label><label>asdfasd.sadfas</label></div>
-          </div>
+    <div class="row ">
+      <div class="col-50"><label><b>Subject:</b> </label><label>{{readPageData.info.subject_name}}</label></div>
+      <div class="col-50"><label><b>Test Name:</b> </label><label>{{readPageData.info.daily_test_name}}</label></div>
+    </div>
+    <div class="row">
+      <div class="col-50"><label><b>Mark:</b> </label><label>{{readPageData.info.mark}}</label></div>
+      <div class="col-50"><label><b>Remark:</b> </label><label>{{readPageData.info.daily_test_remark}}</label></div>
+    </div>
+    </div>
+
+          <div class="test-list" ng-repeat="(type, questions) in readPageData.questions" >
+        <div class="padding">
+          <h4 ng-if="type !== 'Other'">{{type}}</h4>
+          <h4 ng-if="type == 'Other'">{{questions[0].other_type}}</h4>
         </div>
 
-          <div ng-repeat="qs in que_ans">
-            <div class="padding"><h4>{{qs.question_type}}</h4></div>
-            <div class="padding" ng-repeat="qs2 in qs.questions">
-              <p>{{$index+1}}. {{qs2.question}}</p>
-              <p><b>Ans</b>. <input type="text"></p>
-            </div>
+        <div ng-if="type == 'Fill Up' || type == 'Other' || type == 'One or Two Words' || type == 'True or False'" class="padding" ng-repeat="qs2 in questions">
+          <p>{{$index+1}}. {{qs2.question}}</p>
+          <p><input ng-model="pageInfo.writetest.questions[qs2.id]"></p>
+          
+        </div>
+        <div ng-repeat="qs2 in questions" ng-init="pageInfo.writetest.questions[qs2.id]='';">
+          <div ng-if="type == 'Opposites'" class="padding" >
+            <span>{{$index+1}}. {{qs2.question}}</span> X <input ng-model="pageInfo.writetest.questions[qs2.id]">
           </div>
+          <div ng-if="type == 'Meanings' || type == 'Match'" class="padding" >
+            <span>{{$index+1}}. {{qs2.question}}</span> - <input ng-model="pageInfo.writetest.questions[qs2.id]">
+          </div>
+          <div ng-if="type == 'Missing Letters' || type == 'Jumbled Letters' || type == 'Jumbled Words'" class="padding" >
+            <span>{{$index+1}}. {{pageInfo.writetest.question_answers[qs2.id]}}</span> - <input ng-model="pageInfo.writetest.questions[qs2.id]">
+          </div>
+          <div ng-if="type == 'Choose' " class="padding" >
+            <p>{{$index+1}}. {{qs2.question}}</p>
+            <p class="padding">A) {{qs2.optiona}}</p>
+            <p class="padding">B) {{qs2.optionb}}</p>
+            <p class="padding" ng-show="qs2.optionc">C) {{qs2.optionc}}</p>
+            <p class="padding" ng-show="qs2.optiond ">D) {{qs2.optiond}}</p>
+             <p><input ng-model="pageInfo.writetest.questions[qs2.id]"></p>
+          </div>
+        </div>
+        
+        </div>
           <div class="text-center padding">
-               <button class="button button-balanced" >Save</button>
+               <button class="button button-balanced" ng-click="writetest()">Save</button>
           </div>
    </div>
    
    <div class="content-bg" ng-if="pageInfo.template == 'report'">
     <div class="closediv">
-    <i class="pg-close fas fa-arrow-left" ng-click="pageInfo.template=''"></i>
+    <i class="pg-close fas fa-arrow-left" ng-click="get_test()"></i>
    <!--  <i class="pg-close fa fa-times"></i> -->
   </div>
   <div class="test-list">
@@ -142,7 +167,7 @@
 
    <div class="content-bg" ng-if="pageInfo.template == 'review'">
        <div class="closediv">
-        <i class="pg-close fas fa-arrow-left" ng-click="pageInfo.template=''"></i>
+        <i class="pg-close fas fa-arrow-left" ng-click="get_test()"></i>
        <!--  <i class="pg-close fa fa-times"></i> -->
       </div>
       <div class="test-list">
@@ -157,12 +182,9 @@
         </div>
       <div class="test-list pos-relative" ng-repeat="(type,questions) in reviewPageData.questions">
           <h4>{{type}}</h4>
-          <div class="clearfix" ng-repeat="qs3 in questions">
-            <div><b>{{$index+1}}. Question:</b>{{qs3.question}} </div>
-            <div><b>Ans:</b>{{qs3.answer}}</div>
-            <div ng-class="{ca: qs3.urans.daily_test_mark == 1, wa: qs3.urans.daily_test_mark == 0}" ><b>Your Ans:</b> {{qs3.urans.answer}}</div> 
-            <div class="clearfix mar-b" ng-repeat="qs3 in questions">
-            <div><b>{{$index+1}}. Question:</b><p>{{qs3.question}} </p></div>
+          <div class="clearfix mar-b" ng-repeat="qs3 in questions">
+            <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) != -1"><b>{{$index+1}}. Question:</b><p>{{qs3.urans.question_answer}} </p></div>
+            <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) == -1"><b>{{$index+1}}. Question:</b><p>{{qs3.question}} </p></div>
             <div ng-show="type == Choose"><b>Options :</b>
             <p class="pad-5">A) {{qs3.optiona}}</p>
             <p class="pad-5">B) {{qs3.optionb}}</p>
@@ -173,9 +195,7 @@
             <div><b>Ans:</b>{{qs3.answer}}</div>
             <div ng-class="{ca: qs3.urans.daily_test_mark == 1, wa: qs3.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs3.urans.answer}}</span></div> 
                            
-          </div>
-                           
-          </div>              
+          </div>             
        </div>
    </div>
   
