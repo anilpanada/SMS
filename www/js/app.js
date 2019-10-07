@@ -67,6 +67,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
         }
     }
   })
+  
   .state('attendance', {
     url: '/attendance',
     templateUrl: 'app/attendance/attendance.html',
@@ -77,6 +78,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
         }
     }
   })
+
 .state('books', {
     url: '/books',
     templateUrl: 'app/books/books.html',
@@ -87,6 +89,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
         }
     }
   })
+
 .state('calendar', {
     url: '/calendar',
     templateUrl: 'app/calendar/calendar.html',
@@ -97,6 +100,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
         }
     }
   })
+
 .state('classnotes', {
     url: '/classnotes',
     templateUrl: 'app/classnotes/classnotes.html',
@@ -107,6 +111,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
         }
     }
   })
+
 .state('examtimetable', {
     url: '/examtimetable',
     templateUrl: 'app/examtimetable/examtimetable.html',
@@ -117,6 +122,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
         }
     }
   })
+
 .state('fairnote', {
     url: '/fairnote',
     templateUrl: 'app/fairnote/fairnote.html',
@@ -127,6 +133,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
         }
     }
   })
+
 .state('gallery', {
     url: '/gallery',
     templateUrl: 'app/gallery/gallery.html',
@@ -159,6 +166,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
         }
     }
   })
+
 .state('projects', {
     url: '/projects',
     templateUrl: 'app/projects/projects.html',
@@ -169,6 +177,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
         }
     }
   })
+
 .state('results', {
     url: '/results',
     templateUrl: 'app/results/results.html',
@@ -179,6 +188,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
         }
     }
   })
+
 .state('selftest', {
     url: '/selftest',
     templateUrl: 'app/selftest/selftest.html',
@@ -189,6 +199,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
         }
     }
   })
+
 .state('test', {
     url: '/test',
     templateUrl: 'app/test/test.html',
@@ -199,6 +210,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
         }
     }
   })
+
 .state('timetable', {
     url: '/timetable',
     templateUrl: 'app/timetable/timetable.html',
@@ -209,11 +221,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
         }
     }
   })
+
 .state('transport', {
     url: '/transport',
     templateUrl: 'app/transport/transport.html',
     controller: 'transportCtrl'
   })
+
 .state('videobooks', {
     url: '/videobooks',
     templateUrl: 'app/videobooks/videobooks.html',
@@ -224,36 +238,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
         }
     }
   })
+
 .state('login', {
     url: '/login',
     templateUrl: 'app/login/login.html',
     controller: 'LoginCtrl'
   })
+
 .state('forgetpass', {
     url: '/forgetpass',
     templateUrl: 'app/login/forgetpass.html',
     controller: 'ForgetCtrl'
   })
-.state('readtest', {
-    url: '/readtest',
-    templateUrl: 'app/test/readtest.html',
-    controller: 'ReadtestCtrl'
-  })
-  .state('writetest', {
-    url: '/writetest',
-    templateUrl: 'app/test/write_test.html',
-    controller: 'WritetestCtrl'
-  })
-  .state('writestest', {
-    url: '/writestest',
-    templateUrl: 'app/selftest/write_stest.html',
-    controller: 'WritestestCtrl'
-  })
-  .state('report', {
-    url: '/report',
-    templateUrl: 'app/test/report.html',
-    controller: 'ReportCtrl'
-  });
+
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');

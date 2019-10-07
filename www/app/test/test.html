@@ -97,11 +97,24 @@
           <h4 ng-if="type == 'Other'">{{questions[0].other_type}}</h4>
         </div>
 
-        <div ng-if="type == 'Fill Up' || type == 'Other' || type == 'One or Two Words' || type == 'True or False'" class="padding" ng-repeat="qs2 in questions">
+        <div ng-if="type == 'Fill Up' || type == 'Other' || type == 'One or Two Words'" class="padding" ng-repeat="qs2 in questions">
           <p>{{$index+1}}. {{qs2.question}}</p>
           <p><input ng-model="pageInfo.writetest.questions[qs2.id]"></p>
           
         </div>
+        <div ng-if="type == 'True or False'" class="padding" ng-repeat="qs2 in questions">
+              <p>{{$index+1}}. {{qs2.question}}</p>
+              <p><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]"></p>
+              <ion-item>
+                <ion-label>True</ion-label>
+                <ion-radio slot="end" color="success" value="True"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label>False</ion-label>
+                <ion-radio slot="end" color="success" value="false"></ion-radio>
+              </ion-item>
+         </div>
+
         <div ng-repeat="qs2 in questions" ng-init="pageInfo.writetest.questions[qs2.id]='';">
           <div ng-if="type == 'Opposites'" class="padding" >
             <span>{{$index+1}}. {{qs2.question}}</span> X <input ng-model="pageInfo.writetest.questions[qs2.id]">

@@ -18,11 +18,23 @@
         </div>
 
           <div ng-repeat="qs in que_ans">
-            <div class="padding"><h4>{{qs.question_type}}</h4></div>
-            <div class="padding" ng-repeat="qs2 in qs.questions">
+            <div class="padding">
+               <h4 ng-if="qs.question_type !== 'Other'">{{qs.question_type}}</h4>
+               <h4 ng-if="qs.question_type == 'Other'">{{qs.question_type}}</h4>
+            </div>
+            <!-- <div class="padding" ng-repeat="qs2 in qs.questions">
               <p>{{$index+1}}. {{qs2.question}}</p>
               <p><b>Ans</b>. <input type="text"></p>
+            </div> -->
+            <div ng-if="type == 'Opposites'" class="padding row" ng-repeat="qs2 in questions">
+              <span class="col-40">{{$index+1}}. {{qs2.question}}</span> <span class="col-20">X</span> <input class="col-40" type="text">
             </div>
+
+            <div ng-if="type == 'Fill Up' || type == 'Other' || type == 'One or Two Words'" class="padding" ng-repeat="qs2 in questions">
+              <p>{{$index+1}}. {{qs2.question}}</p>
+              <p><b>Ans:</b> <input class="form-control" type="text"></p>
+            </div>
+
           </div>
           <div class="text-center padding">
                <button class="button button-balanced" >Save</button>

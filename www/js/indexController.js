@@ -1,12 +1,33 @@
 moduleCtrl
 
-.controller('indexController', function($scope, $rootScope, $state, ApiService) {
+.controller('indexController', function($scope, $rootScope, $state, ApiService, $timeout) {
+
+      $scope.removeOfflineFile = function(){
+           var type = window.TEMPORARY;
+           var size = 500*1024*1024;
+           window.requestFileSystem(type, size, successCallback, errorCallback)
+
+           function successCallback(fs) {
+              fs.root.getFile('offline-data.txt', {create: false}, function(fileEntry) {
+
+                 fileEntry.remove(function() {
+                 }, errorCallback);
+              }, errorCallback);
+           }
+
+           function errorCallback(error) {
+              alert("ERROR: " + error.code)
+           }
+    }
+    
 
 	var authData = localStorage.getItem('sms_auth');
     $rootScope.loggedInUserInfo = {};
+    $rootScope.isDevice = 1;
 
 	if(!!authData){
 		$rootScope.loggedInUserInfo = JSON.parse(authData);
+        
 	} else if($state.current.name != 'login'){
 		$state.go('login');
 	}
