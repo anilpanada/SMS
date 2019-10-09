@@ -41,8 +41,10 @@ function httpRestService($http, $q, $rootScope, APIURL, $timeout) {
                   //alert("ERROR: " + error.code)
                   $rootScope.offlineData = {};
                }
-
-               window.requestFileSystem(type, size, successCallback, errorCallback);
+               if(window.requestFileSystem){
+                   window.requestFileSystem(type, size, successCallback, errorCallback);
+               }
+               
            }
 
             if($rootScope.isOnline){
@@ -51,36 +53,38 @@ function httpRestService($http, $q, $rootScope, APIURL, $timeout) {
                 apiPromise.then(function(response){
                         var vv = url.split(APIURL);
 
-                        $rootScope.offlineData['sms_sync_'+encodeURI(vv[1])] = response;
+                        if($rootScope.offlineData){
+                             $rootScope.offlineData['sms_sync_'+encodeURI(vv[1])] = response;
+                     
+                            var type = window.TEMPORARY;
+                            var size = 500*1024*1024;
+                            
+                            function successCallback(fs) {
+                              fs.root.getFile('offline-data.txt', {create: true}, function(fileEntry) {
 
-                            if($rootScope.isDevice){
-                                var type = window.TEMPORARY;
-                                var size = 500*1024*1024;
-                                
-                                function successCallback(fs) {
-                                  fs.root.getFile('offline-data.txt', {create: true}, function(fileEntry) {
+                                 fileEntry.createWriter(function(fileWriter) {
+                                    fileWriter.onwriteend = function(e) {
+                                       //alert('Write completed.');
+                                    };
 
-                                     fileEntry.createWriter(function(fileWriter) {
-                                        fileWriter.onwriteend = function(e) {
-                                           //alert('Write completed.');
-                                        };
+                                    fileWriter.onerror = function(e) {
+                                       //alert('Write failed: ' + e.toString());
+                                    };
 
-                                        fileWriter.onerror = function(e) {
-                                           //alert('Write failed: ' + e.toString());
-                                        };
-
-                                        var blob = new Blob([JSON.stringify($rootScope.offlineData)], {type: 'text/plain'});
-                                        fileWriter.write(blob);
-                                             }, errorCallback);
-                                  }, errorCallback);
-                                }
-
-                                function errorCallback(error) {
-                                  //alert("ERROR: " + error.code)
-                                }
-
-                                window.requestFileSystem(type, size, successCallback, errorCallback);
+                                    var blob = new Blob([JSON.stringify($rootScope.offlineData)], {type: 'text/plain'});
+                                    fileWriter.write(blob);
+                                         }, errorCallback);
+                              }, errorCallback);
                             }
+
+                            function errorCallback(error) {
+                              //alert("ERROR: " + error.code)
+                            }
+
+                           if(window.requestFileSystem){
+                               window.requestFileSystem(type, size, successCallback, errorCallback);
+                           }
+                        }
                             
 
                     deferred.resolve(response);

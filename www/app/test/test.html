@@ -55,7 +55,7 @@
         <div ng-if="type == 'Opposites'" class="padding" ng-repeat="qs2 in questions">
           <span>{{$index+1}}. {{qs2.question}}</span> X <span>{{qs2.answer}}</span>
         </div>
-        <div ng-if="type == 'Meanings' || type == 'Match' || type == 'Other'" class="padding" ng-repeat="qs2 in questions">
+        <div ng-if="type == 'Meanings' || type == 'Match' || questions[0].other_type == 'Rhyming Words'" class="padding" ng-repeat="qs2 in questions">
           <span>{{$index+1}}. {{qs2.question}}</span> - <span>{{qs2.answer}}</span>
         </div>
         <div ng-if="type == 'Missing Letters' || type == 'Jumbled Letters' || type == 'Jumbled Words'" class="padding" ng-repeat="qs2 in questions">
@@ -104,16 +104,9 @@
         </div>
         <div ng-if="type == 'True or False'" class="padding" ng-repeat="qs2 in questions">
               <p>{{$index+1}}. {{qs2.question}}</p>
-              <p><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]"></p>
-              <ion-item>
-                <ion-label>True</ion-label>
-                <ion-radio slot="end" color="success" value="True"></ion-radio>
-              </ion-item>
-              <ion-item>
-                <ion-label>False</ion-label>
-                <ion-radio slot="end" color="success" value="false"></ion-radio>
-              </ion-item>
-         </div>
+              <p><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="true"><label>True</label>
+                <input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="false"><label>False</label></p>
+        </div>
 
         <div ng-repeat="qs2 in questions" ng-init="pageInfo.writetest.questions[qs2.id]='';">
           <div ng-if="type == 'Opposites'" class="padding" >

@@ -133,40 +133,42 @@ moduleCtrl
 	            });
             });
 
-            localStorage.setItem('sms_sync_get_self_test_review&user_id='+$rootScope.loggedInUserInfo.id+'&test_id='+$scope.pageInfo.writetest.test_id+'&answer_id='+$scope.newansid, JSON.stringify({data: {data:reviewData, status: 'Success'}}));
+            if($rootScope.offlineData){
+	            $rootScope.offlineData['sms_sync_get_self_test_review&user_id='+$rootScope.loggedInUserInfo.id+'&test_id='+$scope.pageInfo.writetest.test_id+'&answer_id='+$scope.newansid] = {data: {data:reviewData, status: 'Success'}};
 
 
-            var ress = JSON.parse(localStorage.getItem('sms_sync_get_self_tests&user_id='+$rootScope.loggedInUserInfo.id));
-            angular.forEach(ress.data.data, function(dt){
-            	if(dt.id == $scope.pageInfo.writetest.test_id){
-            		dt.tests.push({id: $scope.newansid, mark: mark});
-            	}
-            });
-            localStorage.setItem('sms_sync_get_self_tests&user_id='+$rootScope.loggedInUserInfo.id, JSON.stringify(ress));
+	            var ress = $rootScope.offlineData['sms_sync_get_self_tests&user_id='+$rootScope.loggedInUserInfo.id];
+	            angular.forEach(ress.data.data, function(dt){
+	            	if(dt.id == $scope.pageInfo.writetest.test_id){
+	            		dt.tests.push({id: $scope.newansid, mark: mark});
+	            	}
+	            });
+	            $rootScope.offlineData['sms_sync_get_self_tests&user_id='+$rootScope.loggedInUserInfo.id] = ress;
 
 
-            var reportData = JSON.parse(localStorage.getItem('sms_sync_get_self_test_report&user_id='+$rootScope.loggedInUserInfo.id+'&test_id='+$scope.pageInfo.writetest.test_id));
+	            var reportData = $rootScope.offlineData['sms_sync_get_self_test_report&user_id='+$rootScope.loggedInUserInfo.id+'&test_id='+$scope.pageInfo.writetest.test_id];
 
-            angular.forEach(reportData.data.data.questions, function(qst, k){
-            		if(qst.results === undefined) qst.results = [];
-            		if(qst.correct === undefined) qst.correct = 0;
-            		if(qst.wrong === undefined) qst.wrong = 0;
+	            angular.forEach(reportData.data.data.questions, function(qst, k){
+	            		if(qst.results === undefined) qst.results = [];
+	            		if(qst.correct === undefined) qst.correct = 0;
+	            		if(qst.wrong === undefined) qst.wrong = 0;
 
-            		var tres = {};
-            		if(qst.answer && qst.answer.trim().toLowerCase() == $scope.pageInfo.writetest.questions[qst.id].toLowerCase()){
-            			tres.daily_test_mark = 1;
-            			qst.correct++;
-            		} else {
-            			tres.daily_test_mark = 0;
-            			qst.wrong++;
-            		}
+	            		var tres = {};
+	            		if(qst.answer && qst.answer.trim().toLowerCase() == $scope.pageInfo.writetest.questions[qst.id].toLowerCase()){
+	            			tres.daily_test_mark = 1;
+	            			qst.correct++;
+	            		} else {
+	            			tres.daily_test_mark = 0;
+	            			qst.wrong++;
+	            		}
 
-            		qst.results.push(tres);
-            });
+	            		qst.results.push(tres);
+	            });
 
-            localStorage.setItem('sms_sync_get_self_test_report&user_id='+$rootScope.loggedInUserInfo.id+'&test_id='+$scope.pageInfo.writetest.test_id, JSON.stringify(reportData));
-            $scope.pageInfo.template = 'review';
-            $scope.getReviewData($scope.pageInfo.writetest.test_id, $scope.newansid);
+	            $rootScope.offlineData['sms_sync_get_self_test_report&user_id='+$rootScope.loggedInUserInfo.id+'&test_id='+$scope.pageInfo.writetest.test_id] = reportData;
+	            $scope.pageInfo.template = 'review';
+	            $scope.getReviewData($scope.pageInfo.writetest.test_id, $scope.newansid);
+        	}
 		}
 
 	}

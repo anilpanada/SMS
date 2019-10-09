@@ -143,3 +143,6 @@ body.login_page ion-content{
 .upper{
 	text-transform: uppercase;
 }
+.login-pad{
+        padding: 0 25px 10px;
+    }
