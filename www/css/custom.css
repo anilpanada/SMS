@@ -144,5 +144,68 @@ body.login_page ion-content{
 	text-transform: uppercase;
 }
 .login-pad{
-        padding: 0 25px 10px;
-    }
+    padding: 0 25px 10px;
+}
+
+.pb{
+    width: 100%;
+    height: 5px;
+    background: #00BFFF;
+    position :relative;
+    -webkit-animation: mymove 3s infinite; /* Safari 4.0 - 8.0 */
+    animation: mymove 3s infinite;
+}
+
+
+/* Standard syntax */
+@keyframes mymove {
+    from   {width: 0px;}
+    to  {width: 500px;}
+}
+
+
+.off-toggle{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    z-index: 999;
+}
+.off-toggle input[type=checkbox]{
+    height: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+.off-toggle label {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 40px;
+    height: 20px;
+    background: grey;
+    display: block;
+    border-radius: 20px;
+    position: relative;
+}
+
+.off-toggle label:after {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+.off-toggle input:checked + label {
+    background: #bada55;
+}
+
+.off-toggle input:checked + label:after {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+
+}
