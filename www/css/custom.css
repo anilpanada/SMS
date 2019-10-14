@@ -209,3 +209,24 @@ body.login_page ion-content{
     transform: translateX(20px);
 
 }
+.nav-pills>li{
+    float:left
+}
+.nav-pills>li>a{
+    border-radius: 4px;
+    background: #000;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    text-decoration: none;
+}
+.nav-pills>li+li{
+    margin-left:2px
+}
+.nav-pills>li.active>a,.nav-pills>li.active>a:hover,.nav-pills>li.active>a:focus{
+    color:#fff;background-color:#428bca
+}
+.tab-nav{
+    margin-bottom: 35px;
+    padding: 10px 0;
+}

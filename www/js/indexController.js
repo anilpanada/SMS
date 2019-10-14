@@ -43,11 +43,13 @@ moduleCtrl
 
     $rootScope.$on('user_logged_in', function(eve, data){
         $rootScope.loggedInUserInfo = data;
+        $scope.backUpData();
     });
 
     $scope.logout = function(){
         $rootScope.loggedInUserInfo = {};
         localStorage.removeItem('sms_auth');
+        localStorage.removeItem('backUpData');
         $state.go('login');
     }
 
@@ -88,59 +90,112 @@ moduleCtrl
                 localStorage.setItem('smsCachedTest', JSON.stringify(insCachedPackage));
             });
         });
-    }
+    };
 
-    $scope.backUpData = function(){
-        ApiService.get_homework();
-        ApiService.attendance();
-        ApiService.get_subjects();
-        ApiService.calendar();
-        ApiService.get_class_notes();
-        ApiService.get_exam_time_table();
-        ApiService.get_gallery();
-        ApiService.get_aptitude();
-        ApiService.get_profile();
-        ApiService.get_projects();
-        ApiService.get_results();
-        
-        ApiService.get_time_table();
+    $scope.startQueue = function(qd){
+        var filter = qd.filter(function(a){
+            return a.bk === false;
+        });
 
-        /*ApiService.get_daily_tests().then(function(res){
+        if(filter.length){
+            $rootScope.backupLoader = true;
+            var prom;
+
+            if(filter[0].noparams){
+                prom = ApiService[filter[0].action]();
+            } else if(filter[0].params2){
+                prom = ApiService[filter[0].action](filter[0].params, filter[0].params2);
+            } else {
+                prom = ApiService[filter[0].action](filter[0].params);
+            }
+
+            prom.then(function(){
+                filter[0].bk = true;
+                localStorage.setItem('backUpData', JSON.stringify(qd));
+
+                if($rootScope.loadBackup){
+                  $scope.startQueue(qd);
+                }
+            });
+        } else {
+          $rootScope.backupLoader = false;
+        }
+    };
+
+    $rootScope.backupLoader = false;
+    $rootScope.loadBackup = true;
+    $scope.createQueue = function(){
+
+        $que = ['get_homework', 'attendance', 'get_subjects', 'calendar', 'get_class_notes', 'get_exam_time_table',
+        'get_gallery', 'get_aptitude', 'get_profile', 'get_projects', 'get_results'];
+
+        $quedata = [];
+
+        angular.forEach($que, function(v,k){
+            $quedata.push({action: v, noparams: {}, bk: false})
+        });
+
+        ApiService.get_daily_tests().then(function(res){
             angular.forEach(res.data, function(v,k){
-                ApiService.get_daily_test_questions(v.id);
-                ApiService.get_daily_test_report(v.id);
+              $quedata.push({action: 'get_daily_test_questions', params: v.id, bk: false});
+              $quedata.push({action: 'get_daily_test_report', params: v.id, bk: false});
 
                 angular.forEach(v.tests, function(v1,k1){
-                    ApiService.get_daily_test_review(v.id, v1.id);
+                  $quedata.push({action: 'get_daily_test_review', params: v.id, params2: v1.id, bk: false});
                 });
+            });
+
+            ApiService.get_self_tests().then(function(res){
+              angular.forEach(res.data, function(v,k){
+                $quedata.push({action: 'get_self_test_questions', params: v.id, bk: false});
+                $quedata.push({action: 'get_self_test_report', params: v.id, bk: false});
+
+                angular.forEach(v.tests, function(v1,k1){
+                  $quedata.push({action: 'get_self_test_review', params2: v.id, params2: v1.id, bk: false});
+                });
+              });
+
+              localStorage.setItem('backUpData', JSON.stringify($quedata));
+              if($rootScope.loadBackup){
+                $scope.startQueue($quedata);
+              }
             });
         });
-        ApiService.get_self_tests().then(function(res){
-            angular.forEach(res.data, function(v,k){
-                ApiService.get_self_test_questions(v.id);
-                ApiService.get_self_test_report(v.id);
+        
+    };
 
-                angular.forEach(v.tests, function(v1,k1){
-                    ApiService.get_self_test_review(v.id, v1.id);
-                });
-            });
-        });*/
+
+    $scope.changeBkStatus = function(fl){
+      $rootScope.loadBackup = fl;
+      $scope.backUpData();
+    };
+
+    $scope.backUpData = function(){
+        var backUpData = localStorage.getItem('backUpData');
+
+        if(backUpData){
+            backUpData = JSON.parse(backUpData);
+            if($rootScope.loadBackup){
+              $scope.startQueue(backUpData);
+            }
+        } else {
+            $scope.createQueue();
+        }
     };
 
     $scope.setOnlineStatus = function(){
         $rootScope.isOnline = navigator.onLine;
         //$rootScope.isOnline = false;
-
-
-        if($rootScope.isOnline){
-            $scope.backUpData();
-        }
     };
 
     if($rootScope.loggedInUserInfo.id){
         $scope.setOnlineStatus();
 
         $scope.syncOffineData();
+
+        if($rootScope.isOnline){
+            $scope.backUpData();
+        }
     }
 
     $scope.reload = function(){
@@ -208,5 +263,8 @@ moduleCtrl
         a = $scope.shuffle(a);
         return a.join('');
     };
+
+
+
 
 });

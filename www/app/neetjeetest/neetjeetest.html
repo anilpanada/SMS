@@ -13,7 +13,7 @@
         <span class="pull-right test-btn">
           <a ng-show="dt.tests.length" ng-click="dt.expand = !dt.expand;"><i class="fa fa-file"></i></a>
           <a ng-click="selectedTest(dt); pageInfo.template = 'read';getReadData(dt.id);"><i class="fa fa-eye"></i></a>
-          <a ng-click="selectedTest(dt); pageInfo.template = 'write';"><i class="fa fa-edit"></i></a>
+          <a ng-click="selectedTest(dt); pageInfo.template = 'write';getReadData(dt.id);"><i class="fa fa-edit"></i></a>
         </span>
       </div>
       <div class="clearfix mark-list" ng-if="dt.expand">
@@ -26,9 +26,9 @@
   </div>
 
  <div class="content-bg" ng-if="pageInfo.template == 'read'">
-  <!-- <div class="closediv">
-    <i class="pg-close fas fa-arrow-left" ng-click="pageInfo.template=''"></i>
-  </div> -->
+  <div class="closediv">
+    <i class="pg-close fas fa-arrow-left" ng-click="get_test()"></i>
+  </div>
   <div class="test-list">
     <div class="row ">
       <div class="col-50"><label><b>Subject:</b> </label><label>{{readPageData.info.subject_name}}</label></div>
@@ -47,52 +47,57 @@
 
          <div ng-if="type == 'Choose' " class="padding" ng-repeat="qs2 in questions">
             <p>{{$index+1}}. {{qs2.question}}</p>
-          
             <p class="pad-5">A) {{qs2.optiona}}</p>
             <p class="pad-5">B) {{qs2.optionb}}</p>
             <p class="pad-5" ng-show="qs2.optionc">C) {{qs2.optionc}}</p>
             <p class="pad-5" ng-show="qs2.optiond">D) {{qs2.optiond}}</p>
             <p class="pad-5" ng-show="qs2.optione">E) {{qs2.optione}}</p>
-          
-           <p><b>Ans:</b>{{qs2.answer}}</p>
+            <p><b>Ans:</b>{{qs2.answer}}</p>
         </div>
         </div>
 
         <div class="text-center padding">
-           <button class="button button-positive" ng-click="pageInfo.template = 'write';">Write Test</button>
+           <button class="button button-positive" ng-click="pageInfo.template = 'write';getReadData(readPageData.info.id);">Write Test</button>
          </div>
   </div>
   <div class="content-bg" ng-if="pageInfo.template == 'write'">
-    <!-- <div class="closediv">
-      <i class="pg-close fas fa-arrow-left" ng-click="pageInfo.template=''"></i>
-    </div> -->
+        <div class="closediv">
+          <i class="pg-close fas fa-arrow-left" ng-click="get_test()"></i>
+        </div>
         <div class="test-list">
           <div class="row ">
-            <div class="col-50"><label><b>Subjet:</b> </label><label>English</label></div>
-            <div class="col-50"><label><b>Test Name:</b> </label><label>English I akjhsdkfjhas</label></div>
+            <div class="col-50"><label><b>Subject:</b> </label><label>{{readPageData.info.subject_name}}</label></div>
+            <div class="col-50"><label><b>Test Name:</b> </label><label>{{readPageData.info.daily_test_name}}</label></div>
           </div>
           <div class="row">
-            <div class="col-50"><label><b>Mark:</b> </label><label>89</label></div>
-            <div class="col-50"><label><b>Remark:</b> </label><label>asdfasd.sadfas</label></div>
+            <div class="col-50"><label><b>Mark:</b> </label><label>{{readPageData.info.mark}}</label></div>
+            <div class="col-50"><label><b>Remark:</b> </label><label>{{readPageData.info.daily_test_remark}}</label></div>
           </div>
         </div>
 
-          <div ng-repeat="qs in que_ans">
-            <div class="padding"><h4>{{qs.question_type}}</h4></div>
-            <div class="padding" ng-repeat="qs2 in qs.questions">
-              <p>{{$index+1}}. {{qs2.question}}</p>
-              <p><b>Ans</b>. <input type="text"></p>
+          <div class="test-list" ng-repeat="(type, questions) in readPageData.questions">
+
+            <div class="padding"><h4>{{type}}</h4></div>
+            <div class="padding" ng-repeat="qs2 in questions">
+                <p>{{$index+1}}. {{qs2.question}}</p>
+                <p ><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="{{qs2.optiona}}"><label class="padding">A) {{qs2.optiona}}</label> </p>
+                <p ><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="{{qs2.optionb}}"><label class="padding">B) {{qs2.optionb}}</label></p>
+                <p ng-show="qs2.optionc"><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="{{qs2.optionc}}"><label class="padding">C) {{qs2.optionc}}</label></p>
+                <p ng-show="qs2.optiond "><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="{{qs2.optiond}}"><label class="padding">D) {{qs2.optiond}}</label></p>
+                <p ng-show="qs2.optione "><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="{{qs2.optione}}"><label class="padding">E) {{qs2.optione}}</label></p>
+               
+              </div>
             </div>
-          </div>
+        
           <div class="text-center padding">
-               <button class="button button-balanced" >Save</button>
+               <button class="button button-balanced" ng-click="writetest()" >Save</button>
           </div>
    </div>
    
    <div class="content-bg" ng-if="pageInfo.template == 'report'">
-      <!-- <div class="closediv">
+      <div class="closediv">
       <i class="pg-close fas fa-arrow-left" ng-click="pageInfo.template=''"></i>
-    </div> -->
+      </div>
   <div class="test-list">
     <div class="row ">
       <div class="col-50"><label><b>Subject:</b> </label><label>{{reportPageData.info.subject_name}}</label></div>
@@ -132,9 +137,9 @@
       </div>
 
    <div class="content-bg" ng-if="pageInfo.template == 'review'">
-       <!-- <div class="closediv">
+       <div class="closediv">
         <i class="pg-close fas fa-arrow-left" ng-click="pageInfo.template=''"></i>
-      </div> -->
+      </div>
       <div class="test-list">
         <div class="row ">
           <div class="col-50"><label><b>Subject:</b> </label><label>{{reviewPageData.info.subject_name}}</label></div>
@@ -146,8 +151,7 @@
         </div>
         </div>
       <div class="test-list pos-relative padding" ng-repeat="(type,questions) in reviewPageData.questions">
-         
-          <div class="clearfix mar-b" ng-repeat="qs3 in questions">
+        <div class="clearfix mar-b" ng-repeat="qs3 in questions">
             <div><b>{{$index+1}}. Question:</b><p>{{qs3.question}} </p></div>
             <div><b>Options :</b></div>
             <p class="pad-5">A) {{qs3.optiona}}</p>
