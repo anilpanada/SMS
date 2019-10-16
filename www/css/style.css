@@ -121,7 +121,7 @@
  	margin: auto;
  }*/
  .gallery img, video{
-    height: 200px;
+    height: auto;
     width: 100%;
  }
  .border{

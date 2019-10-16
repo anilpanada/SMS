@@ -40,6 +40,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','7
 }])
 
 .value('APIURL', 'http://dev.srivinayagaschoolpennagaram.com/api/?action=')
+//.value('APIURL', 'http://srivinayagaschoolpennagaram.com/api/?action=')
 //.value('APIURL', 'http://localhost/sms2019/api/?action=')
 
 .config(function($stateProvider, $urlRouterProvider) {

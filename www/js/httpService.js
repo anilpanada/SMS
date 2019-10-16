@@ -22,7 +22,7 @@ function httpRestService($http, $q, $rootScope, APIURL, $timeout) {
                var type = window.TEMPORARY;
                var size = 500*1024*1024;
                function successCallback(fs) {
-                  fs.root.getFile('offline-data.txt', {}, function(fileEntry) {
+                  fs.getFile('offline-data.txt', {}, function(fileEntry) {
 
                      fileEntry.file(function(file) {
                         var reader = new FileReader();
@@ -41,8 +41,8 @@ function httpRestService($http, $q, $rootScope, APIURL, $timeout) {
                   //alert("ERROR: " + error.code)
                   $rootScope.offlineData = {};
                }
-               if(window.requestFileSystem){
-                   window.requestFileSystem(type, size, successCallback, errorCallback);
+               if(window.resolveLocalFileSystemURI){
+                   window.resolveLocalFileSystemURI(cordova.file.externalDataDirectory, successCallback, errorCallback);
                }
                
            }
@@ -60,7 +60,7 @@ function httpRestService($http, $q, $rootScope, APIURL, $timeout) {
                             var size = 500*1024*1024;
                             
                             function successCallback(fs) {
-                              fs.root.getFile('offline-data.txt', {create: true}, function(fileEntry) {
+                              fs.getFile('offline-data.txt', {create: true}, function(fileEntry) {
 
                                  fileEntry.createWriter(function(fileWriter) {
                                     fileWriter.onwriteend = function(e) {
@@ -81,8 +81,9 @@ function httpRestService($http, $q, $rootScope, APIURL, $timeout) {
                               //alert("ERROR: " + error.code)
                             }
 
-                           if(window.requestFileSystem){
-                               window.requestFileSystem(type, size, successCallback, errorCallback);
+                           if(window.resolveLocalFileSystemURI){
+                               //window.requestFileSystem(type, size, successCallback, errorCallback);
+                               window.resolveLocalFileSystemURI(cordova.file.externalDataDirectory, successCallback, errorCallback);
                            }
                         }
                             

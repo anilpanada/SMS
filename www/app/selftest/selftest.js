@@ -3,6 +3,16 @@ moduleCtrl
 .controller('selftestCtrl', function($scope, $rootScope, $state, Data, $ionicModal, ApiService) {
 	$scope.selftest= Data.data;
 	
+	$scope.tab = 1;
+
+    $scope.setTab = function (tabId) {
+        $scope.tab = tabId;
+    };
+
+    $scope.isSet = function (tabId) {
+        return $scope.tab === tabId;
+    };
+	
 	$scope.pageInfo = {template: '', assign: {}};
 	$scope.selectedTest = function(obj){
 		$scope.selected = obj;

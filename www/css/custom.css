@@ -1,6 +1,3 @@
-body.login_page ion-content{
-	background: #fff;
-}
 .pos-relative{
 	position: relative;
 }
@@ -159,8 +156,12 @@ body.login_page ion-content{
 
 /* Standard syntax */
 @keyframes mymove {
-    from   {width: 0px;}
-    to  {width: 500px;}
+    from   {
+        width: 0%;
+    }
+    to  {
+        width: 100%;
+    }
 }
 
 

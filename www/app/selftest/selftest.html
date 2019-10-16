@@ -169,8 +169,8 @@
    
    <div class="content-bg" ng-if="pageInfo.template == 'report'">
     <div class="closediv">
-           <i class="pg-close fas fa-arrow-left" ng-click="get_test()"></i>
-         </div>
+      <i class="pg-close fas fa-arrow-left" ng-click="get_test()"></i>
+    </div>
   <div class="test-list">
     <div class="row ">
       <div class="col-50"><label><b>Subject:</b> </label><label>{{reportPageData.info.subject_name}}</label></div>
@@ -182,7 +182,7 @@
     </div>
     </div>
     
-      <div class="test-list pos-relative" ng-repeat="qr in reportPageData.questions">
+      <div class="test-list pos-relative" ng-repeat="qr in reportPageData.questions | orderBy:'-wrong'">
           <h4>{{qr.question_type}}</h4>
           <div class="clearfix" >
             <div><b>{{$index+1}}. Question:</b> {{qr.question}} </div>
@@ -204,9 +204,9 @@
       </div>
 
    <div class="content-bg" ng-if="pageInfo.template == 'review'">
-       <div class="closediv">
-        <i class="pg-close fas fa-arrow-left" ng-click="get_test()"></i>
-      </div>
+        <div class="closediv">
+          <i class="pg-close fas fa-arrow-left" ng-click="get_test()"></i>
+        </div>
       <div class="test-list">
         <div class="row ">
           <div class="col-50"><label><b>Subject:</b> </label><label>{{reviewPageData.info.subject_name}}</label></div>
@@ -217,10 +217,39 @@
           <div class="col-50"><label><b>Remark:</b> </label><label>{{reviewPageData.info.daily_test_remark}}</label></div>
         </div>
         </div>
-      <div class="test-list pos-relative" ng-repeat="(type,questions) in reviewPageData.questions">
+
+        <div class="tab-nav">
+            <ul class="nav nav-pills">
+              <li ng-class="{active:isSet(1)}"><a href ng-click="setTab(1)">All</a></li>
+              <li ng-class="{active:isSet(2)}"><a href ng-click="setTab(2)">Correct Answers</a></li>
+              <li ng-class="{active:isSet(3)}"><a href ng-click="setTab(3)">Wrong Answers</a></li>
+            </ul>
+        </div>
+
+      <div ng-if="tab==1" class="test-list pos-relative" ng-repeat="(type,questions) in reviewPageData.questions">
         
           <h4>{{type}}</h4>
           <div class="clearfix" ng-repeat="qs3 in questions">
+            <div><b>{{$index+1}}. Question:</b>{{qs3.question}} </div>
+            <div><b>Ans:</b>{{qs3.answer}}</div>
+            <div ng-class="{ca: qs3.urans.daily_test_mark == 1, wa: qs3.urans.daily_test_mark == 0}" ><b>Your Ans:</b> {{qs3.urans.answer}}</div> 
+                           
+          </div>              
+       </div>
+       <div ng-if="tab==2" class="test-list pos-relative" ng-repeat="(type,questions) in reviewPageData.questions">
+        
+          <h4>{{type}}</h4>
+          <div class="clearfix" ng-repeat="qs3 in questions" ng-if="qs3.urans.daily_test_mark == 1">
+            <div><b>{{$index+1}}. Question:</b>{{qs3.question}} </div>
+            <div><b>Ans:</b>{{qs3.answer}}</div>
+            <div ng-class="{ca: qs3.urans.daily_test_mark == 1, wa: qs3.urans.daily_test_mark == 0}" ><b>Your Ans:</b> {{qs3.urans.answer}}</div> 
+                           
+          </div>              
+       </div>
+       <div ng-if="tab==3" class="test-list pos-relative" ng-repeat="(type,questions) in reviewPageData.questions">
+        
+          <h4>{{type}}</h4>
+          <div class="clearfix" ng-repeat="qs3 in questions" ng-if="qs3.urans.daily_test_mark == 0">
             <div><b>{{$index+1}}. Question:</b>{{qs3.question}} </div>
             <div><b>Ans:</b>{{qs3.answer}}</div>
             <div ng-class="{ca: qs3.urans.daily_test_mark == 1, wa: qs3.urans.daily_test_mark == 0}" ><b>Your Ans:</b> {{qs3.urans.answer}}</div> 
