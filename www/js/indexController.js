@@ -119,11 +119,14 @@ moduleCtrl
             });
         } else {
           $rootScope.backupLoader = false;
+          $rootScope.lastSync = new Date().getTime();
+          localStorage.setItem('lastSync', $rootScope.lastSync);
         }
     };
 
+    $rootScope.lastSync = localStorage.getItem('lastSync');
+
     $rootScope.backupLoader = false;
-    $rootScope.loadBackup = true;
     $scope.createQueue = function(){
 
         $que = ['get_homework', 'attendance', 'get_subjects', 'calendar', 'get_class_notes', 'get_exam_time_table',
@@ -155,18 +158,31 @@ moduleCtrl
                 });
               });
 
-              localStorage.setItem('backUpData', JSON.stringify($quedata));
-              if($rootScope.loadBackup){
-                $scope.startQueue($quedata);
-              }
+              ApiService.get_aptitude().then(function(res){
+                angular.forEach(res.data, function(v,k){
+                  $quedata.push({action: 'get_aptitude_questions', params: v.id, bk: false});
+                  $quedata.push({action: 'get_aptitude_report', params: v.id, bk: false});
+
+                  angular.forEach(v.tests, function(v1,k1){
+                    $quedata.push({action: 'get_aptitude_review', params2: v.id, params2: v1.id, bk: false});
+                  });
+                });
+
+                localStorage.setItem('backUpData', JSON.stringify($quedata));
+                if($rootScope.loadBackup){
+                  $scope.startQueue($quedata);
+                }
+              });
             });
         });
         
     };
 
-
+    $rootScope.loadBackup = localStorage.getItem('smsBackUpStatus');
+    $rootScope.loadBackup = ($rootScope.loadBackup == '' || $rootScope.loadBackup == 'true') ? true : false;
     $scope.changeBkStatus = function(fl){
       $rootScope.loadBackup = fl;
+      localStorage.setItem('smsBackUpStatus', fl);
       $scope.backUpData();
     };
 
@@ -175,9 +191,19 @@ moduleCtrl
 
         if(backUpData){
             backUpData = JSON.parse(backUpData);
-            if($rootScope.loadBackup){
-              $scope.startQueue(backUpData);
+
+            var filter = backUpData.filter(function(a){
+              return a.bk === false;
+            });
+
+            if($rootScope.loadBackup ){
+              if(filter.length){
+                $scope.startQueue(backUpData);
+              } else {
+                $scope.createQueue();
+              }
             }
+            
         } else {
             $scope.createQueue();
         }

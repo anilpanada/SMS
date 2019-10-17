@@ -1,18 +1,24 @@
 <ion-view view-title="Calendar">
   <ion-content class="padding scroll-bg">
    <div class="content-bg">
-       <div class="test-list">
-        <div class="row padding">
-          <div class="col-50"><label>Class : </label><label>{{loggedInUserInfo.academic.class_name}}</label></div>
-          <div class="col-50"><label>Section : </label><label>{{loggedInUserInfo.academic.section_name}}</label></div>
-        </div>
-        <div class="row padding">
-          <div class="col-50"><label># Working days : </label><label>55</label></div>
-          <div class="col-50"><label># days present : </label><label>50</label></div>
-        </div>
-       </div>
-       <div id='calendar' class="padding test-list"></div>
+      <div id='calendar' class="padding test-list"></div>
    </div>
+
+  <div class="fc-popover fc-more-popover" style="top: 22px; left: 91px;">
+    <div class="fc-header fc-widget-header">
+      <span class="fc-title">October 1, 2019</span>
+      <span class="fc-close fc-icon fc-icon-x"></span>
+    </div>
+    <div class="fc-body fc-widget-content">
+      <div class="fc-event-container">
+        <a class="fc-day-grid-event fc-h-event fc-event fc-start fc-end event greenEvent fc-draggable">
+          <div class="fc-content"> 
+              <span class="fc-title">Quarterly Holiday</span>
+          </div>
+        </a>         
+      </div>
+    </div>
+  </div>
  
   </ion-content>
 </ion-view>

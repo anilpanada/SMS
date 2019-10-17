@@ -2,6 +2,8 @@ moduleCtrl
 
 .controller('AttendanceCtrl', function($scope, $rootScope, $state, Data) {
 
+	$scope.attendance = Data;
+
 	var calendarEl = document.getElementById('attendancecalendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
