@@ -1,8 +1,10 @@
 <ion-view view-title="Daily Test">
   <ion-content class="padding scroll-bg">
-   <div class="content-bg" ng-if="pageInfo.template == ''">
+   <div class="content-bg" >
 
-    <div class="test-list pos-relative" ng-repeat="dt in dailytest">
+
+
+    <div class="test-list pos-relative" ng-repeat="dt in dailytest" ng-class="{todaytest: date(dt.created_at.split(' ')[0]) == date('')}">
       <h4>{{dt.daily_test_name}}</h4>
       <div class="clearfix">
         <span class="pull-left"><b>Sub:</b> {{dt.subject_name}}</span>
@@ -12,31 +14,35 @@
         <span class="pull-left"><b>Mark:</b> {{dt.mark}}</span>
         <span class="pull-right test-btn">
           <a ng-show="dt.tests.length" ng-click="dt.expand = !dt.expand;"><i class="fa fa-file"></i></a>
-          <a ng-click="selectedTest(dt); pageInfo.template = 'read';getReadData(dt.id);"><i class="fa fa-eye"></i></a>
-          <a ng-click="selectedTest(dt); pageInfo.template = 'write';getReadData(dt.id);"><i class="fa fa-edit"></i></a>
+          <a ng-click="selectedTest(dt, 'read'); pageInfo.template = 'read';getReadData(dt.id);"><i class="fa fa-eye"></i></a>
+          <a ng-click="selectedTest(dt, 'write'); pageInfo.template = 'write';getReadData(dt.id);"><i class="fa fa-edit"></i></a>
         </span>
       </div>
       <div class="clearfix mark-list" ng-if="dt.expand">
-        <span ng-repeat="mark in dt.tests" ng-click="selectedTest(dt);pageInfo.template='review'; getReviewData(dt.id, mark.id)">{{mark.mark}}</span>
+        <span ng-repeat="mark in dt.tests" ng-click="selectedTest(dt, 'review'); getReviewData(dt.id, mark.id)">{{mark.mark}}</span>
         <div>
-          <button class="button button-block button-positive" ng-click="selectedTest(dt);pageInfo.template='report'; getReportData(dt.id)">View Detailed Report</button>
+          <button class="button button-block button-positive" ng-click="selectedTest(dt, 'report');pageInfo.template='report'; getReportData(dt.id)">View Detailed Report</button>
         </div>
       </div>
     </div>
   </div>
 
- <div class="content-bg" ng-if="pageInfo.template == 'read'">
-  <div class="closediv">
-    <i class="pg-close fas fa-arrow-left" ng-click="get_test()"></i>
-    </div>
-  <div class="test-list">
+  <script id="templates/readmodal.html" type="text/ng-template">
+      <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+          <h1 class="title text-center">{{date(readPageData.info.created_at) | date: 'dd-MM-yyyy'}} Daily Test Preview</h1>
+          <button class="button button-clear ion-close" ng-click="modal.hide()"></button>
+        </ion-header-bar>
+        <ion-content class="padding">
+          
+           <div class="test-list">
     <div class="row ">
       <div class="col-50"><label><b>Subject:</b> </label><label>{{readPageData.info.subject_name}}</label></div>
       <div class="col-50"><label><b>Test Name:</b> </label><label>{{readPageData.info.daily_test_name}}</label></div>
     </div>
     <div class="row">
       <div class="col-50"><label><b>Mark:</b> </label><label>{{readPageData.info.mark}}</label></div>
-      <div class="col-50"><label><b>Remark:</b> </label><label>{{readPageData.info.daily_test_remark}}</label></div>
+      <div class="col-50"><label><b>Lesson:</b> </label><label>{{readPageData.info.daily_test_remark}}</label></div>
     </div>
     </div>
 
@@ -72,70 +78,112 @@
         </div>
 
         <div class="text-center padding">
-           <button class="button button-positive" ng-click="pageInfo.template = 'write';getReadData(readPageData.info.id);">Write Test</button>
+           <button class="button button-positive" ng-click="modal.hide();selectedTest(dt, 'write'); pageInfo.template = 'write';getReadData(readPageData.info.id);">Write Test</button>
          </div>
-  </div>
-  <div class="content-bg" ng-if="pageInfo.template == 'write'">
-        <div class="closediv">
-          <i class="pg-close fas fa-arrow-left" ng-click="get_test()"></i>
-        </div>
-        <div class="test-list">
-          <div class="row ">
-            <div class="col-50"><label><b>Subject:</b> </label><label>{{readPageData.info.subject_name}}</label></div>
-            <div class="col-50"><label><b>Test Name:</b> </label><label>{{readPageData.info.daily_test_name}}</label></div>
-          </div>
-          <div class="row">
-            <div class="col-50"><label><b>Mark:</b> </label><label>{{readPageData.info.mark}}</label></div>
-            <div class="col-50"><label><b>Remark:</b> </label><label>{{readPageData.info.daily_test_remark}}</label></div>
-          </div>
-        </div>
+  
+    
+        </ion-content>
+      </ion-modal-view>
+    </script>
 
-          <div class="test-list" ng-repeat="(type, questions) in readPageData.questions" >
-            <div class="padding">
-              <h4 ng-if="type !== 'Other'">{{type}}</h4>
-              <h4 ng-if="type == 'Other'">{{questions[0].other_type}}</h4>
+  <script id="templates/writemodal.html" type="text/ng-template">
+      <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+          <h1 class="title text-center">{{date(readPageData.info.created_at) | date: 'dd-MM-yyyy'}} Daily Test</h1>
+          <button class="button button-clear ion-close" ng-click="modal.hide()"></button>
+        </ion-header-bar>
+        <ion-content class="padding">
+          
+           <div class="test-list">
+              <div class="row ">
+                <div class="col-50"><label><b>Subject:</b> </label><label>{{readPageData.info.subject_name}}</label></div>
+                <div class="col-50"><label><b>Test Name:</b> </label><label>{{readPageData.info.daily_test_name}}</label></div>
+              </div>
+              <div class="row">
+                <div class="col-50"><label><b>Mark:</b> </label><label>{{readPageData.info.mark}}</label></div>
+                <div class="col-50"><label><b>Lesson:</b> </label><label>{{readPageData.info.daily_test_remark}}</label></div>
+              </div>
             </div>
 
-            <div ng-if="type == 'Fill Up' || type == 'Other' || type == 'One or Two Words'" class="padding" ng-repeat="qs2 in questions">
-              <p>{{$index+1}}. {{qs2.question}}</p>
-              <p><input ng-model="pageInfo.writetest.questions[qs2.id]"></p>
-             </div>
-            <div ng-if="type == 'True or False'" class="padding" ng-repeat="qs2 in questions">
+              <div class="test-list" ng-repeat="(type, questions) in readPageData.questions" >
+                <div class="padding">
+                  <h4 ng-if="type !== 'Other'">{{type}}</h4>
+                  <h4 ng-if="type == 'Other'">{{questions[0].other_type}}</h4>
+                </div>
+                
+                <div class="row" ng-if="type == 'Match'">
+
+                  <div class="col-40">
+                    <ul>
+                      <li ng-repeat="qs2 in questions" ng-init="pageInfo.writetest.questions[qs2.id]=pageInfo.matchans[$index].answer;">{{qs2.question}}</li>
+                    </ul>
+                  </div>
+                  <div class="col-20">
+                    <ul>
+                      <li ng-repeat="qs2 in questions">-</li>
+                    </ul>
+                  </div>
+                  <div class="col-40">
+                    <ul ui-sortable id="msort" after-sort="questionsort()">
+                      <li ng-repeat="qs2 in pageInfo.matchans">{{qs2.answer}}</li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <div ng-if="type == 'Fill Up' || type == 'Other' || type == 'One or Two Words'" class="padding" ng-repeat="qs2 in questions">
                   <p>{{$index+1}}. {{qs2.question}}</p>
-                  <p><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="true"><label>True</label>
-                    <input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="false"><label>False</label></p>
-            </div>
+                  <p><input ng-model="pageInfo.writetest.questions[qs2.id]"></p>
+                 </div>
+                <div ng-if="type == 'True or False'" class="padding" ng-repeat="qs2 in questions">
+                      <p>{{$index+1}}. {{qs2.question}}</p>
+                      <p ng-hide="readPageData.info.subject_name = 'Tamil'"><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="true"><label>True</label>
+                        <input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="false"><label>False</label></p>
 
-            <div ng-repeat="qs2 in questions" ng-init="pageInfo.writetest.questions[qs2.id]='';">
-              <div ng-if="type == 'Opposites'" class="padding" >
-                <span>{{$index+1}}. {{qs2.question}}</span> X <input ng-model="pageInfo.writetest.questions[qs2.id]">
-              </div>
-              <div ng-if="type == 'Meanings' || type == 'Match'" class="padding" >
-                <span>{{$index+1}}. {{qs2.question}}</span> - <input ng-model="pageInfo.writetest.questions[qs2.id]">
-              </div>
-              <div ng-if="type == 'Missing Letters' || type == 'Jumbled Letters' || type == 'Jumbled Words'" class="padding" >
-                <span>{{$index+1}}. {{pageInfo.writetest.question_answers[qs2.id]}}</span> - <input ng-model="pageInfo.writetest.questions[qs2.id]">
-              </div>
-              <div ng-if="type == 'Choose' " class="padding" >
-                <p>{{$index+1}}. {{qs2.question}}</p>
-                <p ><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="{{qs2.optiona}}"><label class="padding">A) {{qs2.optiona}}</label> </p>
-                <p ><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="{{qs2.optionb}}"><label class="padding">B) {{qs2.optionb}}</label></p>
-                <p ng-show="qs2.optionc"><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="{{qs2.optionc}}"><label class="padding">C) {{qs2.optionc}}</label></p>
-                <p ng-show="qs2.optiond "><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="{{qs2.optiond}}"><label class="padding">D) {{qs2.optiond}}</label></p>
-                <p ng-show="qs2.optione "><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="{{qs2.optione}}"><label class="padding">E) {{qs2.optione}}</label></p>
-               
-              </div>
+                        <p ng-show="readPageData.info.subject_name = 'Tamil'"><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="true"><label>சரி</label>
+                        <input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="false"><label>தவறு</label></p>
+                </div>
+
+                <div ng-repeat="qs2 in questions" ng-init="pageInfo.writetest.questions[qs2.id]='';" ng-if="type !== 'Match'">
+                  <div ng-if="type == 'Opposites'" class="padding" >
+                    <span>{{$index+1}}. {{qs2.question}}</span> X <input ng-model="pageInfo.writetest.questions[qs2.id]">
+                  </div>
+                  <div ng-if="type == 'Meanings'" class="padding" >
+                    <span>{{$index+1}}. {{qs2.question}}</span> - <input ng-model="pageInfo.writetest.questions[qs2.id]">
+                  </div>
+                  <div ng-if="type == 'Jumbled Words'" class="padding" >
+                    <span>{{$index+1}}. {{qs2.question}}</span> - <input ng-model="pageInfo.writetest.questions[qs2.id]">
+                  </div>
+                  <div ng-if="type == 'Missing Letters' || type == 'Jumbled Letters'" class="padding" >
+                    <span>{{$index+1}}. {{pageInfo.writetest.question_answers[qs2.id]}}</span> - <input ng-model="pageInfo.writetest.questions[qs2.id]">
+                  </div>
+                  <div ng-if="type == 'Choose' " class="padding" >
+                    <p>{{$index+1}}. {{qs2.question}}</p>
+                    <p ><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="{{qs2.optiona}}"><label class="padding">A) {{qs2.optiona}}</label> </p>
+                    <p ><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="{{qs2.optionb}}"><label class="padding">B) {{qs2.optionb}}</label></p>
+                    <p ng-show="qs2.optionc"><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="{{qs2.optionc}}"><label class="padding">C) {{qs2.optionc}}</label></p>
+                    <p ng-show="qs2.optiond "><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="{{qs2.optiond}}"><label class="padding">D) {{qs2.optiond}}</label></p>
+                    <p ng-show="qs2.optione "><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="{{qs2.optione}}"><label class="padding">E) {{qs2.optione}}</label></p>
+                   
+                  </div>
+                </div>
             </div>
-        </div>
-          <div class="text-center padding">
-               <button class="button button-balanced" ng-click="writetest()">Save</button>
-          </div>
-   </div>
-   
-   <div class="content-bg" ng-if="pageInfo.template == 'report'">
-      <div class="closediv">
-        <i class="pg-close fas fa-arrow-left" ng-click="get_test()"></i>
-      </div>
+              <div class="text-center padding">
+                   <button class="button button-balanced" ng-click="writetest()">Save</button>
+              </div>
+    
+        </ion-content>
+      </ion-modal-view>
+    </script>
+
+   <script id="templates/reportmodal.html" type="text/ng-template">
+      <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+          <h1 class="title text-center">{{date(reportPageData.info.created_at) | date: 'dd-MM-yyyy'}} Daily Test Report</h1>
+          <button class="button button-clear ion-close" ng-click="modal.hide()"></button>
+        </ion-header-bar>
+        <ion-content class="padding">
+          
+      
   <div class="test-list">
     <div class="row ">
       <div class="col-50"><label><b>Subject:</b> </label><label>{{reportPageData.info.subject_name}}</label></div>
@@ -143,7 +191,7 @@
     </div>
     <div class="row">
       <div class="col-50"><label><b>Mark:</b> </label><label>{{reportPageData.info.mark}}</label></div>
-      <div class="col-50"><label><b>Remark:</b> </label><label>{{reportPageData.info.daily_test_remark}}</label></div>
+      <div class="col-50"><label><b>Lesson:</b> </label><label>{{reportPageData.info.daily_test_remark}}</label></div>
     </div>
     </div>
     
@@ -166,91 +214,101 @@
            
           </div>              
        </div>
-      </div>
-
-   <div class="content-bg" ng-if="pageInfo.template == 'review'">
-       <div class="closediv">
-        <i class="pg-close fas fa-arrow-left" ng-click="get_test()"></i>
-       
-      </div>
-      <div class="test-list">
-        <div class="row ">
-          <div class="col-50"><label><b>Subject:</b> </label><label>{{reviewPageData.info.subject_name}}</label></div>
-          <div class="col-50"><label><b>Test Name:</b> </label><label>{{reviewPageData.info.daily_test_name}}</label></div>
-        </div>
-        <div class="row">
-          <div class="col-50"><label><b>Mark:</b> </label><label>{{reviewPageData.info.mark}}</label></div>
-          <div class="col-50"><label><b>Remark:</b> </label><label>{{reviewPageData.info.daily_test_remark}}</label></div>
-        </div>
-        </div>
-        <div class="tab-nav">
-            <ul class="nav nav-pills">
-              <li ng-class="{active:isSet(1)}"><a href ng-click="setTab(1)">All</a></li>
-              <li ng-class="{active:isSet(2)}"><a href ng-click="setTab(2)">Correct Answers</a></li>
-              <li ng-class="{active:isSet(3)}"><a href ng-click="setTab(3)">Wrong Answers</a></li>
-            </ul>
-        </div>
-        
-     <!--  <div > -->
-        
-
-            <div ng-if="tab==1" class="test-list " ng-repeat="(type,questions) in reviewPageData.questions">
-              <h4>{{type}}</h4>
-                <div class="clearfix mar-b" ng-repeat="qs3 in questions">
-                  <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) != -1"><b>{{$index+1}}. Question:</b><p>{{qs3.urans.question_answer}} </p></div>
-                  <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) == -1"><b>{{$index+1}}. Question:</b><p>{{qs3.question}} </p></div>
-                  <div ng-show="type == Choose"><b>Options :</b>
-                  <p class="pad-5">A) {{qs3.optiona}}</p>
-                  <p class="pad-5">B) {{qs3.optionb}}</p>
-                  <p class="pad-5" ng-show="qs3.optionc">C) {{qs3.optionc}}</p>
-                  <p class="pad-5" ng-show="qs3.optiond">D) {{qs3.optiond}}</p>
-                  <p class="pad-5" ng-show="qs3.optione">E) {{qs3.optione}}</p>
-                  </div>
-                  <div><b>Ans:</b>{{qs3.answer}}</div>
-                  <div ng-class="{ca: qs3.urans.daily_test_mark == 1, wa: qs3.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs3.urans.answer}}</span></div> 
-                                 
-                </div> 
-            </div>
-
-            <div ng-if="tab==2" class="test-list " ng-repeat="(type,questions) in reviewPageData.questions">
-              <h4>{{type}}</h4>
-                <div class="clearfix mar-b" ng-repeat="qs3 in questions" ng-if="qs3.urans.daily_test_mark == 1">
-                  <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) != -1"><b>{{$index+1}}. Question:</b><p>{{qs3.urans.question_answer}} </p></div>
-                  <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) == -1"><b>{{$index+1}}. Question:</b><p>{{qs3.question}} </p></div>
-                  <div ng-show="type == Choose"><b>Options :</b>
-                  <p class="pad-5">A) {{qs3.optiona}}</p>
-                  <p class="pad-5">B) {{qs3.optionb}}</p>
-                  <p class="pad-5" ng-show="qs3.optionc">C) {{qs3.optionc}}</p>
-                  <p class="pad-5" ng-show="qs3.optiond">D) {{qs3.optiond}}</p>
-                  <p class="pad-5" ng-show="qs3.optione">E) {{qs3.optione}}</p>
-                  </div>
-                  <div><b>Ans:</b>{{qs3.answer}}</div>
-                  <div ng-class="{ca: qs3.urans.daily_test_mark == 1, wa: qs3.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs3.urans.answer}}</span></div> 
-                                 
-                </div> 
-            </div>
-
-            <div ng-if="tab==3" class="test-list " ng-repeat="(type,questions) in reviewPageData.questions">
-              <h4>{{type}}</h4>
-                <div class="clearfix mar-b" ng-repeat="qs3 in questions" ng-if="qs3.urans.daily_test_mark == 0">
-                  <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) != -1"><b>{{$index+1}}. Question:</b><p>{{qs3.urans.question_answer}} </p></div>
-                  <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) == -1"><b>{{$index+1}}. Question:</b><p>{{qs3.question}} </p></div>
-                  <div ng-show="type == Choose"><b>Options :</b>
-                  <p class="pad-5">A) {{qs3.optiona}}</p>
-                  <p class="pad-5">B) {{qs3.optionb}}</p>
-                  <p class="pad-5" ng-show="qs3.optionc">C) {{qs3.optionc}}</p>
-                  <p class="pad-5" ng-show="qs3.optiond">D) {{qs3.optiond}}</p>
-                  <p class="pad-5" ng-show="qs3.optione">E) {{qs3.optione}}</p>
-                  </div>
-                  <div><b>Ans:</b>{{qs3.answer}}</div>
-                  <div ng-class="{ca: qs3.urans.daily_test_mark == 1, wa: qs3.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs3.urans.answer}}</span></div> 
-                                 
-                </div> 
-            </div>
-                     
-       <!-- </div> -->
-   </div>
+    
+        </ion-content>
+      </ion-modal-view>
+    </script>
   
+  <script id="templates/reviewmodal.html" type="text/ng-template">
+      <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+          <h1 class="title text-center">{{date(reviewPageData.info.updated_at) | date: 'dd-MM-yyyy'}} Daily Test Review</h1>
+          <button class="button button-clear ion-close" ng-click="modal.hide()"></button>
+        </ion-header-bar>
+        <ion-content class="padding">
+          <div class="" >
+             
+            <div class="test-list">
+              <div class="row ">
+                <div class="col-50"><label><b>Subject:</b> </label><label>{{reviewPageData.info.subject_name}}</label></div>
+                <div class="col-50"><label><b>Test Name:</b> </label><label>{{reviewPageData.info.daily_test_name}}</label></div>
+              </div>
+              <div class="row">
+                <div class="col-50"><label><b>Total Marks:</b> </label><label>{{reviewPageData.info.mark}}</label></div>
+                <div class="col-50"><label><b>Lesson:</b> </label><label>{{reviewPageData.info.daily_test_remark}}</label></div>
+              </div>
+              <div class="row">
+                <div class="col-50"><label><b>Marks Scored:</b> </label><label>{{reviewPageData.info.mark_scored}}</label></div>
+                <div class="col-50"><label><b>Written on:</b> </label><label>{{reviewPageData.info.updated_at}}</label></div>
+              </div>
+              </div>
+              <div class="tab-nav">
+                  <ul class="nav nav-pills">
+                    <li ng-class="{active:isSet(1)}"><a href ng-click="setTab(1)">All</a></li>
+                    <li ng-class="{active:isSet(2)}"><a href ng-click="setTab(2)">Correct Answers</a></li>
+                    <li ng-class="{active:isSet(3)}"><a href ng-click="setTab(3)">Wrong Answers</a></li>
+                  </ul>
+              </div>
+              
+              <div ng-if="tab==1" class="test-list " ng-repeat="(type,questions) in reviewPageData.questions">
+                    <h4>{{type}}</h4>
+                      <div class="clearfix mar-b" ng-repeat="qs3 in questions">
+                        <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) != -1"><b>{{$index+1}}. Question:</b><p>{{qs3.urans.question_answer}} </p></div>
+                        <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) == -1"><b>{{$index+1}}. Question:</b><p>{{qs3.question}} </p></div>
+                        <div ng-show="type == Choose"><b>Options :</b>
+                        <p class="pad-5">A) {{qs3.optiona}}</p>
+                        <p class="pad-5">B) {{qs3.optionb}}</p>
+                        <p class="pad-5" ng-show="qs3.optionc">C) {{qs3.optionc}}</p>
+                        <p class="pad-5" ng-show="qs3.optiond">D) {{qs3.optiond}}</p>
+                        <p class="pad-5" ng-show="qs3.optione">E) {{qs3.optione}}</p>
+                        </div>
+                        <div><b>Ans:</b>{{qs3.answer}}</div>
+                        <div ng-class="{ca: qs3.urans.daily_test_mark == 1, wa: qs3.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs3.urans.answer}}</span></div> 
+                                       
+                      </div> 
+                  </div>
+
+                  <div ng-if="tab==2" class="test-list " ng-repeat="(type,questions) in reviewPageData.questions">
+                    <h4>{{type}}</h4>
+                      <div class="clearfix mar-b" ng-repeat="qs3 in questions" ng-if="qs3.urans.daily_test_mark == 1">
+                        <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) != -1"><b>{{$index+1}}. Question:</b><p>{{qs3.urans.question_answer}} </p></div>
+                        <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) == -1"><b>{{$index+1}}. Question:</b><p>{{qs3.question}} </p></div>
+                        <div ng-show="type == Choose"><b>Options :</b>
+                        <p class="pad-5">A) {{qs3.optiona}}</p>
+                        <p class="pad-5">B) {{qs3.optionb}}</p>
+                        <p class="pad-5" ng-show="qs3.optionc">C) {{qs3.optionc}}</p>
+                        <p class="pad-5" ng-show="qs3.optiond">D) {{qs3.optiond}}</p>
+                        <p class="pad-5" ng-show="qs3.optione">E) {{qs3.optione}}</p>
+                        </div>
+                        <div><b>Ans:</b>{{qs3.answer}}</div>
+                        <div ng-class="{ca: qs3.urans.daily_test_mark == 1, wa: qs3.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs3.urans.answer}}</span></div> 
+                                       
+                      </div> 
+                  </div>
+
+                  <div ng-if="tab==3" class="test-list " ng-repeat="(type,questions) in reviewPageData.questions">
+                    <h4>{{type}}</h4>
+                      <div class="clearfix mar-b" ng-repeat="qs3 in questions" ng-if="qs3.urans.daily_test_mark == 0">
+                        <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) != -1"><b>{{$index+1}}. Question:</b><p>{{qs3.urans.question_answer}} </p></div>
+                        <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) == -1"><b>{{$index+1}}. Question:</b><p>{{qs3.question}} </p></div>
+                        <div ng-show="type == Choose"><b>Options :</b>
+                        <p class="pad-5">A) {{qs3.optiona}}</p>
+                        <p class="pad-5">B) {{qs3.optionb}}</p>
+                        <p class="pad-5" ng-show="qs3.optionc">C) {{qs3.optionc}}</p>
+                        <p class="pad-5" ng-show="qs3.optiond">D) {{qs3.optiond}}</p>
+                        <p class="pad-5" ng-show="qs3.optione">E) {{qs3.optione}}</p>
+                        </div>
+                        <div><b>Ans:</b>{{qs3.answer}}</div>
+                        <div ng-class="{ca: qs3.urans.daily_test_mark == 1, wa: qs3.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs3.urans.answer}}</span></div> 
+                                       
+                      </div> 
+                  </div>
+                           
+            
+         </div>
+        </ion-content>
+      </ion-modal-view>
+    </script>
   </ion-content>
 </ion-view>
 

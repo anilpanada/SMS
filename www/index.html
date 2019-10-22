@@ -32,6 +32,9 @@
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
 
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js/touch-punch.min.js"></script>
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
     
@@ -76,7 +79,7 @@
     <!--
       The nav bar that will be updated as we navigate between views.
     -->
-    <div ng-include="'app/layouts/header.html'"></div>
+    <div ng-include="'app/layouts/header.html'" class="scroll-bg"></div>
     <ion-nav-view></ion-nav-view>
     <div class="footer" ng-include="'app/layouts/footer.html'"></div>
 

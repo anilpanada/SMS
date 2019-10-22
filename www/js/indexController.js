@@ -267,7 +267,7 @@ moduleCtrl
         for(i=0;i<lcnt;i++){
             var dd = $scope.get_random_number(a.length, c);
             c.push(dd);
-            b[dd] = '_';
+            b[dd] = ' _';
         }
 
         return b.join('');

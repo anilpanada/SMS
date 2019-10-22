@@ -2,9 +2,18 @@
   <ion-content class="padding scroll-bg">
     <div class="content-bg">
       <div class="test-list">
+        <div class="pull-right">
+         <b>{{getDatetime | date:'medium'}}</b>          
+        </div>
         <div class="row padding">
          	<div class="col-50"><label>Class : </label><label>{{loggedInUserInfo.academic.class_name}}</label></div>
          	<div class="col-50"><label>Section : </label><label>{{loggedInUserInfo.academic.section_name}}</label></div>
+        </div>
+
+        <div class="row padding today-p" >
+            <span>{{loggedInUserInfo.name}}</span>            
+            <span>{{attendance.today}}</span>            
+            <span>Today</span>
         </div>
         <div class="row padding">
          	<div class="col-50"><label># Working days : </label><label>{{attendance.noofworking}}</label></div>
@@ -13,16 +22,16 @@
        </div>
       <div id='attendancecalendar' class="padding test-list"></div>
 
-      <div class="fc-popover fc-more-popover" style="top: 22px; left: 91px;">
-          <div class="fc-header fc-widget-header">
-            <span class="fc-title">October 1, 2019</span>
-            <span class="fc-close fc-icon fc-icon-x"></span>
+      <div class="fc-popover fc-more-popover customised_popover ng-hide" style="top: 190px; left: 91px;background: #fff;" ng-click="$event.stopPropagation();">
+          <div class="fc-header fc-widget-header" style="background: #eee">
+            <span class="fc-title" id="cpdate">October 1, 2019</span>
+            <span class="fc-close fc-icon fc-icon-x" ng-click="hidepopover()"></span>
           </div>
           <div class="fc-body fc-widget-content">
             <div class="fc-event-container">
-              <a class="fc-day-grid-event fc-h-event fc-event fc-start fc-end event greenEvent fc-draggable">
+              <a class="fc-day-grid-event fc-h-event fc-event fc-start fc-end event fc-draggable" id="eventcolor">
                 <div class="fc-content"> 
-                    <span class="fc-title">Quarterly Holiday</span>
+                    <span class="fc-title" id="cptitle">Quarterly Holiday</span>
                 </div>
               </a>         
             </div>

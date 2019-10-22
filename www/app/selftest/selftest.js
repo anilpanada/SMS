@@ -12,12 +12,24 @@ moduleCtrl
     $scope.isSet = function (tabId) {
         return $scope.tab === tabId;
     };
-	
-	$scope.pageInfo = {template: '', assign: {}};
-	$scope.selectedTest = function(obj){
+
+    $scope.date= function(dt){
+		return dt ? new Date(dt).getTime() : new Date(new Date().toJSON().split('T')[0]).getTime();
+	}
+
+	$scope.selectedTest = function(obj, ty){
 		$scope.selected = obj;
-		$scope.loadData(obj);
+		$ionicModal.fromTemplateUrl('templates/'+ty+'modal.html', {
+		    scope: $scope
+		  }).then(function(modal) {
+		    $scope.modal = modal;
+		    $scope.modal.show();
+		  });
 	};
+	
+	$scope.pageInfo = {template: ''};
+	$scope.modal = {};
+	
 	$scope.subjects = [];
 	ApiService.get_subjects().then(function(res){
 		$scope.subjects = res.data;
@@ -41,35 +53,47 @@ moduleCtrl
 
 	$scope.readPageData = {};
 
-		$scope.getReadData = function(id){
-			$scope.readPageData = {};
-			ApiService.get_self_test_questions(id).then(function(res){
-				$scope.readPageData = res.data;
+	$scope.getReadData = function(id){
+		$scope.readPageData = {};
+		ApiService.get_self_test_questions(id).then(function(res){
+			$scope.readPageData = res.data;
 
-				if($scope.pageInfo.template == 'write'){
-					$scope.pageInfo.writetest={test_id:id, test_name: $scope.readPageData.info.daily_test_name,questions:{}, question_answers: {}};
+			if($scope.pageInfo.template == 'write'){
+				$scope.pageInfo.writetest={test_id:id, test_name: $scope.readPageData.info.daily_test_name,questions:{}, question_answers: {}};
 
-					angular.forEach($scope.readPageData.questions, function(arr, type){
-						$scope.readPageData.questions[type] = $scope.$parent.shuffle(arr);
+				angular.forEach($scope.readPageData.questions, function(arr, type){
+					$scope.readPageData.questions[type] = $scope.$parent.shuffle(arr);
 
-						if(type == 'Missing Letters'){
-							angular.forEach($scope.readPageData.questions[type], function(v,k){
-								$scope.pageInfo.writetest.question_answers[v.id] = $scope.$parent.missing_letters(v.question);
-							});
-						} else if(type == 'Jumbled Letters'){
-							angular.forEach($scope.readPageData.questions[type], function(v,k){
-								$scope.pageInfo.writetest.question_answers[v.id] = $scope.$parent.jumbled_letters(v.question);
-							});
-						} else if(type == 'Jumbled Words'){
-							angular.forEach($scope.readPageData.questions[type], function(v,k){
-								$scope.pageInfo.writetest.question_answers[v.id] = $scope.$parent.jumbled_words(v.question);
-							});
-						}
-					});
-				}
-			});
-		};
+					if(type == 'Missing Letters'){
+						angular.forEach($scope.readPageData.questions[type], function(v,k){
+							$scope.pageInfo.writetest.question_answers[v.id] = $scope.$parent.missing_letters(v.question);
+						});
+					} else if(type == 'Jumbled Letters'){
+						angular.forEach($scope.readPageData.questions[type], function(v,k){
+							$scope.pageInfo.writetest.question_answers[v.id] = $scope.$parent.jumbled_letters(v.question);
+						});
+					} else if(type == 'Jumbled Words'){
+						angular.forEach($scope.readPageData.questions[type], function(v,k){
+							$scope.pageInfo.writetest.question_answers[v.id] = $scope.$parent.jumbled_words(v.question);
+						});
+					} else if(type == 'Match'){
+					var bk = angular.copy($scope.readPageData.questions[type]);
+					$scope.pageInfo.matchans = $scope.$parent.shuffle(bk);
+					}
+				});
+			}
+		});
+	};
 
+	$scope.questionsort = function(){
+		$lis = $('#msort li');
+		angular.forEach($scope.readPageData.questions['Match'], function(v,k){
+			$scope.pageInfo.writetest.questions[v.id] = $lis[k].innerText;
+		});
+		if(!$scope.$$phase) {
+           $scope.$apply();
+        }
+	}
 
 	$scope.reportPageData = {};
 

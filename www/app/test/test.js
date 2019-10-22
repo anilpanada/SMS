@@ -4,20 +4,42 @@ moduleCtrl
 	$scope.dailytest = Data.data;
 
 	$scope.pageInfo = {template: ''};
-	$scope.selectedTest = function(obj){
+	$scope.modal = {};
+	
+	/*$scope.selectedTest = function(obj){
 		$scope.selected = obj;
 		$scope.loadData(obj);
+	};*/
+
+	$scope.date= function(dt){
+		return dt ? new Date(dt).getTime() : new Date(new Date().toJSON().split('T')[0]).getTime();
+	}
+
+
+
+	$scope.selectedTest = function(obj, ty){
+		$scope.selected = obj;
+		$ionicModal.fromTemplateUrl('templates/'+ty+'modal.html', {
+		    scope: $scope
+		  }).then(function(modal) {
+		    $scope.modal = modal;
+		    $scope.modal.show();
+		  });
 	};
 
-		$scope.tab = 1;
+	$scope.$on('modal.hidden', function() {
+	    $scope.get_test();
+	});
 
-        $scope.setTab = function (tabId) {
-            $scope.tab = tabId;
-        };
+	$scope.tab = 1;
 
-        $scope.isSet = function (tabId) {
-            return $scope.tab === tabId;
-        };
+    $scope.setTab = function (tabId) {
+        $scope.tab = tabId;
+    };
+
+    $scope.isSet = function (tabId) {
+        return $scope.tab === tabId;
+    };
 
 	$scope.readPageData = {};
 
@@ -60,12 +82,24 @@ moduleCtrl
 						angular.forEach($scope.readPageData.questions[type], function(v,k){
 							$scope.pageInfo.writetest.question_answers[v.id] = $scope.$parent.jumbled_words(v.question);
 						});
+					} else if(type == 'Match'){
+						var bk = angular.copy($scope.readPageData.questions[type]);
+						$scope.pageInfo.matchans = $scope.$parent.shuffle(bk);
 					}
 				});
 			}
 		});
 	};
 
+	$scope.questionsort = function(){
+		$lis = $('#msort li');
+		angular.forEach($scope.readPageData.questions['Match'], function(v,k){
+			$scope.pageInfo.writetest.questions[v.id] = $lis[k].innerText;
+		});
+		if(!$scope.$$phase) {
+           $scope.$apply();
+        }
+	}
 
 	$scope.reportPageData = {};
 
@@ -90,6 +124,8 @@ moduleCtrl
 		if($rootScope.isOnline){
 			ApiService.write_daily_test($scope.pageInfo.writetest).then(function(res){
 				$scope.pageInfo.template = 'review';
+				$scope.modal.hide();
+				$scope.selectedTest({}, 'review');
 				$scope.getReviewData($scope.pageInfo.writetest.test_id, res.id);
 			});
 		} else {
@@ -156,6 +192,8 @@ moduleCtrl
 
 	            $rootScope.offlineData['sms_sync_get_daily_test_report&user_id='+$rootScope.loggedInUserInfo.id+'&test_id='+$scope.pageInfo.writetest.test_id] = reportData;
 	            $scope.pageInfo.template = 'review';
+	            $scope.modal.hide();
+	            $scope.selectedTest({}, 'review');
 	            $scope.getReviewData($scope.pageInfo.writetest.test_id, $scope.newansid);
 			}
 		}

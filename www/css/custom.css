@@ -7,12 +7,12 @@
     background-color: #ffa58c;
 }
 .fc-event.event.greenEvent {
-    background-color: #06df06;
+    background-color: #FFA58C;
     padding: 5px 0px;
 }
 
 .fc-event.event.blueEvent {
-    background-color:#00c0ef;
+    background-color:#06DF06;
     padding: 5px 0px;
 }
 
@@ -234,4 +234,51 @@
 .footer p{
     font-size: 11px;
     line-height: 0.5;
+}
+.ptitle{
+    padding: 0 10px;
+}
+.ptitle h1{
+    color: #000;
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 0!important;
+    padding: 5px;
+    background: #fff;
+
+}
+.login_page .scroll-content{
+    padding: 20px 10px;
+}
+
+.test_page .modal-backdrop, .selftest_page .modal-backdrop{
+    height: 100%!important;
+    z-index: 99999;
+}
+.todaytest{
+    background: #000000b0;
+    color: white;
+}
+.todaytest h4{
+    color: white;
+}
+[nav-view-transition="ios"][nav-view-direction="forward"], [nav-view-transition="ios"][nav-view-direction="back"]{
+    background-color: transparent!important;
+}
+.test-list li{
+    padding: 10px 0;
+}
+
+input:focus {
+    box-shadow: 0 0 10px #719ECE;
+}
+.today-p span{
+    padding: 0 10px;
+}
+.fc-unthemed td.fc-today {
+    background: #11c1f382!important;
+}
+.fc .fc-row .fc-content-skeleton table, .fc .fc-row .fc-content-skeleton td, .fc .fc-row .fc-mirror-skeleton td {
+    background: none!important;
+    border-color: transparent;
 }
