@@ -3,7 +3,7 @@ moduleCtrl
 .controller('LoginCtrl', function($scope, $rootScope, $state, ApiService) {
 	
 	var authData = localStorage.getItem('sms_auth');
-
+	$scope.showerror = false;
 	if(!!authData){
 		$state.go('home');
 	}
@@ -20,7 +20,7 @@ moduleCtrl
 				ApiService.notification('Logged in successfully', 'success');
 				$state.go('home');
 			} else {
-				ApiService.notification(res.msg, 'error');
+				$scope.showerror= true;
 			}
 		});
 	}

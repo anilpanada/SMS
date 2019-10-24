@@ -282,3 +282,6 @@ input:focus {
     background: none!important;
     border-color: transparent;
 }
+.login p{
+    color: red;
+}

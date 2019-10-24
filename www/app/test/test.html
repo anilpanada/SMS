@@ -36,15 +36,15 @@
         <ion-content class="padding">
           
            <div class="test-list">
-    <div class="row ">
-      <div class="col-50"><label><b>Subject:</b> </label><label>{{readPageData.info.subject_name}}</label></div>
-      <div class="col-50"><label><b>Test Name:</b> </label><label>{{readPageData.info.daily_test_name}}</label></div>
-    </div>
-    <div class="row">
-      <div class="col-50"><label><b>Mark:</b> </label><label>{{readPageData.info.mark}}</label></div>
-      <div class="col-50"><label><b>Lesson:</b> </label><label>{{readPageData.info.daily_test_remark}}</label></div>
-    </div>
-    </div>
+            <div class="row ">
+              <div class="col-50"><label><b>Subject:</b> </label><label>{{readPageData.info.subject_name}}</label></div>
+              <div class="col-50"><label><b>Test Name:</b> </label><label>{{readPageData.info.daily_test_name}}</label></div>
+            </div>
+            <div class="row">
+              <div class="col-50"><label><b>Mark:</b> </label><label>{{readPageData.info.mark}}</label></div>
+              <div class="col-50"><label><b>Lesson:</b> </label><label>{{readPageData.info.daily_test_remark}}</label></div>
+            </div>
+            </div>
 
       <div class="test-list" ng-repeat="(type, questions) in readPageData.questions">
         <div class="padding">
@@ -136,10 +136,10 @@
                  </div>
                 <div ng-if="type == 'True or False'" class="padding" ng-repeat="qs2 in questions">
                       <p>{{$index+1}}. {{qs2.question}}</p>
-                      <p ng-hide="readPageData.info.subject_name = 'Tamil'"><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="true"><label>True</label>
+                      <p ng-show="readPageData.info.subject_name !== 'Tamil'"><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="true"><label>True</label>
                         <input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="false"><label>False</label></p>
 
-                        <p ng-show="readPageData.info.subject_name = 'Tamil'"><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="true"><label>சரி</label>
+                        <p ng-show="readPageData.info.subject_name == 'Tamil'"><input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="true"><label>சரி</label>
                         <input type="radio" ng-model="pageInfo.writetest.questions[qs2.id]" value="false"><label>தவறு</label></p>
                 </div>
 
@@ -198,18 +198,12 @@
       <div class="test-list pos-relative" ng-repeat="qr in reportPageData.questions | orderBy:'-wrong'">
           <h4>{{qr.question_type}}</h4>
           <div class="clearfix" >
-            <div><b>{{$index+1}}. Question:</b> {{qr.question}} </div>
+            <div><b> <span class="ca">{{qr.correct}}</span> +
+            <span class="wa">{{qr.wrong}}</span> - Question:</b> {{qr.question}} </div>
             <div><b>Ans:</b> {{qr.answer}}</div>
 
             
-          <div class="clearfix mark-list text-center ">
-            <div class="clearfix testatm " >
-              <span ng-class="{greenbtn: re.daily_test_mark == 1, redbtn: re.daily_test_mark == 0}" ng-repeat="re in qr.results">T{{$index+1}}</span>
-          </div>
-          <div class="clearfix ">
-            <span class="ca"><b>CA:</b>{{qr.correct}}</span>
-            <span class="wa"><b>WA:</b>{{qr.wrong}}</span>            
-          </div>  
+           
           </div>
            
           </div>              
@@ -249,63 +243,121 @@
                     <li ng-class="{active:isSet(3)}"><a href ng-click="setTab(3)">Wrong Answers</a></li>
                   </ul>
               </div>
-              
+
               <div ng-if="tab==1" class="test-list " ng-repeat="(type,questions) in reviewPageData.questions">
-                    <h4>{{type}}</h4>
-                      <div class="clearfix mar-b" ng-repeat="qs3 in questions">
-                        <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) != -1"><b>{{$index+1}}. Question:</b><p>{{qs3.urans.question_answer}} </p></div>
-                        <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) == -1"><b>{{$index+1}}. Question:</b><p>{{qs3.question}} </p></div>
-                        <div ng-show="type == Choose"><b>Options :</b>
-                        <p class="pad-5">A) {{qs3.optiona}}</p>
-                        <p class="pad-5">B) {{qs3.optionb}}</p>
-                        <p class="pad-5" ng-show="qs3.optionc">C) {{qs3.optionc}}</p>
-                        <p class="pad-5" ng-show="qs3.optiond">D) {{qs3.optiond}}</p>
-                        <p class="pad-5" ng-show="qs3.optione">E) {{qs3.optione}}</p>
-                        </div>
-                        <div><b>Ans:</b>{{qs3.answer}}</div>
-                        <div ng-class="{ca: qs3.urans.daily_test_mark == 1, wa: qs3.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs3.urans.answer}}</span></div> 
-                                       
-                      </div> 
-                  </div>
+                <div class="padding">
+                  <h4 ng-if="type !== 'Other'">{{type}}</h4>
+                  <h4 ng-if="type == 'Other'">{{questions[0].other_type}}</h4>
+                </div>
 
-                  <div ng-if="tab==2" class="test-list " ng-repeat="(type,questions) in reviewPageData.questions">
-                    <h4>{{type}}</h4>
-                      <div class="clearfix mar-b" ng-repeat="qs3 in questions" ng-if="qs3.urans.daily_test_mark == 1">
-                        <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) != -1"><b>{{$index+1}}. Question:</b><p>{{qs3.urans.question_answer}} </p></div>
-                        <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) == -1"><b>{{$index+1}}. Question:</b><p>{{qs3.question}} </p></div>
-                        <div ng-show="type == Choose"><b>Options :</b>
-                        <p class="pad-5">A) {{qs3.optiona}}</p>
-                        <p class="pad-5">B) {{qs3.optionb}}</p>
-                        <p class="pad-5" ng-show="qs3.optionc">C) {{qs3.optionc}}</p>
-                        <p class="pad-5" ng-show="qs3.optiond">D) {{qs3.optiond}}</p>
-                        <p class="pad-5" ng-show="qs3.optione">E) {{qs3.optione}}</p>
-                        </div>
-                        <div><b>Ans:</b>{{qs3.answer}}</div>
-                        <div ng-class="{ca: qs3.urans.daily_test_mark == 1, wa: qs3.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs3.urans.answer}}</span></div> 
-                                       
-                      </div> 
-                  </div>
+                <div ng-if="type == 'Fill Up' || type == 'Other' || type == 'One or Two Words' || type == 'True or False'" class="padding" ng-repeat="qs2 in questions">
+                  <p>{{$index+1}}. {{qs2.question}}</p>
+                  <p><b>Ans:</b> {{qs2.answer}}
+                    <span ng-class="{ca: qs2.urans.daily_test_mark == 1, wa: qs2.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs2.urans.answer}}</span></span> </p>
+                  
+                </div>
+                <div ng-if="type == 'Opposites'" class="padding" ng-repeat="qs2 in questions">
+                  <span>{{$index+1}}. {{qs2.question}}</span> X <span>{{qs2.answer}}</span>
+                  <div ng-class="{ca: qs2.urans.daily_test_mark == 1, wa: qs2.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs2.urans.answer}}</span></div> 
+                </div>
+                <div ng-if="type == 'Meanings' || type == 'Match' || questions[0].other_type == 'Rhyming Words'" class="padding" ng-repeat="qs2 in questions">
+                  <span>{{$index+1}}. {{qs2.question}}</span> - <span>{{qs2.answer}}</span>
+                  <div ng-class="{ca: qs2.urans.daily_test_mark == 1, wa: qs2.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs2.urans.answer}}</span></div> 
+                </div>
+                <div ng-if="type == 'Missing Letters' || type == 'Jumbled Letters' || type == 'Jumbled Words'" class="padding" ng-repeat="qs2 in questions">
+                  <span>{{$index+1}}. {{qs2.question}}</span>
+                  <div ng-class="{ca: qs2.urans.daily_test_mark == 1, wa: qs2.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs2.urans.answer}}</span></div> 
+                </div>
+                <div ng-if="type == 'Choose' " class="padding" ng-repeat="qs2 in questions">
+                  <p>{{$index+1}}. {{qs2.question}}</p>
+                  <p class="padding">A) {{qs2.optiona}}</p>
+                  <p class="padding">B) {{qs2.optionb}}</p>
+                  <p class="padding" ng-show="qs2.optionc">C) {{qs2.optionc}}</p>
+                  <p class="padding" ng-show="qs2.optiond ">D) {{qs2.optiond}}</p>
+                  <p class="padding" ng-show="qs2.optione ">D) {{qs2.optione}}</p>
+                   <p><b>Ans:</b>{{qs2.answer}} <span ng-class="{ca: qs2.urans.daily_test_mark == 1, wa: qs2.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs2.urans.answer}}</span></span> </p>
 
-                  <div ng-if="tab==3" class="test-list " ng-repeat="(type,questions) in reviewPageData.questions">
-                    <h4>{{type}}</h4>
-                      <div class="clearfix mar-b" ng-repeat="qs3 in questions" ng-if="qs3.urans.daily_test_mark == 0">
-                        <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) != -1"><b>{{$index+1}}. Question:</b><p>{{qs3.urans.question_answer}} </p></div>
-                        <div ng-if="['Missing Letters', 'Jumbled Letters', 'Jumbled Words'].indexOf(type) == -1"><b>{{$index+1}}. Question:</b><p>{{qs3.question}} </p></div>
-                        <div ng-show="type == Choose"><b>Options :</b>
-                        <p class="pad-5">A) {{qs3.optiona}}</p>
-                        <p class="pad-5">B) {{qs3.optionb}}</p>
-                        <p class="pad-5" ng-show="qs3.optionc">C) {{qs3.optionc}}</p>
-                        <p class="pad-5" ng-show="qs3.optiond">D) {{qs3.optiond}}</p>
-                        <p class="pad-5" ng-show="qs3.optione">E) {{qs3.optione}}</p>
-                        </div>
-                        <div><b>Ans:</b>{{qs3.answer}}</div>
-                        <div ng-class="{ca: qs3.urans.daily_test_mark == 1, wa: qs3.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs3.urans.answer}}</span></div> 
-                                       
-                      </div> 
-                  </div>
-                           
-            
-         </div>
+                </div>
+                </div>
+
+                <div ng-if="tab==2" class="test-list " ng-repeat="(type,questions) in reviewPageData.questions">
+                <div class="padding">
+                  <h4 ng-if="type !== 'Other'">{{type}}</h4>
+                  <h4 ng-if="type == 'Other'">{{questions[0].other_type}}</h4>
+                </div>
+
+                <div ng-repeat="qs2 in questions" ng-if="qs2.urans.daily_test_mark == 1" >
+                <div ng-if="type == 'Fill Up' || type == 'Other' || type == 'One or Two Words' || type == 'True or False'" class="padding" >
+                  <p>{{$index+1}}. {{qs2.question}}</p>
+                  <p><b>Ans:</b> {{qs2.answer}}
+                    <span ng-class="{ca: qs2.urans.daily_test_mark == 1, wa: qs2.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs2.urans.answer}}</span></span> </p>
+                  
+                </div>
+                <div ng-if="type == 'Opposites'" class="padding" >
+                  <span>{{$index+1}}. {{qs2.question}}</span> X <span>{{qs2.answer}}</span>
+                  <div ng-class="{ca: qs2.urans.daily_test_mark == 1, wa: qs2.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs2.urans.answer}}</span></div> 
+                </div>
+                <div ng-if="type == 'Meanings' || type == 'Match' || questions[0].other_type == 'Rhyming Words'" class="padding" >
+                  <span>{{$index+1}}. {{qs2.question}}</span> - <span>{{qs2.answer}}</span>
+                  <div ng-class="{ca: qs2.urans.daily_test_mark == 1, wa: qs2.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs2.urans.answer}}</span></div> 
+                </div>
+                <div ng-if="type == 'Missing Letters' || type == 'Jumbled Letters' || type == 'Jumbled Words'" class="padding" >
+                  <span>{{$index+1}}. {{qs2.question}}</span>
+                  <div ng-class="{ca: qs2.urans.daily_test_mark == 1, wa: qs2.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs2.urans.answer}}</span></div> 
+                </div>
+                <div ng-if="type == 'Choose' " class="padding" >
+                  <p>{{$index+1}}. {{qs2.question}}</p>
+                  <p class="padding">A) {{qs2.optiona}}</p>
+                  <p class="padding">B) {{qs2.optionb}}</p>
+                  <p class="padding" ng-show="qs2.optionc">C) {{qs2.optionc}}</p>
+                  <p class="padding" ng-show="qs2.optiond ">D) {{qs2.optiond}}</p>
+                  <p class="padding" ng-show="qs2.optione ">D) {{qs2.optione}}</p>
+                   <p><b>Ans:</b>{{qs2.answer}} <span ng-class="{ca: qs2.urans.daily_test_mark == 1, wa: qs2.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs2.urans.answer}}</span></span> </p>
+
+                </div>
+              </div>
+                </div>
+
+              <div ng-if="tab==3" class="test-list " ng-repeat="(type,questions) in reviewPageData.questions">
+                <div class="padding">
+                  <h4 ng-if="type !== 'Other'">{{type}}</h4>
+                  <h4 ng-if="type == 'Other'">{{questions[0].other_type}}</h4>
+                </div>
+
+                <div ng-repeat="qs2 in questions" ng-if="qs2.urans.daily_test_mark == 0" >
+
+                <div ng-if="type == 'Fill Up' || type == 'Other' || type == 'One or Two Words' || type == 'True or False'" class="padding" >
+                  <p>{{$index+1}}. {{qs2.question}}</p>
+                  <p><b>Ans:</b> {{qs2.answer}}
+                    <span ng-class="{ca: qs2.urans.daily_test_mark == 1, wa: qs2.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs2.urans.answer}}</span></span> </p>
+                  
+                </div>
+                <div ng-if="type == 'Opposites'" class="padding" >
+                  <span>{{$index+1}}. {{qs2.question}}</span> X <span>{{qs2.answer}}</span>
+                  <div ng-class="{ca: qs2.urans.daily_test_mark == 1, wa: qs2.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs2.urans.answer}}</span></div> 
+                </div>
+                <div ng-if="type == 'Meanings' || type == 'Match' || questions[0].other_type == 'Rhyming Words'" class="padding">
+                  <span>{{$index+1}}. {{qs2.question}}</span> - <span>{{qs2.answer}}</span>
+                  <div ng-class="{ca: qs2.urans.daily_test_mark == 1, wa: qs2.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs2.urans.answer}}</span></div> 
+                </div>
+                <div ng-if="type == 'Missing Letters' || type == 'Jumbled Letters' || type == 'Jumbled Words'" class="padding" >
+                  <span>{{$index+1}}. {{qs2.question}}</span>
+                  <div ng-class="{ca: qs2.urans.daily_test_mark == 1, wa: qs2.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs2.urans.answer}}</span></div> 
+                </div>
+                <div ng-if="type == 'Choose' " class="padding">
+                  <p>{{$index+1}}. {{qs2.question}}</p>
+                  <p class="padding">A) {{qs2.optiona}}</p>
+                  <p class="padding">B) {{qs2.optionb}}</p>
+                  <p class="padding" ng-show="qs2.optionc">C) {{qs2.optionc}}</p>
+                  <p class="padding" ng-show="qs2.optiond ">D) {{qs2.optiond}}</p>
+                  <p class="padding" ng-show="qs2.optione ">D) {{qs2.optione}}</p>
+                   <p><b>Ans:</b>{{qs2.answer}} <span ng-class="{ca: qs2.urans.daily_test_mark == 1, wa: qs2.urans.daily_test_mark == 0}" ><b>Your Ans:</b> <span class="upper">{{qs2.urans.answer}}</span></span> </p>
+
+                </div>
+              </div>
+                </div>
+              
+          </div>
         </ion-content>
       </ion-modal-view>
     </script>

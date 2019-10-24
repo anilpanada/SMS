@@ -19,4 +19,9 @@ moduleCtrl
 	$scope.get_date = function(dt){
 		return new Date(dt);
 	};
+
+	$scope.goto_test= function(id){
+		$rootScope.homeworktest = id;
+		$state.go('test');
+	}
 });

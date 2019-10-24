@@ -16,7 +16,6 @@ moduleCtrl
 	}
 
 
-
 	$scope.selectedTest = function(obj, ty){
 		$scope.selected = obj;
 		$ionicModal.fromTemplateUrl('templates/'+ty+'modal.html', {
@@ -199,5 +198,19 @@ moduleCtrl
 		}
 
 	}
+	
+	if($rootScope.homeworktest){
+		var filt = $scope.dailytest.filter(function(a){
+			return a.id == $rootScope.homeworktest;
+		});
+		if(filt.length){
+			$scope.selectedTest(filt[0], 'write');
+			$scope.pageInfo.template = 'write';
+			$scope.getReadData($rootScope.homeworktest);
+		}
+
+		$rootScope.homeworktest = undefined;
+	}
+
 	
 });

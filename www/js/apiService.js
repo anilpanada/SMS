@@ -21,7 +21,7 @@ moduleCtrl.factory('ApiService', function (httpService, $q, APIURL, $rootScope) 
 
     apiService.calendar = function (data) {
     	return httpService
-        .post(APIURL+'get_calendar', data)
+        .post(APIURL+'get_calendar&class='+$rootScope.loggedInUserInfo.academic.class_name, data)
         .then(function (res) {
             return res['data'];
         });
@@ -29,7 +29,7 @@ moduleCtrl.factory('ApiService', function (httpService, $q, APIURL, $rootScope) 
 
     apiService.attendance = function (data) {
     	return httpService
-        .post(APIURL+'get_student_attendance&user_id='+$rootScope.loggedInUserInfo.id, {})
+        .post(APIURL+'get_student_attendance&user_id='+$rootScope.loggedInUserInfo.id+'&class='+$rootScope.loggedInUserInfo.academic.class_name, {})
         .then(function (res) {
             return res['data'];
         });

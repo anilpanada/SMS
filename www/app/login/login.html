@@ -12,11 +12,14 @@
         <span ><i class="fa fa-user"></i></span>
         <input class="form-control" type="text" required="" ng-model="login.username" name="username" placeholder="Username">
       </div>
+
       <div class=" login"> 
         <span><i class="fa fa-lock"></i></span>
         <input class="form-control" type="password" required ng-model="login.password" name="password" placeholder="Password">
       </div>
-
+      <div ng-if="showerror" class="text-left login">
+        <p>Invalid Username/Password</p>
+      </div>
      
       <div class="login">
         <div class="form-check pull-left login-pad">

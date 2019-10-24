@@ -25,7 +25,7 @@
             <div class="col-50">{{hw.description}}
               <a download="" class="padding" ng-if="hw.home_work_file_path" href="{{hw.home_work_file_path}}">
                 <i class="fa fa-download"></i></a>
-                <a class="padding" ng-if="hw.home_work_test_names" href="hw."><i class="fa fa-pencil">Write Test</i></a>
+                <a class="padding" ng-if="hw.home_work_test_names.length"  ng-click="goto_test(hw.home_work_test_names[0])"><i class="fa fa-pencil">Write Test</i></a>
             </div>
           </div>
          </div>
